@@ -26,27 +26,27 @@
 		<form action="RegisterServlet" method="POST">
 			<table>
 				<tr>
-					<td>ID</td>
+					<td>ユーザID</td>
 					<td>
-						<input type="text" name="id" pattern="^[0-9A-Za-z]{1,20}$" maxlength="20" placeholder="半角英数字20文字以内">
+						<input type="text" name="user_id" pattern="^[0-9A-Za-z]{1,20}$" maxlength="20" placeholder="半角英数字20文字以内" required>
 					</td>
 				</tr>	
 				<tr>	
 					<td>ニックネーム</td>
 					<td>
-						<input type="text" name="nickname" pattern="^[0-9A-Za-z]{1,20}$" placeholder="半角英数字20文字以内">
+						<input type="text" name="nickname" pattern="^[0-9A-Za-z]{1,20}$" placeholder="半角英数字20文字以内" required>
 					</td>
 				</tr>
 				<tr>	
 					<td>パスワード</td>
 					<td>
-						<input type="password" name="password" pattern="^[0-9A-Za-z]{1,20}$" placeholder="半角英数字20文字以内">
+						<input type="password" name="password" pattern="^[0-9A-Za-z]{1,20}$" placeholder="半角英数字20文字以内" required>
 					</td>
 				</tr>	
 				<tr>
 					<td>パスワード2回目</td>
 					<td>
-						<input type="password" name="password2" pattern="^[0-9A-Za-z]{1,20}$" placeholder="再入力">
+						<input type="password" name="password2" pattern="^[0-9A-Za-z]{1,20}$" placeholder="再入力" required>
 					</td>
 				</tr>	
 			</table>

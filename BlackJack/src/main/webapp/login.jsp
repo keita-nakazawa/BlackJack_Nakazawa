@@ -26,8 +26,8 @@
 		<form action="LoginLogoutServlet" method="POST">
 			<table>
 				<tr>
-					<td>ID</td>
-					<td><input type="text" name="id" pattern="^[0-9A-Za-z]+$" placeholder="半角英数字" required></td>
+					<td>ユーザID</td>
+					<td><input type="text" name="user_id" pattern="^[0-9A-Za-z]+$" placeholder="半角英数字" required></td>
 				</tr>
 				<tr>
 					<td>パスワード</td>

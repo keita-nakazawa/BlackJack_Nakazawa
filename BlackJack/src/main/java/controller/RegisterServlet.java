@@ -27,9 +27,10 @@ public class RegisterServlet extends HttpServlet {
 		UserDao userDao = new UserDao();
 		userDao.doRegister(id, nickname, password, password2);
 		
-		RequestDispatcher rd = MessageManager.checkMessage("login.jsp", "register.jsp", request);
+		String nextPage = MessageManager.checkMessage("login.jsp", "register.jsp", request);
 		MessageManager.resetMessage();
 		
+		RequestDispatcher rd = request.getRequestDispatcher(nextPage);
 		rd.forward(request, response);
 	
 	}

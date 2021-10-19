@@ -1,6 +1,5 @@
 package exception;
 
-import javax.servlet.RequestDispatcher;
 import javax.servlet.http.HttpServletRequest;
 
 /**
@@ -27,12 +26,13 @@ public class MessageManager{
 		MessageManager.message = null;
 	}
 	
-	public static RequestDispatcher checkMessage(String nextPage, String thisPage, HttpServletRequest request) {
+	public static String checkMessage(String nextPage, String thisPage, HttpServletRequest request) {
 		if(MessageManager.message == null) {
-			return request.getRequestDispatcher(nextPage);
+			return nextPage;
 		}else {
 			request.setAttribute("message", MessageManager.message);
-			return request.getRequestDispatcher(thisPage);
+			return thisPage;
 		}
 	}
+	
 }
