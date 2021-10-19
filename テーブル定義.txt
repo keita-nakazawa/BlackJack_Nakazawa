@@ -1,0 +1,17 @@
+create table users(
+	user_id varchar(30) BINARY NOT NULL,
+	nickname varchar(30) NOT NULL,
+	password varchar(30) NOT NULL,
+	win_rate float UNSIGNED NOT NULL,
+	PRIMARY KEY(user_id)
+);
+
+
+create table history (
+	game_id int UNSIGNED NOT NULL AUTO_INCREMENT,
+	user_id varchar(30) BINARY NOT NULL,
+	result int NOT NULL,
+	PRIMARY KEY(game_id),
+	INDEX index_user_id(user_id),
+	FOREIGN KEY fk_user_id(user_id) REFERENCES users(user_id)
+);
