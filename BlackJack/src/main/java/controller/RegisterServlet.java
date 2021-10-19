@@ -25,7 +25,7 @@ public class RegisterServlet extends HttpServlet {
 		//入力内容制限を無理やり破っていないかここでチェックする必要がある。
 		
 		UserDao userDao = new UserDao();
-		userDao.registerUser(id, nickname, password, password2);
+		userDao.doRegister(id, nickname, password, password2);
 		
 		RequestDispatcher rd = MessageManager.checkMessage("login.jsp", "register.jsp", request);
 		MessageManager.resetMessage();

@@ -16,7 +16,7 @@ public class UserDao {
 	private PreparedStatement ps = null;
 	private ResultSet rs = null;
 	
-	public void registerUser(String id, String nickname, String password, String password2) {
+	public void doRegister(String id, String nickname, String password, String password2) {
 		
 		if(password.equals(password2)) {
 			
@@ -47,7 +47,7 @@ public class UserDao {
 		}else {
 			new MessageManager("パスワード2回目が間違っています。");
 		}
-	}
+	} 
 	
 	
 	public void getConnect() throws ClassNotFoundException, SQLException{
