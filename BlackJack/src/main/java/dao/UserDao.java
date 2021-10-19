@@ -25,7 +25,7 @@ public class UserDao {
 				//DBへの接続処理
 				getConnect();
 				
-				//SQL文の作成(win_rateには0を設定)
+				//SQL文の作成(win_rateカラムには0を設定)
 				String sql = "INSERT INTO users VALUES (?, ?, ?, 0)";
 				ps = con.prepareStatement(sql);
 				ps.setString(1, userId);
@@ -46,7 +46,7 @@ public class UserDao {
 				closeAll();
 			}
 		}else {
-			new MessageManager("パスワード2回目が間違っています。");
+			new MessageManager("パスワードが一致していません。");
 		}
 	}
 	

@@ -17,7 +17,7 @@ public class RegisterServlet extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		request.setCharacterEncoding("UTF-8");
 		
-		String id = request.getParameter("id");
+		String id = request.getParameter("user_id");
 		String nickname = request.getParameter("nickname");
 		String password = request.getParameter("password");
 		String password2 = request.getParameter("password2");
