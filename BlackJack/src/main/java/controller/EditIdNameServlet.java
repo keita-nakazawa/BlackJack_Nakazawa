@@ -11,6 +11,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import dao.UserDao;
+import exception.MessageManager;
 import model.User;
 
 @WebServlet("/EditIdNameServlet")
@@ -27,6 +28,9 @@ public class EditIdNameServlet extends HttpServlet {
 		UserDao userDao = new UserDao();
 		User loginUser = userDao.editIdName(userId, nickname, sessionUserId);
 		session.setAttribute("loginUser", loginUser);
+		
+		request.setAttribute("message", MessageManager.getMessage());
+		MessageManager.resetMessage();
 
 		RequestDispatcher rd = request.getRequestDispatcher("edit.jsp");
 		rd.forward(request, response);

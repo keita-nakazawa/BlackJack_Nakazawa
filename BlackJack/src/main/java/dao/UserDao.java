@@ -129,6 +129,10 @@ public class UserDao {
 
 		} catch (ClassNotFoundException e) {
 			e.printStackTrace();
+		} catch (SQLIntegrityConstraintViolationException e) {
+			e.printStackTrace();
+			userId = sessionUserId;
+			new MessageManager("既に登録されているユーザIDです。");
 		} catch (SQLException e) {
 			e.printStackTrace();
 		} finally {
