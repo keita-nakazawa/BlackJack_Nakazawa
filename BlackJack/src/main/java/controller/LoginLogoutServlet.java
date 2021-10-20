@@ -27,7 +27,7 @@ public class LoginLogoutServlet extends HttpServlet {
 		User loginUser = userDao.loginUser(id, password);
 		session.setAttribute("loginUser", loginUser);
 		
-		String nextPage = MessageManager.checkMessage("game.jsp", "login.jsp", request);
+		String nextPage = MessageManager.checkMessage("menu.jsp", "login.jsp", request);
 		MessageManager.resetMessage();
 		
 		RequestDispatcher rd = request.getRequestDispatcher(nextPage);

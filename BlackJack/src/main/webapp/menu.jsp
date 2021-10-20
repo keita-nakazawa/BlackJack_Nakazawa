@@ -40,12 +40,12 @@
 					</form>
 				</td>
 				<td>
-					<form action="EditServlet">
+					<form action="edit.jsp">
 						<input type="submit" value="ユーザ情報変更">
 					</form>
 				</td>
 				<td>
-					<form action="DeleteServlet">
+					<form action="delete.jsp">
 						<input type="submit" value="ユーザ削除">
 					</form>
 				</td>

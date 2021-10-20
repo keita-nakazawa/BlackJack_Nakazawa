@@ -7,10 +7,12 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.SQLIntegrityConstraintViolationException;
 
+import javax.servlet.http.HttpSession;
+
 import exception.MessageManager;
 import model.User;
 
-//DBのusersテーブルを扱うDAOクラス
+//DBのusersテーブルのみを扱うDAOクラス
 public class UserDao {
 
 	private Connection con = null;
@@ -71,6 +73,7 @@ public class UserDao {
 				user.setUserId(rs.getString("user_id"));
 				user.setNickname(rs.getString("nickname"));
 			}else {
+				//ログイン情報が誤っている場合の処理
 				new MessageManager("ログインに失敗しました。");
 			}
 		} catch(ClassNotFoundException e) {
@@ -81,6 +84,28 @@ public class UserDao {
 			closeAll();
 		}
 		return user;
+	}
+	
+	public void doDelete(HttpSession session) {
+		try {
+			//DBへの接続処理
+			getConnect();
+			
+			//SQL文の作成
+			String sql = "DELETE FROM users WHERE user_id = ?";
+			ps = con.prepareStatement(sql);
+			ps.setString(1, ((User)session.getAttribute("loginUser")).getUserId());
+			System.out.println(ps);
+			
+			ps.executeUpdate();
+			
+		} catch(ClassNotFoundException e) {
+			e.printStackTrace();
+		} catch(SQLException e) {
+			e.printStackTrace();
+		} finally {
+			closeAll();
+		}
 	}
 	
 	
