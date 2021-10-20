@@ -39,7 +39,7 @@ public class UserDao {
 				e.printStackTrace();
 			} catch(SQLIntegrityConstraintViolationException e) {
 				e.printStackTrace();
-				new MessageManager("登録済みユーザIDです。");
+				new MessageManager("登録済みかもしくは不正なユーザIDです。");
 			} catch(SQLException e) {
 				e.printStackTrace();
 			} finally {
@@ -87,7 +87,7 @@ public class UserDao {
 	public void getConnect() throws ClassNotFoundException, SQLException{
 		Class.forName("org.mariadb.jdbc.Driver");
 
-		String url = "jdbc:mysql://localhost/blackjack";
+		String url = "jdbc:mysql://localhost/bj_nakazawa";
 		String user = "root";
 		String password = "";
 		
