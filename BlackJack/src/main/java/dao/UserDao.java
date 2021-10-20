@@ -108,6 +108,35 @@ public class UserDao {
 		}
 	}
 	
+	public User editIdName(String userId, String nickname, String sessionUserId) {
+		User user = new User();
+		
+		try {
+			//DBへの接続処理
+			getConnect();
+			
+			//SQL文の作成
+			String sql = "UPDATE users SET user_id = ?, nickname = ? WHERE user_id = ?";
+			ps = con.prepareStatement(sql);
+			ps.setString(1, userId);
+			ps.setString(2, nickname);
+			ps.setString(3, sessionUserId);
+			System.out.println(ps);
+			
+			ps.executeUpdate();
+			
+		} catch(ClassNotFoundException e) {
+			e.printStackTrace();
+		} catch(SQLException e) {
+			e.printStackTrace();
+		} finally {
+			closeAll();
+		}
+		user.setUserId(userId);
+		user.setNickname(nickname);
+		return user;
+	}
+	
 	
 	public void getConnect() throws ClassNotFoundException, SQLException{
 		Class.forName("org.mariadb.jdbc.Driver");

@@ -6,16 +6,13 @@
 <html>
 	<head>
 		<meta charset="UTF-8">
-		<title>BlackJack</title>
+		<title>メニュー</title>
 	</head>
 
 	<body>
-<%
-		User loginUser = (User)session.getAttribute("loginUser");
-%>	
 		<h1>BlackJack</h1>
 		
-		<p><%=loginUser.getNickname()%>さんがログイン中</p>
+		<p><%=((User)session.getAttribute("loginUser")).getNickname()%>さんがログイン中</p>
 		<form action="LoginLogoutServlet">
 			<p><input type="submit" value="ログアウト"></p>
 		</form>

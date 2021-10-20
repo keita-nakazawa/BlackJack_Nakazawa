@@ -6,7 +6,7 @@
 <html>
 	<head>
 		<meta charset="UTF-8">
-		<title>BlackJack</title>
+		<title>ユーザ削除</title>
 	</head>
 
 	<body>
