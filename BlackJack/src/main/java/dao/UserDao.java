@@ -137,6 +137,38 @@ public class UserDao {
 		return user;
 	}
 	
+	public void editPassword(String oldPassword, String newPassword, String newPassword2, String sessionUserId) {
+
+		if(newPassword.equals(newPassword2)) {
+			
+			try {
+				//DBへの接続処理
+				getConnect();
+				
+				//SQL文の作成
+				String sql = "UPDATE users SET password = ? WHERE (user_id = ?) && (password = ?)";
+				ps = con.prepareStatement(sql);
+				ps.setString(1, newPassword);
+				ps.setString(2, sessionUserId);
+				ps.setString(3, oldPassword);
+				System.out.println(ps);
+				
+				int changedRows = ps.executeUpdate();
+				if(changedRows == 0) {
+					new MessageManager("古いパスワードが間違っています。");
+				}
+			} catch(ClassNotFoundException e) {
+				e.printStackTrace();
+			}catch(SQLException e) {
+				e.printStackTrace();
+			} finally {
+				closeAll();
+			}
+		}else {
+			new MessageManager("新しいパスワードが一致していません。");
+		}
+	}
+	
 	
 	public void getConnect() throws ClassNotFoundException, SQLException{
 		Class.forName("org.mariadb.jdbc.Driver");
