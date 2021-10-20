@@ -38,7 +38,7 @@
 		</form>
 		
 		<form action="menu.jsp">
-			<p><input type="submit" value="戻る"></p>
+			<p><input type="submit" value="メニューへ戻る"></p>
 		</form>
 	</body>
 </html>
