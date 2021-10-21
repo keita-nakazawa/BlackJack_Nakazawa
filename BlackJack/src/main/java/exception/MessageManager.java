@@ -7,30 +7,25 @@ import javax.servlet.http.HttpServletRequest;
  */
 public class MessageManager{
 	
-	private static String message = null;
+	private String message = null;
 	
-	/**
-	 * コンストラクタ<br>
-	 * 画面に表示するメッセージ用に引数で受け取った値をセットします
-	 * @param message 発生した内容を示すメッセージ
-	 */
-	public MessageManager(String message) {
-		MessageManager.message = message;
-	}
-	
-	public static String getMessage() {
+	public String getMessage() {
 		return message;
 	}
 	
-	public static void resetMessage() {
-		MessageManager.message = null;
+	public void setMessage(String message) {
+		this.message = message;
 	}
 	
-	public static String checkMessage(String nextPage, String thisPage, HttpServletRequest request) {
-		if(MessageManager.message == null) {
+	public void resetMessage() {
+		message = null;
+	}
+	
+	public String checkMessage(String nextPage, String thisPage, HttpServletRequest request) {
+		if(message == null) {
 			return nextPage;
 		}else {
-			request.setAttribute("message", MessageManager.message);
+			request.setAttribute("message", message);
 			return thisPage;
 		}
 	}

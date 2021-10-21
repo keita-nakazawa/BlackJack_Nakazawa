@@ -7,6 +7,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.SQLIntegrityConstraintViolationException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import javax.servlet.http.HttpSession;
@@ -54,7 +55,9 @@ public class UserDao {
 		}
 	}
 
-	public User loginUser(String userId, String password) {
+	public HashMap<User, String> doLogin(String userId, String password) {
+		HashMap<User, String> map = new HashMap<>();
+		MessageManager messageManager = new MessageManager();
 		User user = new User();
 
 		try {
@@ -76,7 +79,7 @@ public class UserDao {
 				user.setNickname(rs.getString("nickname"));
 			} else {
 				// ログイン情報が誤っている場合の処理
-				new MessageManager("ログインに失敗しました。");
+				messageManager.setMessage("ログインに失敗しました。");
 			}
 		} catch (ClassNotFoundException e) {
 			e.printStackTrace();
@@ -85,7 +88,8 @@ public class UserDao {
 		} finally {
 			closeAll();
 		}
-		return user;
+		map.put(user, messageManager.getMessage());
+		return map;
 	}
 
 	public void doDelete(HttpSession session) {
