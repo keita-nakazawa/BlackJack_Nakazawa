@@ -35,12 +35,12 @@
 			</thead>
 			<tbody>
 <%
-				for(int rank = 1; rank <= 5; rank++) {
+				for(int rank = 0; rank < rankingList.size(); rank++) {
 %>
 				<tr>
-					<td><%=rank%></td>
-					<td><%=rankingList.get(rank-1).getNickname()%></td>
-					<td><%=rankingList.get(rank-1).getWinRate()%></td>
+					<td><%=rank + 1%></td>
+					<td><%=rankingList.get(rank).getNickname()%></td>
+					<td><%=rankingList.get(rank).getWinRate()%></td>
 				</tr>
 <%
 				}
