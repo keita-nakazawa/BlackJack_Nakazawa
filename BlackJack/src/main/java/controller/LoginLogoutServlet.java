@@ -5,13 +5,10 @@ import java.io.IOException;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
-import javax.servlet.http.HttpServlet;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
+import javax.servlet.http.*;
 
 import dao.UserDao;
-import exception.MessageManager;
+import manager_model.RedirectManager;
 import model.User;
 
 @WebServlet("/LoginLogoutServlet")
@@ -24,14 +21,8 @@ public class LoginLogoutServlet extends HttpServlet {
 		HttpSession session = request.getSession();
 		
 		UserDao userDao = new UserDao();
-		User loginUser = userDao.loginUser(id, password);
-		session.setAttribute("loginUser", loginUser);
-		
-		String nextPage = MessageManager.checkMessage("menu.jsp", "login.jsp", request);
-		MessageManager.resetMessage();
-		
-		RequestDispatcher rd = request.getRequestDispatcher(nextPage);
-		rd.forward(request, response);
+		User loginUser = userDao.getLoginUser(id, password);
+		RedirectManager.loginOrNot(loginUser, session, request, response);
 	}
 	
 	//ログアウト処理

@@ -1,18 +1,10 @@
 package dao;
 
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.SQLIntegrityConstraintViolationException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
+import java.sql.*;
+import java.util.*;
 
 import javax.servlet.http.HttpSession;
 
-import exception.MessageManager;
 import model.User;
 
 //DBのusersテーブルのみを扱うDAOクラス
@@ -22,7 +14,13 @@ public class UserDao {
 	private PreparedStatement ps = null;
 	private ResultSet rs = null;
 
-	public void doRegister(String userId, String nickname, String password, String password2) {
+	/**
+	 * DBにユーザ情報を新規登録する。
+	 * @return 新規登録に失敗した旨のメッセージを示すStringオブジェクト<br>成功時はnull
+	 */
+	public String getRegisterMessage(String userId, String nickname, String password, String password2) {
+
+		String message = null;
 
 		if (password.equals(password2)) {
 
@@ -44,20 +42,20 @@ public class UserDao {
 				e.printStackTrace();
 			} catch (SQLIntegrityConstraintViolationException e) {
 				e.printStackTrace();
-				new MessageManager("登録済みかもしくは不正なユーザIDです。");
+				message = "登録済みかもしくは不正なユーザIDです。";
 			} catch (SQLException e) {
 				e.printStackTrace();
 			} finally {
 				closeAll();
 			}
 		} else {
-			new MessageManager("パスワードが一致していません。");
+			message = "パスワードが一致していません。";
 		}
+		return message;
 	}
 
-	public HashMap<User, String> doLogin(String userId, String password) {
-		HashMap<User, String> map = new HashMap<>();
-		MessageManager messageManager = new MessageManager();
+	public User getLoginUser(String userId, String password) {
+
 		User user = new User();
 
 		try {
@@ -79,7 +77,7 @@ public class UserDao {
 				user.setNickname(rs.getString("nickname"));
 			} else {
 				// ログイン情報が誤っている場合の処理
-				messageManager.setMessage("ログインに失敗しました。");
+				user = null;
 			}
 		} catch (ClassNotFoundException e) {
 			e.printStackTrace();
@@ -88,11 +86,11 @@ public class UserDao {
 		} finally {
 			closeAll();
 		}
-		map.put(user, messageManager.getMessage());
-		return map;
+		return user;
 	}
 
 	public void doDelete(HttpSession session) {
+		
 		try {
 			// DBへの接続処理
 			getConnect();
@@ -114,8 +112,17 @@ public class UserDao {
 		}
 	}
 
-	public User editIdName(String userId, String nickname, String sessionUserId) {
-		User user = new User();
+	/**
+	 * DBのユーザ情報のユーザIDとニックネームを変更する。
+	 * @return HashMap<br>
+	 * "loginUser"キーで、変更後のユーザの情報を持つUserオブジェクトを取得<br>
+	 * "message"キーで、エラーメッセージを表すStringオブジェクトを取得
+	 */
+	public Map<String, Object> editIdName(String userId, String nickname, String sessionUserId) {
+		
+		Map<String, Object> map = new HashMap<>();
+		User loginUser = new User();
+		String message = null;
 
 		try {
 			// DBへの接続処理
@@ -136,19 +143,28 @@ public class UserDao {
 		} catch (SQLIntegrityConstraintViolationException e) {
 			e.printStackTrace();
 			userId = sessionUserId;
-			new MessageManager("既に登録されているユーザIDです。");
+			message = "既に登録されているユーザIDです。";
 		} catch (SQLException e) {
 			e.printStackTrace();
 		} finally {
 			closeAll();
 		}
-		user.setUserId(userId);
-		user.setNickname(nickname);
-		return user;
+		loginUser.setUserId(userId);
+		loginUser.setNickname(nickname);
+		
+		map.put("loginUser", loginUser);
+		map.put("message", message);
+		return map;
 	}
 
-	public void editPassword(String oldPassword, String newPassword, String newPassword2, String sessionUserId) {
+	/**
+	 * DBのユーザ情報のパスワードを変更する。
+	 * @return パスワード変更に失敗した旨のメッセージを示すStringオブジェクト<br>成功時はnull
+	 */
+	public String editPassword(String oldPassword, String newPassword, String newPassword2, String sessionUserId) {
 
+		String message = null;
+		
 		if (newPassword.equals(newPassword2)) {
 
 			try {
@@ -165,7 +181,7 @@ public class UserDao {
 
 				int changedRows = ps.executeUpdate();
 				if (changedRows == 0) {
-					new MessageManager("古いパスワードが間違っています。");
+					message = "古いパスワードが間違っています。";
 				}
 			} catch (ClassNotFoundException e) {
 				e.printStackTrace();
@@ -175,8 +191,9 @@ public class UserDao {
 				closeAll();
 			}
 		} else {
-			new MessageManager("新しいパスワードが一致していません。");
+			message = "新しいパスワードが一致していません。";
 		}
+		return message;
 	}
 
 	public List<User> getRankingList() {
@@ -210,7 +227,6 @@ public class UserDao {
 
 	}
 
-	
 	public void getConnect() throws ClassNotFoundException, SQLException {
 		Class.forName("org.mariadb.jdbc.Driver");
 
