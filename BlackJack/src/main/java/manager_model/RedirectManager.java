@@ -12,8 +12,7 @@ import model.User;
 
 public class RedirectManager {
 
-	public static void registerOrNot(String message, HttpServletRequest request, HttpServletResponse response)
-			throws ServletException, IOException {
+	public static void registerOrNot(String message, HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
 		if (message != null) {
 

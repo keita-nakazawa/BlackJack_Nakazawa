@@ -5,7 +5,8 @@ import java.util.Collections;
 import java.util.List;
 
 public class Deck {
-	private List<Card> deck;
+	
+	private List<Card> deck = new ArrayList<>();
 	
 	public void createDeck() {
 		List<Card> deck = new ArrayList<Card>();
@@ -19,15 +20,15 @@ public class Deck {
 		this.deck = deck;
 	}
 	
-	public void removeCard() {
-		
+	public Card removeCard() {
+		return deck.remove(0);
 	}
 	
-	public List<Card> getDeck() {
+	public List<Card> getListOfDeck() {
 		return deck;
 	}
 	
-	public void setDeck(List<Card> deck) {
-		this.deck = deck;
-	}
+//	public void setDeck(List<Card> deck) {
+//		this.deck = deck;
+//	}
 }

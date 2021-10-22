@@ -1,6 +1,7 @@
 package model;
 
 public class Card {
+	
 	private Mark mark;
 	private Number number;
 	
@@ -23,6 +24,7 @@ public class Card {
 }
 
 enum Mark {
+	
 	SPADE("♠"),
 	HEART("♥"),
 	DIAMOND("♦"),
@@ -40,6 +42,7 @@ enum Mark {
 }
 
 enum Number {
+	
 	ACE("A",1),
 	TWO("2",2),
 	THREE("3",3),
