@@ -15,27 +15,31 @@ public class GameStartServlet extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 
-		Player player = new Player();
-		Dealer dealer = new Dealer();
-		Deck deck = new Deck();
-
 		HttpSession session = request.getSession();
-		User loginUser = (User) session.getAttribute("loginUser");
-		player.setLoginUser(loginUser);
 
-		deck.createDeck();
+		// ページ更新を悪用して何度でも手札を入れ替えられる不正の対策として、
+		//セッションの"game"キーが既にセットされている場合はそれを更新しない。
+		// ただ、if文をサーブレットに書くのはよろしくないかも。要検討。
+		if (session.getAttribute("game") == null) {
 
-		for (int i = 0; i < 2; i++) {
-			player.drawCard(deck.removeCard());
-			dealer.drawCard(deck.removeCard());
+			Player player = new Player();
+			Dealer dealer = new Dealer();
+			Deck deck = new Deck();
+
+			User loginUser = (User) session.getAttribute("loginUser");
+			player.setLoginUser(loginUser);
+
+			deck.createDeck();
+
+			for (int i = 0; i < 2; i++) {
+				player.drawCard(deck.removeCard());
+				dealer.drawCard(deck.removeCard());
+			}
+			player.setPoint();
+			dealer.setPoint();
+
+			session.setAttribute("game", new Game(deck, player, dealer));
 		}
-		
-		player.setPoint();
-		dealer.setPoint();
-
-		Game game = new Game(deck, player, dealer);
-		session.setAttribute("game", game);
-
 		RequestDispatcher rd = request.getRequestDispatcher("playGame.jsp");
 		rd.forward(request, response);
 	}
