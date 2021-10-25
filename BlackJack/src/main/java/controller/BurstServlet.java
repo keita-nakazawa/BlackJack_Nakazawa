@@ -5,20 +5,16 @@ import java.io.IOException;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
-import javax.servlet.http.*;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
-import model.Game;
 
-
-@WebServlet("/StandServlet")
-public class StandServlet extends HttpServlet {
+@WebServlet("/BurstServlet")
+public class BurstServlet extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		
-		HttpSession session = request.getSession();
-		Game game = (Game)session.getAttribute("game");
-		game.setGameEnd();
-		
-		//スタンド処理
+		//burst==trueならgame.setGameEnd();
 		
 		RequestDispatcher rd = request.getRequestDispatcher("playGame.jsp");
 		rd.forward(request, response);

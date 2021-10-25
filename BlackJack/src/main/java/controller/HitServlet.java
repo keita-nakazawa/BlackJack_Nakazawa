@@ -29,9 +29,9 @@ public class HitServlet extends HttpServlet {
 		game.addTurnCount();
 		System.out.println(game.getTurnCount());
 		
-		session.setAttribute("game", game);
+		request.setAttribute("game", game);
 		
-		RequestDispatcher rd = request.getRequestDispatcher("StandServlet");
+		RequestDispatcher rd = request.getRequestDispatcher("BurstServlet");
 		rd.forward(request, response);
 	}
 }
