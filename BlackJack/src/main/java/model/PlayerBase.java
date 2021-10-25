@@ -22,15 +22,19 @@ public abstract class PlayerBase {
 		return burst;
 	}
 	
-	public void setHand(Hand hand) {
-		this.hand = hand;
+	public void setPoint() {
+		int pointCounter = 0;
+		for(Card card: hand.getListOfHand()) {
+			pointCounter += card.getIntPoint();
+		}
+		point = pointCounter;
 	}
 	
-	public void addPoint(int point) {
-		this.point += point;
-	}
-	
-	public void setBurst(boolean burst) {
-		this.burst = burst;
+	public void setBurst() {
+		 if(point > 21) {
+			 burst = true;
+		 } else {
+			 burst = false;
+		 }
 	}
 }

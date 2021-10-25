@@ -9,7 +9,7 @@ public class TestPlayer {
 		player.getHand().addCard(card);
 		List<Card> listOfHand = player.getHand().getListOfHand();
 		for(Card handCard: listOfHand) {
-			System.out.println(handCard.getStrMark() + handCard.getNumber());
+			System.out.println(handCard.getStrMark() + handCard.getStrNumber());
 		}
 	}
 }

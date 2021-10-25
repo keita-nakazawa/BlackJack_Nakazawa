@@ -11,7 +11,7 @@ public class TestCard {
 		int count = 0;
 		for(int i = 0; i < size; i++) {
 			List<Card> list = deck1.getListOfDeck();
-			System.out.println(list.get(0).getStrMark() + list.get(0).getNumber());
+			System.out.println(list.get(0).getStrMark() + list.get(0).getStrNumber());
 			count++;
 			deck1.getListOfDeck().remove(0);
 		}

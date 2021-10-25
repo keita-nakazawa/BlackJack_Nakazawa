@@ -14,7 +14,7 @@ public class Card {
 		return mark.getMark();
 	}
 	
-	public String getNumber() {
+	public String getStrNumber() {
 		return number.getNumber();
 	}
 	

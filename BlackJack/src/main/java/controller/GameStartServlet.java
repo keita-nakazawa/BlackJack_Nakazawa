@@ -29,6 +29,9 @@ public class GameStartServlet extends HttpServlet {
 			player.drawCard(deck.removeCard());
 			dealer.drawCard(deck.removeCard());
 		}
+		
+		player.setPoint();
+		dealer.setPoint();
 
 		Game game = new Game(deck, player, dealer);
 		session.setAttribute("game", game);

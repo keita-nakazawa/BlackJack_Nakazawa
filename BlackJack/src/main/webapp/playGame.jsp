@@ -25,25 +25,23 @@
 		
 		<br>
 	
-		<p>ディーラー( 点)</p>
+		<p>ディーラー</p>
 		<table>
 			<tr>
 <%
-				for(Card card: game.getDealer().getHand().getListOfHand()) {
+				Card card0 = game.getDealer().getHand().getListOfHand().get(0);
 %>
-					<td><%=card.getStrMark()%><%=card.getNumber()%></td>
-<%
-				}
-%>
+				<td><%=card0.getStrMark()%><%=card0.getStrNumber()%></td>
+				<td>?</td>
 			</tr>
 		</table>
-		<p>あなた( 点)</p>
+		<p>あなた(<%=game.getPlayer().getPoint()%>点)</p>
 			<table>
 			<tr>
 <%
 				for(Card card: game.getPlayer().getHand().getListOfHand()) {
 %>
-					<td><%=card.getStrMark()%><%=card.getNumber()%></td>
+					<td><%=card.getStrMark()%><%=card.getStrNumber()%></td>
 <%
 				}
 %>
