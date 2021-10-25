@@ -5,7 +5,8 @@ public class Game {
 	private Deck deck;
 	private Player player;
 	private Dealer dealer;
-	private int turnCount;
+	private int turnCount = 0;
+	private boolean gameEnd = false;
 	
 	public Game(Deck deck, Player player, Dealer dealer) {
 		this.deck = deck;
@@ -29,6 +30,10 @@ public class Game {
 		return turnCount;
 	}
 	
+	public boolean getGameEnd() {
+		return gameEnd;
+	}
+	
 	public void setDeck(Deck deck) {
 		this.deck = deck;
 	}
@@ -43,6 +48,10 @@ public class Game {
 	
 	public void addTurnCount() {
 		turnCount += 1;
+	}
+	
+	public void setGameEnd() {
+		gameEnd = true;
 	}
 	
 //	public String checkNull(String nextPage, String thisPage) {

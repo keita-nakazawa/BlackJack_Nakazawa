@@ -11,10 +11,6 @@ public class Player extends PlayerBase{
 		this.loginUser = loginUser;
 	}
 	
-	public void hit() {
-		
-	}
-	
 	public void stand() {
 		
 	}

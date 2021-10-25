@@ -35,20 +35,21 @@
 				<td>?</td>
 			</tr>
 		</table>
-		<p>あなた(<%=game.getPlayer().getPoint()%>点)</p>
+		<p>あなた(<%=game.getPlayer().getPoint()%>点)(burst = <%=game.getPlayer().getBurst()%>)</p>
 			<table>
-			<tr>
+				<tr>
 <%
-				for(Card card: game.getPlayer().getHand().getListOfHand()) {
+					for(Card card: game.getPlayer().getHand().getListOfHand()) {
 %>
-					<td><%=card.getStrMark()%><%=card.getStrNumber()%></td>
+						<td><%=card.getStrMark()%><%=card.getStrNumber()%></td>
 <%
-				}
+					}
 %>
-			</tr>
-		</table>
+				</tr>
+			</table>
+<%
 		
-		
+%>		
 		<table>
 			<tr>
 				<td>

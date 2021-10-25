@@ -3,8 +3,8 @@ package model;
 public abstract class PlayerBase {
 	
 	protected Hand hand = new Hand();
-	protected int point;
-	protected boolean burst;
+	protected int point = 0;
+	protected boolean burst = false;
 	
 	public void drawCard(Card card) {
 		hand.addCard(card);
