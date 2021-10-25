@@ -2,6 +2,7 @@ package controller;
 
 import java.io.IOException;
 
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -9,7 +10,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import dao.UserDao;
-import manager_model.RedirectManager;
 
 @WebServlet("/RegisterServlet")
 public class RegisterServlet extends HttpServlet {
@@ -25,6 +25,17 @@ public class RegisterServlet extends HttpServlet {
 		
 		UserDao userDao = new UserDao();
 		String message = userDao.getRegisterMessage(userId, nickname, password, password2);
-		RedirectManager.registerOrNot(message, request, response);	
+		
+		if (message != null) {
+
+			request.setAttribute("message", message);
+			RequestDispatcher rd = request.getRequestDispatcher("register.jsp");
+			rd.forward(request, response);
+
+		} else {
+
+			RequestDispatcher rd = request.getRequestDispatcher("login.jsp");
+			rd.forward(request, response);
+		}
 	}
 }

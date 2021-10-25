@@ -31,8 +31,7 @@ public class HitServlet extends HttpServlet {
 		
 		session.setAttribute("game", game);
 		
-		
-		RequestDispatcher rd = request.getRequestDispatcher("playGame.jsp");
+		RequestDispatcher rd = request.getRequestDispatcher("StandServlet");
 		rd.forward(request, response);
 	}
 }

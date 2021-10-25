@@ -48,22 +48,28 @@
 				</tr>
 			</table>
 <%
-		
+		if(game.getGameEnd() == false) {
 %>		
-		<table>
-			<tr>
-				<td>
-					<form action="HitServlet">
-						<input type="submit" value="ヒット">
-					</form>
-				</td>
-				<td>
-					<form action="StandServlet">
-						<input type="submit" value="スタンド">
-					</form>
-				</td>
-			</tr>
-		</table>
-		
+			<table>
+				<tr>
+					<td>
+						<form action="HitServlet">
+							<input type="submit" value="ヒット">
+						</form>
+					</td>
+					<td>
+						<form action="StandServlet">
+							<input type="submit" value="スタンド">
+						</form>
+					</td>
+				</tr>
+			</table>
+<%
+		} else {
+%>
+			
+<%
+		}
+%>		
 	</body>
 </html>

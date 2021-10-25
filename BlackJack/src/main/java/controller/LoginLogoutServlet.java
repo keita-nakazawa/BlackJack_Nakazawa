@@ -8,7 +8,6 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.*;
 
 import dao.UserDao;
-import manager_model.RedirectManager;
 import model.User;
 
 @WebServlet("/LoginLogoutServlet")
@@ -22,7 +21,19 @@ public class LoginLogoutServlet extends HttpServlet {
 		
 		UserDao userDao = new UserDao();
 		User loginUser = userDao.getLoginUser(id, password);
-		RedirectManager.loginOrNot(loginUser, session, request, response);
+		
+		if(loginUser != null) {
+			
+			session.setAttribute("loginUser", loginUser);
+			RequestDispatcher rd = request.getRequestDispatcher("menu.jsp");
+			rd.forward(request, response);
+			
+		} else {
+			
+			request.setAttribute("message", "ログインに失敗しました。");
+			RequestDispatcher rd = request.getRequestDispatcher("login.jsp");
+			rd.forward(request, response);
+		}
 	}
 	
 	//ログアウト処理
