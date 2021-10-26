@@ -14,7 +14,9 @@
 	<body>
 <%
 		Game game = (Game)session.getAttribute("game");
+		String message = (String)session.getAttribute("message");
 %>
+	
 		<h1>BlackJack</h1>
 		
 		<p><%=((User)session.getAttribute("loginUser")).getNickname()%>さんがログイン中</p>
@@ -28,25 +30,39 @@
 		<table>
 			<tr>
 <%
+			if(game.getGameEnd() == false) {
+				
 				Card card0 = game.getDealer().getHand().getListOfHand().get(0);
 %>
 				<td><%=card0.getStrMark()%><%=card0.getStrNumber()%></td>
 				<td>?</td>
+<%
+			} else {
+				for(Card dealerCard: game.getDealer().getHand().getListOfHand()) {
+%>
+					<td><%=dealerCard.getStrMark()%><%=dealerCard.getStrNumber()%></td>
+<%
+				}
+			}
+%>
 			</tr>
 		</table>
+		
 		<p>あなた(<%=game.getPlayer().getPoint()%>点)(burst = <%=game.getPlayer().getBurst()%>)</p>
 			<table>
 				<tr>
 <%
-					for(Card card: game.getPlayer().getHand().getListOfHand()) {
+				for(Card playerCard: game.getPlayer().getHand().getListOfHand()) {
 %>
-						<td><%=card.getStrMark()%><%=card.getStrNumber()%></td>
+					<td><%=playerCard.getStrMark()%><%=playerCard.getStrNumber()%></td>
 <%
-					}
+				}
 %>
 				</tr>
 			</table>
-	
+<%
+		if(game.getGameEnd() == false) {
+%>		
 			<table>
 				<tr>
 					<td>
@@ -61,5 +77,26 @@
 					</td>
 				</tr>
 			</table>
+<%
+		} else {
+%>
+			<p><%=message%></p>
+			<table>
+				<tr>
+					<td>
+						<form action="GameStartServlet">
+							<input type="submit" value="再戦">
+						</form>
+					</td>
+					<td>
+						<form action="menu.jsp">
+							<input type="submit" value="ゲーム終了">
+						</form>
+					</td>
+				</tr>
+			</table>
+<%
+		}
+%>		
 	</body>
 </html>

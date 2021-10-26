@@ -23,7 +23,7 @@ public class BurstServlet extends HttpServlet {
 			session.setAttribute("game", game);
 		}
 
-		RequestDispatcher rd = request.getRequestDispatcher("gameEnd.jsp");
+		RequestDispatcher rd = request.getRequestDispatcher("playGame.jsp");
 		rd.forward(request, response);
 	}
 }
