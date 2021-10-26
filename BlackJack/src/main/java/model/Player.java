@@ -10,8 +10,4 @@ public class Player extends PlayerBase{
 	public void setLoginUser(User loginUser) {
 		this.loginUser = loginUser;
 	}
-	
-	public void stand() {
-		
-	}
 }

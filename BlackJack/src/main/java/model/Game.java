@@ -36,5 +36,27 @@ public class Game {
 		this.dealer = dealer;
 	}
 	
-	
+	/**
+	 * プレイヤーとディーラーの点数を比較
+	 * @return 
+	 * -1: ディーラーの勝利<br>
+	 * 0: 引き分け<br>
+	 * 1: プレイヤーの勝利<br>
+	 */
+	public int comparePoints() {
+		
+		dealer.stand(deck);
+		
+		if(dealer.getBurst() == false) {
+			if(dealer.getPoint() > player.getPoint()) {
+				return -1;
+			} else if(dealer.getPoint() == player.getPoint()) {
+				return 0;
+			} else {
+				return 1;
+			}
+		} else {
+			return 1;
+		}
+	}
 }

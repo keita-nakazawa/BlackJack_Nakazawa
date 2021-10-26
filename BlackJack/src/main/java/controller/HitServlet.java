@@ -31,7 +31,7 @@ public class HitServlet extends HttpServlet {
 			game.setPlayer(player);
 			game.setDeck(deck);
 			
-			if(game.getPlayer().getBurst() == false) {
+			if(player.getBurst() == false) {
 				
 				session.setAttribute("game", game);
 				RequestDispatcher rd = request.getRequestDispatcher("playGame.jsp");
