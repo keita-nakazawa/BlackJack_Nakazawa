@@ -30,8 +30,6 @@ public class GameStartServlet extends HttpServlet {
 			User loginUser = (User) session.getAttribute("loginUser");
 			player.setLoginUser(loginUser);
 
-			deck.createDeck();
-
 			for (int i = 0; i < 2; i++) {
 				player.drawCard(deck.removeCard());
 				dealer.drawCard(deck.removeCard());

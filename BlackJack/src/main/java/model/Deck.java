@@ -8,16 +8,13 @@ public class Deck {
 	
 	private List<Card> deck = new ArrayList<>();
 	
-	public void createDeck() {
-		List<Card> deck = new ArrayList<Card>();
-		
+	public Deck() {
 		for(Mark mark: Mark.values()) {
 			for(Number number: Number.values()) {
 				deck.add(new Card(mark, number));
 			}
 		}
 		Collections.shuffle(deck);
-		this.deck = deck;
 	}
 	
 	public Card removeCard() {

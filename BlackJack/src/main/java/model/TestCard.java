@@ -5,7 +5,6 @@ import java.util.List;
 public class TestCard {
 	public static void main(String[] args) {
 		Deck deck1 = new Deck();
-		deck1.createDeck();
 		int size = deck1.getListOfDeck().size();
 		
 		int count = 0;
