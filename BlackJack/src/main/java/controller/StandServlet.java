@@ -15,10 +15,10 @@ public class StandServlet extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		
 		HttpSession session = request.getSession();
-		Game game = (Game)session.getAttribute("game");
-		game.setGameEnd();
+		Game game = (Game)request.getAttribute("game");
 		
 		//スタンド処理
+		
 		
 		RequestDispatcher rd = request.getRequestDispatcher("playGame.jsp");
 		rd.forward(request, response);

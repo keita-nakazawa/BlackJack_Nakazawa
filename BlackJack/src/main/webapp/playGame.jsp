@@ -34,32 +34,33 @@
 				<td>?</td>
 			</tr>
 		</table>
+		
 		<p>あなた(<%=game.getPlayer().getPoint()%>点)(burst = <%=game.getPlayer().getBurst()%>)</p>
 			<table>
 				<tr>
 <%
-					for(Card card: game.getPlayer().getHand().getListOfHand()) {
+				for(Card card: game.getPlayer().getHand().getListOfHand()) {
 %>
-						<td><%=card.getStrMark()%><%=card.getStrNumber()%></td>
+					<td><%=card.getStrMark()%><%=card.getStrNumber()%></td>
 <%
-					}
+				}
 %>
 				</tr>
 			</table>
 	
-			<table>
-				<tr>
-					<td>
-						<form action="HitServlet">
-							<input type="submit" value="ヒット">
-						</form>
-					</td>
-					<td>
-						<form action="StandServlet">
-							<input type="submit" value="スタンド">
-						</form>
-					</td>
-				</tr>
-			</table>
+		<table>
+			<tr>
+				<td>
+					<form action="HitServlet">
+						<input type="submit" value="ヒット">
+					</form>
+				</td>
+				<td>
+					<form action="StandServlet">
+						<input type="submit" value="スタンド">
+					</form>
+				</td>
+			</tr>
+		</table>
 	</body>
 </html>

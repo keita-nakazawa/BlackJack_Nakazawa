@@ -21,7 +21,7 @@ public class GameStartServlet extends HttpServlet {
 		// ページ更新を悪用して何度でも手札を入れ替えられる不正対策のif文。
 		// ただ、このif文はViewの操作をするものではないので、
 		//サーブレットに書くのはよろしくないかも。要検討。
-		if ((game == null) || (game.getGameEnd() == true)) {
+		if (game == null) {
 
 			Player player = new Player();
 			Dealer dealer = new Dealer();

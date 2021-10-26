@@ -33,8 +33,6 @@ public abstract class PlayerBase {
 	public void setBurst() {
 		 if(point > 21) {
 			 burst = true;
-		 } else {
-			 burst = false;
 		 }
 	}
 }

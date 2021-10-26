@@ -30,20 +30,22 @@ public class HitServlet extends HttpServlet {
 
 			game.setPlayer(player);
 			game.setDeck(deck);
-			game.addTurnCount();
-			System.out.println(game.getTurnCount());
-
-			if (player.getBurst() == true) {
-				
-				request.setAttribute("game", game);
-				RequestDispatcher rd = request.getRequestDispatcher("BurstServlet");
-				rd.forward(request, response);
 			
-			} else {
+			if(game.getPlayer().getBurst() == false) {
+				
 				session.setAttribute("game", game);
 				RequestDispatcher rd = request.getRequestDispatcher("playGame.jsp");
 				rd.forward(request, response);
+				
+			} else {
+				
+				request.setAttribute("game", game);
+				request.setAttribute("message", "バーストしました。</br>ディーラーの勝利です。");
+				session.setAttribute("game", null);
+				RequestDispatcher rd = request.getRequestDispatcher("HistoryServlet");
+				rd.forward(request, response);
 			}
+			
 		} else {
 
 			request.setAttribute("message", "不正な操作、URLを検知しました。</br>ログアウト処理を実行しました。");

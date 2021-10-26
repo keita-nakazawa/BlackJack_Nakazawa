@@ -7,7 +7,9 @@ import javax.servlet.http.HttpSession;
 
 import model.User;
 
-//DBのusersテーブルのみを扱うDAOクラス
+/**
+ * DBのusersテーブルのみを扱うDAOクラス
+ */
 public class UserDao {
 
 	private Connection con = null;
@@ -227,6 +229,7 @@ public class UserDao {
 
 	}
 
+	
 	public void getConnect() throws ClassNotFoundException, SQLException {
 		Class.forName("org.mariadb.jdbc.Driver");
 
