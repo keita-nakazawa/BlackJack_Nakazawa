@@ -54,16 +54,8 @@ public class Game {
 		gameEnd = true;
 	}
 	
-//	public String checkNull(String nextPage, String thisPage) {
-//		if(this.equals(null)) {
-//			return nextPage;
-//		} else {
-//			return thisPage;
-//		}
-//	}
-	
 	/**
-	 * ブラウザの戻るボタンを悪用して無限にスタンドする不正行為対策として(たぶん)使えるメソッド。
+	 * ブラウザの戻るボタンを悪用して不正なスタンドをする行為の対策として(たぶん)使えるメソッド。
 	 */
 	public void checkTurnCount(int correctValue) {
 		if(turnCount != correctValue) {

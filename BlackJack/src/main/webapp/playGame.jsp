@@ -15,7 +15,6 @@
 <%
 		Game game = (Game)session.getAttribute("game");
 %>
-	
 		<h1>BlackJack</h1>
 		
 		<p><%=((User)session.getAttribute("loginUser")).getNickname()%>さんがログイン中</p>
@@ -47,9 +46,7 @@
 %>
 				</tr>
 			</table>
-<%
-		if(game.getGameEnd() == false) {
-%>		
+	
 			<table>
 				<tr>
 					<td>
@@ -64,14 +61,5 @@
 					</td>
 				</tr>
 			</table>
-<%
-		} else {
-%>
-			メッセージ
-			再戦
-			ゲーム終了
-<%
-		}
-%>		
 	</body>
 </html>
