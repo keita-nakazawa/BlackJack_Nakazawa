@@ -7,7 +7,8 @@ import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.*;
 
-import model.*;
+import model.Game;
+import model.User;
 
 @WebServlet("/GameStartServlet")
 public class GameStartServlet extends HttpServlet {
@@ -16,30 +17,21 @@ public class GameStartServlet extends HttpServlet {
 			throws ServletException, IOException {
 
 		HttpSession session = request.getSession();
-		Game game = (Game)session.getAttribute("game");
+		User loginUser = (User) session.getAttribute("loginUser");
 
-		// ページ更新を悪用して何度でも手札を入れ替えられる不正対策のif文。
-		// ただ、このif文はViewの操作をするものではないので、
-		//サーブレットに書くのはよろしくないかも。要検討。
-		if (game == null) {
+		if (loginUser != null) {
+			
+			Game oldGame = (Game) session.getAttribute("game");
+			Game newGame = new Game();
+			session.setAttribute("game", newGame.start(oldGame));
 
-			Player player = new Player();
-			Dealer dealer = new Dealer();
-			Deck deck = new Deck();
+			RequestDispatcher rd = request.getRequestDispatcher("playGame.jsp");
+			rd.forward(request, response);
+		} else {
 
-			User loginUser = (User) session.getAttribute("loginUser");
-			player.setLoginUser(loginUser);
-
-			for (int i = 0; i < 2; i++) {
-				player.drawCard(deck.removeCard());
-				dealer.drawCard(deck.removeCard());
-			}
-			player.setPoint();
-			dealer.setPoint();
-
-			session.setAttribute("game", new Game(deck, player, dealer));
+			request.setAttribute("message", "不正な操作、URLを検知しました。</br>ログアウト処理を実行しました。");
+			RequestDispatcher rd = request.getRequestDispatcher("LoginLogoutServlet");
+			rd.forward(request, response);
 		}
-		RequestDispatcher rd = request.getRequestDispatcher("playGame.jsp");
-		rd.forward(request, response);
 	}
 }

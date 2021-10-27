@@ -1,3 +1,4 @@
+<%@page import="java.util.Map"%>
 <%@page import="model.Card"%>
 <%@page import="model.Game"%>
 <%@page import="model.User"%>
@@ -29,7 +30,7 @@
 <%
 		if(request.getAttribute("game") != null) {
 			Game game = (Game)request.getAttribute("game");
-			String message = (String)request.getAttribute("message");
+			Map<String, Object> resultMap = (Map)request.getAttribute("resultMap");
 %>		
 			<p>ディーラー(<%=game.getDealer().getPoint()%>点)(burst = <%=game.getDealer().getBurst()%>)</p>
 			<table>
@@ -57,7 +58,7 @@
 				</tr>
 			</table>
 
-			<p id="message"><%=message%></p>
+			<p id="message"><%=resultMap.get("message")%></p>
 			<table>
 				<tr>
 					<td>
