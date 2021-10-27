@@ -18,65 +18,74 @@
 	</head>
 
 	<body>
-
 		<h1>BlackJack</h1>
+<%
+		User loginUser = (User)session.getAttribute("loginUser");
+		Game game = (Game)request.getAttribute("game");
+		Map<String, Object> resultMap = (Map)request.getAttribute("resultMap");
 		
-		<p><%=((User)session.getAttribute("loginUser")).getNickname()%>さんがログイン中</p>
-		<form action="LoginLogoutServlet">
-			<p><input type="submit" value="ログアウト"></p>
-		</form>
-		
-		<br>
-<%
-		if(request.getAttribute("game") != null) {
-			Game game = (Game)request.getAttribute("game");
-			Map<String, Object> resultMap = (Map)request.getAttribute("resultMap");
-%>		
-			<p>ディーラー(<%=game.getDealer().getPoint()%>点)(burst = <%=game.getDealer().getBurst()%>)</p>
-			<table>
-				<tr>
-<%
-				for(Card card: game.getDealer().getHand().getListOfHand()) {
+		if (loginUser != null) {
 %>
-					<td><%=card.getStrMark()%><%=card.getStrNumber()%></td>
-<%
-				}
-%>
-				</tr>
-			</table>
+			<p><%=loginUser.getNickname()%>さんがログイン中</p>
+			<form action="LoginLogoutServlet">
+				<p><input type="submit" value="ログアウト"></p>
+			</form>
 			
-			<p>あなた(<%=game.getPlayer().getPoint()%>点)(burst = <%=game.getPlayer().getBurst()%>)</p>
-			<table>
-				<tr>
+			<br>
 <%
-				for(Card card: game.getPlayer().getHand().getListOfHand()) {
+			if (game != null) {
+%>		
+				<p>ディーラー(<%=game.getDealer().getPoint()%>点)</p>
+				<table>
+					<tr>
+<%
+					for(Card card: game.getDealer().getHand().getListOfHand()) {
 %>
-					<td><%=card.getStrMark()%><%=card.getStrNumber()%></td>
+						<td><%=card.getStrMark()%><%=card.getStrNumber()%></td>
 <%
-				}
+					}
 %>
-				</tr>
-			</table>
-
-			<p id="message"><%=resultMap.get("message")%></p>
-			<table>
-				<tr>
-					<td>
-						<form action="GameStartServlet">
-							<input type="submit" value="再戦">
-						</form>
-					</td>
-					<td>
-						<form action="menu.jsp">
-							<input type="submit" value="ゲーム終了">
-						</form>
-					</td>
-				</tr>
-			</table>
+					</tr>
+				</table>
+				
+				<p>あなた(<%=game.getPlayer().getPoint()%>点)</p>
+				<table>
+					<tr>
 <%
+					for(Card card: game.getPlayer().getHand().getListOfHand()) {
+%>
+						<td><%=card.getStrMark()%><%=card.getStrNumber()%></td>
+<%
+					}
+%>
+					</tr>
+				</table>
+	
+				<p id="message"><%=resultMap.get("message")%></p>
+				<table>
+					<tr>
+						<td>
+							<form action="GameStartServlet">
+								<input type="submit" value="再戦">
+							</form>
+						</td>
+						<td>
+							<form action="menu.jsp">
+								<input type="submit" value="ゲーム終了">
+							</form>
+						</td>
+					</tr>
+				</table>
+<%
+			} else {
+%>
+				<p id="message">不正な操作、URLです。</p>
+<%
+			}
 		} else {
 %>
-			<p id="message">不正な操作、URLを検知しました。</p>
+			<p id="message">不正な操作、URLです。</p>
+			<a href="login.jsp">ログインページへ</a>
 <%
 		}
 %>

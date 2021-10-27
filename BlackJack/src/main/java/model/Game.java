@@ -79,29 +79,29 @@ public class Game {
 		
 		if(player.getBurst() == true) {
 			
-			resultMap.put("result", -1);
+			resultMap.put("result", Integer.valueOf(-1));
 			resultMap.put("message", "バーストしました。</br>ディーラーの勝利です。");
 		
 		} else if (dealer.getBurst() == true) {
 			
-			resultMap.put("result", 1);
+			resultMap.put("result", Integer.valueOf(1));
 			resultMap.put("message", "ディーラーがバーストしました。</br>あなたの勝利です。");
 		
 		} else {
 			
 			if (dealer.getPoint() > player.getPoint()) {
 				
-				resultMap.put("result", -1);
+				resultMap.put("result", Integer.valueOf(-1));
 				resultMap.put("message", "ディーラーの勝利です。");
 			
 			} else if (dealer.getPoint() == player.getPoint()) {
 			
-				resultMap.put("result", 0);
+				resultMap.put("result", Integer.valueOf(0));
 				resultMap.put("message", "引き分けです。");
 			
 			} else {
 			
-				resultMap.put("result", 1);
+				resultMap.put("result", Integer.valueOf(1));
 				resultMap.put("message", "あなたの勝利です。");
 			}
 		}

@@ -31,19 +31,19 @@ public class HitServlet extends HttpServlet {
 			game.setPlayer(player);
 			game.setDeck(deck);
 
-			if (player.getBurst() == false) {
-
-				session.setAttribute("game", game);
-				RequestDispatcher rd = request.getRequestDispatcher("playGame.jsp");
-				rd.forward(request, response);
-
-			} else {
+			if (player.getBurst() == true) {
 
 				request.setAttribute("resultMap", game.comparePoints());
 				RequestDispatcher rd = request.getRequestDispatcher("ResultServlet");
 				rd.forward(request, response);
-			}
+				
 
+			} else {
+				
+				session.setAttribute("game", game);
+				RequestDispatcher rd = request.getRequestDispatcher("playGame.jsp");
+				rd.forward(request, response);
+			}
 		} else {
 
 			request.setAttribute("message", "不正な操作、URLを検知しました。</br>ログアウト処理を実行しました。");
