@@ -3,6 +3,7 @@ package controller;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -10,6 +11,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.*;
 
 import model.Game;
+import model.NullChecker;
 
 @WebServlet("/GameStartServlet")
 public class GameStartServlet extends HttpServlet {
@@ -20,27 +22,27 @@ public class GameStartServlet extends HttpServlet {
 		HttpSession session = request.getSession();
 
 		List<Object> objectList = new ArrayList<>();
-		objectList.add("GameStartServlet");
 		objectList.add(session.getAttribute("loginUser"));
 
-		// RedirectServletにオブジェクトリストを渡す。
-		// nullChecked?が空ならRedirectServletをまだ経由していないことを意味する。
-		// RedirectServletからこのページに遷移してきた場合、このif文はスキップされる。
-		if (request.getAttribute("nullChecked?") == null) {
+		Map<String, String> map = NullChecker.createMap(objectList);
 
-			request.setAttribute("objectList", objectList);
-			RequestDispatcher rd = request.getRequestDispatcher("RedirectServlet");
-			rd.forward(request, response);
+		String nextPage = new String();
+		
+		if (map.get("nextPage") == null) {
+
+			Game oldGame = (Game) session.getAttribute("game");
+			Game newGame = new Game();
+			session.setAttribute("game", newGame.start(oldGame));
+
+			nextPage = "playGame.jsp";
+
+		} else {
+			
+			request.setAttribute("message", map.get("message"));
+			nextPage = map.get("nextPage");
 		}
-
-		// 以下のコードをすべてelse{}で囲むとServlet.service()は例外を投げなくなる。
-		// 囲まない場合でも、ブラウザ上では特に何も問題は起こらない。
-		// ただ、else{}で囲むとViewの操作以外を制御構造で囲んだことになってしまう。
-		Game oldGame = (Game) session.getAttribute("game");
-		Game newGame = new Game();
-		session.setAttribute("game", newGame.start(oldGame));
-
-		RequestDispatcher rd = request.getRequestDispatcher("playGame.jsp");
+		RequestDispatcher rd = request.getRequestDispatcher(nextPage);
 		rd.forward(request, response);
 	}
+
 }

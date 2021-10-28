@@ -7,12 +7,10 @@ import java.util.Map;
 public class NullChecker {
 
 	/**
-	 * RedirectServletにて使用。<br>
 	 * パラメータのリスト内にnullが含まれているかチェックし、<br>
 	 * その結果に応じてメッセージと遷移先名を生成する。
 	 * 
-	 * @param objectList nullチェックの対象となるオブジェクトのリスト。<br>
-	 *                   ただし、0番目の要素は遷移前のサーブレット名またはページ名。
+	 * @param objectList nullチェックの対象となるオブジェクトのリスト。
 	 * 
 	 * @return Map&lt;String, String><br>
 	 *         "message"キーでメッセージ取得。<br>
@@ -24,14 +22,10 @@ public class NullChecker {
 
 		int nullFlag = 0;
 
-		if (objectList == null) {
-			nullFlag = 1;
-		} else {
-			for (Object object : objectList) {
-				if (object == null) {
-					nullFlag = 1;
-					break;
-				}
+		for (Object object : objectList) {
+			if (object == null) {
+				nullFlag = 1;
+				break;
 			}
 		}
 
@@ -39,9 +33,8 @@ public class NullChecker {
 			map.put("message", "不正な操作、URLを検知しました。</br>ログアウト処理を実行しました。");
 			map.put("nextPage", "LoginLogoutServlet");
 		} else {
-			String thisPage = (String) objectList.get(0);
 			map.put("message", null);
-			map.put("nextPage", thisPage);
+			map.put("nextPage", null);
 		}
 		return map;
 	}
