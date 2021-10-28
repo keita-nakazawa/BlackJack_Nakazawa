@@ -39,7 +39,7 @@
 					<td><%=loginUser.getNickname()%></td>
 				</tr>
 			</table>
-			<form action="DeleteServlet">
+			<form action="DeleteServlet" method="POST">
 				<p><input type="submit" value="削除"></p>
 			</form>
 			
@@ -48,10 +48,9 @@
 			</form>
 <%
 		} else {
-%>
-			<p id="message">不正な操作、URLです。</p>
-			<a href="login.jsp">ログインページへ</a>
-<%
+			request.setAttribute("message", "不正な操作、URLを検知しました。</br>ログアウト処理を実行しました。");
+			RequestDispatcher rd = request.getRequestDispatcher("LoginLogoutServlet");
+			rd.forward(request, response);
 		}
 %>
 	</body>

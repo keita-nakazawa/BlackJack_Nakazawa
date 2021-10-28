@@ -15,6 +15,7 @@ public class EditPassServlet extends HttpServlet {
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
+		
 		String oldPassword = request.getParameter("old_password");
 		String newPassword = request.getParameter("new_password");
 		String newPassword2 = request.getParameter("new_password2");
@@ -27,6 +28,14 @@ public class EditPassServlet extends HttpServlet {
 		request.setAttribute("message", message);
 		
 		RequestDispatcher rd = request.getRequestDispatcher("edit.jsp");
+		rd.forward(request, response);
+	}
+	
+	protected void doGet(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
+		
+		request.setAttribute("message", "不正な操作、URLを検知しました。</br>ログアウト処理を実行しました。");
+		RequestDispatcher rd = request.getRequestDispatcher("LoginLogoutServlet");
 		rd.forward(request, response);
 	}
 }

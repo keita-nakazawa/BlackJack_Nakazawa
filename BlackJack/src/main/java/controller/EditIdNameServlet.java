@@ -16,6 +16,7 @@ public class EditIdNameServlet extends HttpServlet {
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
+		
 		String userId = request.getParameter("user_id");
 		String nickname = request.getParameter("nickname");
 
@@ -28,6 +29,14 @@ public class EditIdNameServlet extends HttpServlet {
 		request.setAttribute("message", map.get("message"));
 
 		RequestDispatcher rd = request.getRequestDispatcher("edit.jsp");
+		rd.forward(request, response);
+	}
+	
+	protected void doGet(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
+
+		request.setAttribute("message", "不正な操作、URLを検知しました。</br>ログアウト処理を実行しました。");
+		RequestDispatcher rd = request.getRequestDispatcher("LoginLogoutServlet");
 		rd.forward(request, response);
 	}
 }

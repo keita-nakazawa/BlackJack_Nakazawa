@@ -21,7 +21,7 @@
 		User loginUser = (User)session.getAttribute("loginUser");
 		List<User> rankingList = (List)request.getAttribute("rankingList");
 
-		if (loginUser != null) {
+		if ((loginUser != null) && (rankingList != null)) {
 %>
 			<p><%=loginUser.getNickname()%>さんがログイン中</p>
 			<form action="LoginLogoutServlet">
@@ -29,48 +29,39 @@
 			</form>
 			
 			<br>
+
+			<h2>勝率ランキングトップ5</h2>
+			<table border="1">
+				<thead>
+					<tr>
+						<td>順位</td>
+						<td>ニックネーム</td>
+						<td>勝率(%)</td>
+					</tr>
+				</thead>
+				<tbody>
 <%
-				if (rankingList != null) {
+					for(int rank = 0; rank < rankingList.size(); rank++) {
 %>
-					<h2>勝率ランキングトップ5</h2>
-					<table border="1">
-						<thead>
-							<tr>
-								<td>順位</td>
-								<td>ニックネーム</td>
-								<td>勝率(%)</td>
-							</tr>
-						</thead>
-						<tbody>
+					<tr>
+						<td><%=rank + 1%></td>
+						<td><%=rankingList.get(rank).getNickname()%></td>
+						<td><%=rankingList.get(rank).getWinRate()%></td>
+					</tr>
 <%
-							for(int rank = 0; rank < rankingList.size(); rank++) {
+					}
 %>
-							<tr>
-								<td><%=rank + 1%></td>
-								<td><%=rankingList.get(rank).getNickname()%></td>
-								<td><%=rankingList.get(rank).getWinRate()%></td>
-							</tr>
-<%
-							}
-%>
-						</tbody>
-					</table>
-<%
-				} else {
-%>
-					<p id="message">不正な操作、URLです。</p>
-<%
-				}
-%>
-				<form action="menu.jsp">
-					<p><input type="submit" value="メニューへ戻る"></p>
-				</form>
+				</tbody>
+			</table>
+			
+			<form action="menu.jsp">
+				<p><input type="submit" value="メニューへ戻る"></p>
+			</form>
 <%
 		} else {
-%>
-			<p id="message">不正な操作、URLです。</p>
-			<a href="login.jsp">ログインページへ</a>
-<%
+			request.setAttribute("message", "不正な操作、URLを検知しました。</br>ログアウト処理を実行しました。");
+			RequestDispatcher rd = request.getRequestDispatcher("LoginLogoutServlet");
+			rd.forward(request, response);
 		}
 %>
 	</body>

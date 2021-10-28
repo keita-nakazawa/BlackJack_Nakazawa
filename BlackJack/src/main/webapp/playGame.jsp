@@ -22,17 +22,15 @@
 		User loginUser = (User)session.getAttribute("loginUser");
 		Game game = (Game)session.getAttribute("game");
 
-		if (loginUser != null) {
+		if ((loginUser != null) && (game != null)) {
 %>	
-			<p><%=loginUser.getNickname()%>さんがログイン中</p>
-			<form action="LoginLogoutServlet">
-				<p><input type="submit" value="ログアウト"></p>
-			</form>
-			
-			<br>
-<%
-			if (game != null) {
-%>	
+				<p><%=loginUser.getNickname()%>さんがログイン中</p>
+				<form action="LoginLogoutServlet">
+					<p><input type="submit" value="ログアウト"></p>
+				</form>
+				
+				<br>
+				
 				<p>ディーラー</p>
 				<table>
 					<tr>
@@ -72,16 +70,10 @@
 					</tr>
 				</table>
 <%
-			} else {
-%>
-				<p id="message">不正な操作、URLです。</p>
-<%
-			}
 		} else {
-%>
-			<p id="message">不正な操作、URLです。</p>
-			<a href="login.jsp">ログインページへ</a>
-<%
+			request.setAttribute("message", "不正な操作、URLを検知しました。</br>ログアウト処理を実行しました。");
+			RequestDispatcher rd = request.getRequestDispatcher("LoginLogoutServlet");
+			rd.forward(request, response);
 		}
 %>
 	</body>

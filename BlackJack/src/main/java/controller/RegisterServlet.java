@@ -13,19 +13,22 @@ import dao.UserDao;
 
 @WebServlet("/RegisterServlet")
 public class RegisterServlet extends HttpServlet {
-	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+	
+	protected void doPost(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
+
 		request.setCharacterEncoding("UTF-8");
-		
+
 		String userId = request.getParameter("user_id");
 		String nickname = request.getParameter("nickname");
 		String password = request.getParameter("password");
 		String password2 = request.getParameter("password2");
-		
-		//入力内容制限を無理やり破っていないかここでチェックする必要がある。
-		
+
+		// 入力内容制限を無理やり破っていないかここでチェックする必要がある。
+
 		UserDao userDao = new UserDao();
 		String message = userDao.getRegisterMessage(userId, nickname, password, password2);
-		
+
 		if (message != null) {
 
 			request.setAttribute("message", message);
@@ -37,5 +40,13 @@ public class RegisterServlet extends HttpServlet {
 			RequestDispatcher rd = request.getRequestDispatcher("login.jsp");
 			rd.forward(request, response);
 		}
+	}
+
+	protected void doGet(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
+
+		request.setAttribute("message", "不正な操作、URLを検知しました。</br>ログアウト処理を実行しました。");
+		RequestDispatcher rd = request.getRequestDispatcher("LoginLogoutServlet");
+		rd.forward(request, response);
 	}
 }
