@@ -16,6 +16,7 @@ import model.NullChecker;
 @WebServlet("/RedirectServlet")
 public class RedirectServlet extends HttpServlet {
 
+	//RedirectServlet自身に不正アクセスされた場合にも対応している。
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 
@@ -24,7 +25,7 @@ public class RedirectServlet extends HttpServlet {
 		Map<String, String> map = NullChecker.createMap(objectList);
 		
 		request.setAttribute("message", map.get("message"));	
-		request.setAttribute("nullChecked?", "yes");
+		request.setAttribute("nullChecked?", true);
 		
 		RequestDispatcher rd = request.getRequestDispatcher(map.get("nextPage"));
 		rd.forward(request, response);

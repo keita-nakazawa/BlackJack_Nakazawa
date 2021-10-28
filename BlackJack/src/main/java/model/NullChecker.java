@@ -12,11 +12,11 @@ public class NullChecker {
 	 * その結果に応じてメッセージと遷移先名を生成する。
 	 * 
 	 * @param objectList nullチェックの対象となるオブジェクトのリスト。<br>
-	 * ただし、0番目の要素は遷移前のサーブレット名またはページ名。
+	 *                   ただし、0番目の要素は遷移前のサーブレット名またはページ名。
 	 * 
 	 * @return Map&lt;String, String><br>
-	 * "message"キーでメッセージ取得。<br>
-	 * "nextPage"キーで遷移先のサーブレット名またはページ名取得。
+	 *         "message"キーでメッセージ取得。<br>
+	 *         "nextPage"キーで遷移先のサーブレット名またはページ名取得。
 	 */
 	public static Map<String, String> createMap(List<Object> objectList) {
 
@@ -24,10 +24,14 @@ public class NullChecker {
 
 		int nullFlag = 0;
 
-		for (Object object : objectList) {
-			if (object == null) {
-				nullFlag = 1;
-				break;
+		if (objectList == null) {
+			nullFlag = 1;
+		} else {
+			for (Object object : objectList) {
+				if (object == null) {
+					nullFlag = 1;
+					break;
+				}
 			}
 		}
 
@@ -35,7 +39,7 @@ public class NullChecker {
 			map.put("message", "不正な操作、URLを検知しました。</br>ログアウト処理を実行しました。");
 			map.put("nextPage", "LoginLogoutServlet");
 		} else {
-			String thisPage = (String)objectList.get(0);
+			String thisPage = (String) objectList.get(0);
 			map.put("message", null);
 			map.put("nextPage", thisPage);
 		}

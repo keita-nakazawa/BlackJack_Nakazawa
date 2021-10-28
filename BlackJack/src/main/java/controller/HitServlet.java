@@ -15,7 +15,7 @@ import model.Player;
 public class HitServlet extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-
+		
 		HttpSession session = request.getSession();
 		Game game = (Game) session.getAttribute("game");
 
