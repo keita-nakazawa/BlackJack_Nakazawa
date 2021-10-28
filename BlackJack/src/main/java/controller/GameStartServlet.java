@@ -23,16 +23,19 @@ public class GameStartServlet extends HttpServlet {
 		objectList.add("GameStartServlet");
 		objectList.add(session.getAttribute("loginUser"));
 
-		//RedirectServletにオブジェクトリストを渡す。
-		//nullChecked?が空ならRedirectServletをまだ経由していないことを意味する。
-		//RedirectServletからこのページに遷移してきた場合、このif文はスキップされる。
+		// RedirectServletにオブジェクトリストを渡す。
+		// nullChecked?が空ならRedirectServletをまだ経由していないことを意味する。
+		// RedirectServletからこのページに遷移してきた場合、このif文はスキップされる。
 		if (request.getAttribute("nullChecked?") == null) {
-			
+
 			request.setAttribute("objectList", objectList);
 			RequestDispatcher rd = request.getRequestDispatcher("RedirectServlet");
 			rd.forward(request, response);
 		}
-
+		
+		//以下のコードをすべてelse{}で囲むとServlet.service()は例外を投げなくなる。
+		//囲まない場合でも、ブラウザ上では特に何も問題は起こらない。
+		//ただ、else{}で囲むとViewの操作以外を制御構造で囲んだことになってしまう。
 		Game oldGame = (Game) session.getAttribute("game");
 		Game newGame = new Game();
 		session.setAttribute("game", newGame.start(oldGame));
