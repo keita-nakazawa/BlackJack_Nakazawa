@@ -1,3 +1,4 @@
+<%@page import="model.History"%>
 <%@page import="model.NullChecker"%>
 <%@page import="java.util.Map"%>
 <%@page import="java.util.List"%>
@@ -21,10 +22,9 @@
 		<h1>BlackJack</h1>
 <%
 		User loginUser = (User)session.getAttribute("loginUser");
-		List<User> rankingList = (List)request.getAttribute("rankingList");
-		int population = (int)request.getAttribute("population");
+		List<History> historyList = (List) request.getAttribute("historyList");
 
-		Map<String, String> map = NullChecker.createMap(rankingList);
+		Map<String, String> map = NullChecker.createMap("");
 
 		if (map.isEmpty()) {
 %>
@@ -34,22 +34,18 @@
 			</form>
 			
 			<br>
-<%
-			if(request.getAttribute("message") != null) {
-				String message = (String)request.getAttribute("message");
-%>
-				<p id="message"><%=message%></p>
-<%
-			}
-%>
-			<h2>勝率ランキングトップ5</h2>
-			<p>現在の総プレイ人口：<%=population%>人</p>
+
+			<h2>これまでの戦績</h2>
+			
+			<p>総対戦回数：回</p>
+			<p>勝率：% (回勝利、回敗北)</p>
+			
 			<table border="1">
 				<thead>
 					<tr>
-						<td>順位</td>
-						<td>ニックネーム</td>
-						<td>勝率(%)</td>
+						<td>対戦回数</td>
+						<td>日時</td>
+						<td>勝敗</td>
 					</tr>
 				</thead>
 				<tbody>

@@ -28,6 +28,7 @@ DROP TABLE IF EXISTS `history`;
 CREATE TABLE `history` (
   `game_id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `user_id` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL,
+  `time` varchar(30) NOT NULL,
   `result` int(11) NOT NULL,
   PRIMARY KEY (`game_id`),
   KEY `index_user_id` (`user_id`),

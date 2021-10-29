@@ -25,6 +25,7 @@ public class ResultServlet extends HttpServlet {
 		
 		if (map.isEmpty()) {
 			//HistoryDaoクラスを駆使してDBのhistoryテーブルに結果を記録
+			Integer result = (Integer)resultMap.get("result");
 			
 			request.setAttribute("game", game);
 			request.setAttribute("resultMap", resultMap);

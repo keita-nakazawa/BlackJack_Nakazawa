@@ -1,59 +1,61 @@
 package dao;
 
-import java.sql.*;
-import java.util.*;
-
-import javax.servlet.http.HttpSession;
+import java.sql.SQLException;
+import java.sql.SQLIntegrityConstraintViolationException;
+import java.util.ArrayList;
+import java.util.List;
 
 import model.User;
 
 /**
  * DBのusersテーブルのみを扱うDAOクラス
  */
-public class UserDao {
+public class UserDao extends BaseDao{
 
-	private Connection con = null;
-	private PreparedStatement ps = null;
-	private ResultSet rs = null;
-
+	/**
+	 * コンストラクタ<br>
+	 * 初期処理としてDBに接続する。
+	 */
+	public UserDao() {
+		getConnect();
+	}
+	
 	/**
 	 * DBにユーザ情報を新規登録する。
 	 * @return 新規登録に失敗した旨のメッセージを示すStringオブジェクト<br>成功時はnull
 	 */
-	public String getRegisterMessage(String userId, String nickname, String password, String password2) {
-
-		String message = null;
+	public void doRegister(String userId, String nickname, String password, String password2) {
 
 		if (password.equals(password2)) {
 
 			try {
-				// DBへの接続処理
-				getConnect();
-
 				// SQL文の作成(win_rateカラムには0を設定)
 				String sql = "INSERT INTO users VALUES (?, ?, ?, 0)";
-				ps = con.prepareStatement(sql);
-				ps.setString(1, userId);
-				ps.setString(2, nickname);
-				ps.setString(3, password);
-				System.out.println(ps);
-
-				ps.executeUpdate();
-
-			} catch (ClassNotFoundException e) {
-				e.printStackTrace();
+				
+				if (con != null) {
+					ps = con.prepareStatement(sql);
+					ps.setString(1, userId);
+					ps.setString(2, nickname);
+					ps.setString(3, password);
+					System.out.println(ps);
+					ps.executeUpdate();
+					
+				} else {
+					message = "DBにアクセスできません。";
+				}
+				
 			} catch (SQLIntegrityConstraintViolationException e) {
 				e.printStackTrace();
 				message = "登録済みかもしくは不正なユーザIDです。";
 			} catch (SQLException e) {
 				e.printStackTrace();
+				message = "SQL実行中に例外が発生しました。";
 			} finally {
 				closeAll();
 			}
 		} else {
 			message = "パスワードが一致していません。";
 		}
-		return message;
 	}
 
 	public User getLoginUser(String userId, String password) {
@@ -61,9 +63,6 @@ public class UserDao {
 		User user = new User();
 
 		try {
-			// DBへの接続処理
-			getConnect();
-
 			// SQL文の作成
 			String sql = "SELECT * FROM users WHERE (user_id = ?) && (password = ?)";
 			ps = con.prepareStatement(sql);
@@ -78,37 +77,42 @@ public class UserDao {
 				user.setUserId(rs.getString("user_id"));
 				user.setNickname(rs.getString("nickname"));
 			} else {
-				// ログイン情報が誤っている場合の処理
 				user = null;
+				message = "ログインに失敗しました。";
 			}
-		} catch (ClassNotFoundException e) {
+			
+		} catch (NullPointerException e) {
 			e.printStackTrace();
+			user = null;
+			message = "DBにアクセスできません";
 		} catch (SQLException e) {
 			e.printStackTrace();
+			user = null;
+			message = "SQL実行中に例外が発生しました";
 		} finally {
 			closeAll();
 		}
+		
 		return user;
 	}
 
-	public void doDelete(HttpSession session) {
+	public void doDelete(User loginUser) {
 		
 		try {
-			// DBへの接続処理
-			getConnect();
-
 			// SQL文の作成
 			String sql = "DELETE FROM users WHERE user_id = ?";
 			ps = con.prepareStatement(sql);
-			ps.setString(1, ((User) session.getAttribute("loginUser")).getUserId());
+			ps.setString(1, loginUser.getUserId());
 			System.out.println(ps);
 
 			ps.executeUpdate();
 
-		} catch (ClassNotFoundException e) {
+		} catch (NullPointerException e) {
 			e.printStackTrace();
+			message = "DBにアクセスできません";
 		} catch (SQLException e) {
 			e.printStackTrace();
+			message = "SQL実行中に例外が発生しました";
 		} finally {
 			closeAll();
 		}
@@ -120,16 +124,11 @@ public class UserDao {
 	 * "loginUser"キーで、変更後のユーザの情報を持つUserオブジェクトを取得<br>
 	 * "message"キーで、エラーメッセージを表すStringオブジェクトを取得
 	 */
-	public Map<String, Object> editIdName(String userId, String nickname, String sessionUserId) {
+	public User editIdName(String userId, String nickname, String sessionUserId) {
 		
-		Map<String, Object> map = new HashMap<>();
 		User loginUser = new User();
-		String message = null;
 
 		try {
-			// DBへの接続処理
-			getConnect();
-
 			// SQL文の作成
 			String sql = "UPDATE users SET user_id = ?, nickname = ? WHERE user_id = ?";
 			ps = con.prepareStatement(sql);
@@ -139,40 +138,37 @@ public class UserDao {
 			System.out.println(ps);
 
 			ps.executeUpdate();
-
-		} catch (ClassNotFoundException e) {
+			message = "ユーザID、ニックネームを変更しました。";
+			
+		} catch (NullPointerException e) {
 			e.printStackTrace();
+			userId = sessionUserId;
+			message = "DBにアクセスできません。";
 		} catch (SQLIntegrityConstraintViolationException e) {
 			e.printStackTrace();
 			userId = sessionUserId;
 			message = "既に登録されているユーザIDです。";
 		} catch (SQLException e) {
 			e.printStackTrace();
+			message = "SQL実行中に例外が発生しました。";
 		} finally {
 			closeAll();
 		}
 		loginUser.setUserId(userId);
 		loginUser.setNickname(nickname);
 		
-		map.put("loginUser", loginUser);
-		map.put("message", message);
-		return map;
+		return loginUser;
 	}
 
 	/**
 	 * DBのユーザ情報のパスワードを変更する。
 	 * @return パスワード変更に失敗した旨のメッセージを示すStringオブジェクト<br>成功時はnull
 	 */
-	public String editPassword(String oldPassword, String newPassword, String newPassword2, String sessionUserId) {
+	public void editPassword(String oldPassword, String newPassword, String newPassword2, String sessionUserId) {
 
-		String message = null;
-		
 		if (newPassword.equals(newPassword2)) {
 
 			try {
-				// DBへの接続処理
-				getConnect();
-
 				// SQL文の作成
 				String sql = "UPDATE users SET password = ? WHERE (user_id = ?) && (password = ?)";
 				ps = con.prepareStatement(sql);
@@ -182,20 +178,23 @@ public class UserDao {
 				System.out.println(ps);
 
 				int changedRows = ps.executeUpdate();
+				message = "パスワードを変更しました。";
+				
 				if (changedRows == 0) {
 					message = "古いパスワードが間違っています。";
 				}
-			} catch (ClassNotFoundException e) {
+			} catch (NullPointerException e) {
 				e.printStackTrace();
+				message = "DBにアクセスできません。";
 			} catch (SQLException e) {
 				e.printStackTrace();
+				message = "SQL実行中に例外が発生しました";
 			} finally {
 				closeAll();
 			}
 		} else {
 			message = "新しいパスワードが一致していません。";
 		}
-		return message;
 	}
 
 	public List<User> getRankingList() {
@@ -203,9 +202,6 @@ public class UserDao {
 		List<User> rankingList = new ArrayList<User>();
 
 		try {
-			// DBへの接続処理
-			getConnect();
-
 			// SQL文の作成
 			String sql = "SELECT * FROM users ORDER BY win_rate DESC LIMIT 5";
 			ps = con.prepareStatement(sql);
@@ -218,41 +214,40 @@ public class UserDao {
 				user.setWinRate(rs.getFloat("win_rate"));
 				rankingList.add(user);
 			}
-		} catch (ClassNotFoundException e) {
+		} catch (NullPointerException e) {
 			e.printStackTrace();
+			message = "DBにアクセスできません。";
 		} catch (SQLException e) {
 			e.printStackTrace();
+			message = "SQL実行中に例外が発生しました";
 		} finally {
 			closeAll();
 		}
 		return rankingList;
-
 	}
-
 	
-	public void getConnect() throws ClassNotFoundException, SQLException {
-		Class.forName("org.mariadb.jdbc.Driver");
-
-		String url = "jdbc:mysql://localhost/bj_nakazawa";
-		String user = "root";
-		String password = "";
-
-		con = DriverManager.getConnection(url, user, password);
-	}
-
-	public void closeAll() {
+	public int getPopulation() {
+		
+		int population = 0;
+		
 		try {
-			if (con != null) {
-				con.close();
+			// SQL文の作成
+			String sql = "SELECT * FROM users";
+			ps = con.prepareStatement(sql);
+			rs = ps.executeQuery();
+
+			while (rs.next()) {
+				population += 1;
 			}
-			if (ps != null) {
-				ps.close();
-			}
-			if (rs != null) {
-				rs.close();
-			}
-		} catch (Exception e) {
+		} catch (NullPointerException e) {
 			e.printStackTrace();
+			message = "DBにアクセスできません。";
+		} catch (SQLException e) {
+			e.printStackTrace();
+			message = "SQL実行中に例外が発生しました";
+		} finally {
+			closeAll();
 		}
+		return population;
 	}
 }

@@ -12,35 +12,39 @@ import model.User;
 
 @WebServlet("/LoginLogoutServlet")
 public class LoginLogoutServlet extends HttpServlet {
-	
-	//ログイン処理
-	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+
+	// ログイン処理
+	protected void doPost(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
 		String id = request.getParameter("user_id");
 		String password = request.getParameter("password");
 		HttpSession session = request.getSession();
-		
+
 		UserDao userDao = new UserDao();
 		User loginUser = userDao.getLoginUser(id, password);
 		
-		if(loginUser != null) {
-			
+		String nextPage = new String();
+
+		if (loginUser != null) {
 			session.setAttribute("loginUser", loginUser);
-			RequestDispatcher rd = request.getRequestDispatcher("menu.jsp");
-			rd.forward(request, response);
+			nextPage = "menu.jsp";
 			
 		} else {
-			
-			request.setAttribute("message", "ログインに失敗しました。");
-			RequestDispatcher rd = request.getRequestDispatcher("login.jsp");
-			rd.forward(request, response);
+			request.setAttribute("message", userDao.getMessage());
+			nextPage = "login.jsp";
 		}
+		
+		RequestDispatcher rd = request.getRequestDispatcher(nextPage);
+		rd.forward(request, response);
+		
 	}
-	
-	//ログアウト処理
-	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+
+	// ログアウト処理
+	protected void doGet(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
 		HttpSession session = request.getSession();
 		session.invalidate();
-		
+
 		RequestDispatcher rd = request.getRequestDispatcher("login.jsp");
 		rd.forward(request, response);
 	}

@@ -29,4 +29,12 @@ public class User {
 	public float getWinRate() {
 		return winRate;
 	}
+	
+//	public boolean isEmpty() {
+//		if(userId.isEmpty() && nickname.isEmpty()) {
+//			return true;
+//		} else {
+//			return false;
+//		}
+//	}
 }

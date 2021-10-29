@@ -24,8 +24,8 @@ public class EditPassServlet extends HttpServlet {
 		String sessionUserId = ((User) session.getAttribute("loginUser")).getUserId();
 
 		UserDao userDao = new UserDao();
-		String message = userDao.editPassword(oldPassword, newPassword, newPassword2, sessionUserId);
-		request.setAttribute("message", message);
+		userDao.editPassword(oldPassword, newPassword, newPassword2, sessionUserId);
+		request.setAttribute("message", userDao.getMessage());
 		
 		RequestDispatcher rd = request.getRequestDispatcher("edit.jsp");
 		rd.forward(request, response);

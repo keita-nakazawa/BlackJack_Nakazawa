@@ -8,6 +8,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.*;
 
 import dao.UserDao;
+import model.User;
 
 @WebServlet("/DeleteServlet")
 public class DeleteServlet extends HttpServlet {
@@ -17,9 +18,20 @@ public class DeleteServlet extends HttpServlet {
 
 		UserDao userDao = new UserDao();
 		HttpSession session = request.getSession();
-		userDao.doDelete(session);
+		
+		User loginUser = (User) session.getAttribute("loginUser");
+		userDao.doDelete(loginUser);
+		String nextPage = new String();
 
-		RequestDispatcher rd = request.getRequestDispatcher("login.jsp");
+		if (userDao.getMessage() != null) {
+			request.setAttribute("message", userDao.getMessage());
+			nextPage = "delete.jsp";
+
+		} else {
+			request.setAttribute("message", loginUser.getNickname() + "さんのユーザ情報を削除しました");
+			nextPage = "login.jsp";
+		}
+		RequestDispatcher rd = request.getRequestDispatcher(nextPage);
 		rd.forward(request, response);
 	}
 

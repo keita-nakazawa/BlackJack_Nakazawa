@@ -1,7 +1,6 @@
 package controller;
 
 import java.io.IOException;
-import java.util.Map;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -24,9 +23,9 @@ public class EditIdNameServlet extends HttpServlet {
 		String sessionUserId = ((User) session.getAttribute("loginUser")).getUserId();
 
 		UserDao userDao = new UserDao();
-		Map<String, Object> map = userDao.editIdName(userId, nickname, sessionUserId);
-		session.setAttribute("loginUser", map.get("loginUser"));
-		request.setAttribute("message", map.get("message"));
+		User loginUser = userDao.editIdName(userId, nickname, sessionUserId);
+		session.setAttribute("loginUser", loginUser);
+		request.setAttribute("message", userDao.getMessage());
 
 		RequestDispatcher rd = request.getRequestDispatcher("edit.jsp");
 		rd.forward(request, response);

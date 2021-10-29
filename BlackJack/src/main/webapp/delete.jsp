@@ -31,7 +31,14 @@
 			</form>
 	
 			<br>
-		
+<%
+			if(request.getAttribute("message") != null) {
+				String message = (String)request.getAttribute("message");
+%>
+				<p id="message"><%=message%></p>
+<%
+			}
+%>
 			<p>以下のユーザを削除しますか?</p>
 			<table>
 				<tr>

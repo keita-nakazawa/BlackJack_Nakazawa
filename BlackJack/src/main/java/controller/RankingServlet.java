@@ -20,14 +20,21 @@ public class RankingServlet extends HttpServlet {
 			throws ServletException, IOException {
 
 		HttpSession session = request.getSession();
-		String nextPage = "ranking.jsp";
+		String nextPage = new String();
 		
 		Map<String, String> map = NullChecker.createMap(session.getAttribute("loginUser"));
 		
 		if (map.isEmpty()) {
 			UserDao userDao = new UserDao();
+			int population = userDao.getPopulation();
+
+			userDao = new UserDao();
 			List<User> rankingList = userDao.getRankingList();
+			
+			request.setAttribute("population", population);
 			request.setAttribute("rankingList", rankingList);
+			request.setAttribute("message", userDao.getMessage());
+			nextPage = "ranking.jsp";
 			
 		} else {
 			request.setAttribute("message", map.get("message"));
