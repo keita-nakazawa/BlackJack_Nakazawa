@@ -1,3 +1,5 @@
+<%@page import="model.NullChecker"%>
+<%@page import="java.util.Map"%>
 <%@page import="java.util.List"%>
 <%@page import="model.User"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
@@ -21,7 +23,10 @@
 		User loginUser = (User)session.getAttribute("loginUser");
 		List<User> rankingList = (List)request.getAttribute("rankingList");
 
-		if ((loginUser != null) && (rankingList != null)) {
+		//rankingListのnullチェックを行えば十分である。
+		Map<String, String> map = NullChecker.createMap(rankingList);
+
+		if (map.isEmpty()) {
 %>
 			<p><%=loginUser.getNickname()%>さんがログイン中</p>
 			<form action="LoginLogoutServlet">
@@ -30,7 +35,7 @@
 			
 			<br>
 
-			<h2>勝率ランキングトップ5</h2>
+			<h2>勝率ランキングトップ<%=rankingList.size()%></h2>
 			<table border="1">
 				<thead>
 					<tr>
@@ -59,7 +64,7 @@
 			</form>
 <%
 		} else {
-			request.setAttribute("message", "不正な操作、URLを検知しました。</br>ログアウト処理を実行しました。");
+			request.setAttribute("message", map.get("message"));
 			RequestDispatcher rd = request.getRequestDispatcher("LoginLogoutServlet");
 			rd.forward(request, response);
 		}

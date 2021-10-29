@@ -45,8 +45,7 @@ public class RegisterServlet extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 
-		request.setAttribute("message", "不正な操作、URLを検知しました。</br>ログアウト処理を実行しました。");
-		RequestDispatcher rd = request.getRequestDispatcher("LoginLogoutServlet");
+		RequestDispatcher rd = request.getRequestDispatcher("register.jsp");
 		rd.forward(request, response);
 	}
 }

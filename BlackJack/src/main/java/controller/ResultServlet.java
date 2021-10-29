@@ -9,6 +9,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.*;
 
 import model.Game;
+import model.NullChecker;
 
 @WebServlet("/ResultServlet")
 public class ResultServlet extends HttpServlet {
@@ -18,22 +19,24 @@ public class ResultServlet extends HttpServlet {
 		HttpSession session = request.getSession();
 		Game game = (Game) session.getAttribute("game");
 		Map<String, Object> resultMap = (Map) request.getAttribute("resultMap");
+		String nextPage = new String();
+
+		Map<String, String> map = NullChecker.createMap(game);
 		
-		if (resultMap != null) {
-			
+		if (map.isEmpty()) {
 			//HistoryDaoクラスを駆使してDBのhistoryテーブルに結果を記録
 			
 			request.setAttribute("game", game);
 			request.setAttribute("resultMap", resultMap);
 			session.setAttribute("game", null);
-			RequestDispatcher rd = request.getRequestDispatcher("gameEnd.jsp");
-			rd.forward(request, response);
+			nextPage = "gameEnd.jsp";
 			
 		} else {
-
-			request.setAttribute("message", "不正な操作、URLを検知しました。</br>ログアウト処理を実行しました。");
-			RequestDispatcher rd = request.getRequestDispatcher("LoginLogoutServlet");
-			rd.forward(request, response);
+			request.setAttribute("message", map.get("message"));
+			nextPage = map.get("nextPage");
 		}
+		
+		RequestDispatcher rd = request.getRequestDispatcher(nextPage);
+		rd.forward(request, response);
 	}
 }

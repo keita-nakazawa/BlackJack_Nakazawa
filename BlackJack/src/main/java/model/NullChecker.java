@@ -1,48 +1,29 @@
 package model;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 public class NullChecker {
 
 	/**
-	 * RedirectServletにて使用。<br>
-	 * パラメータのリスト内にnullが含まれているかチェックし、<br>
-	 * その結果に応じてメッセージと遷移先名を生成する。
+	 * パラメータのオブジェクトのnullチェックを行い、<br>
+	 * nullの場合は警告メッセージと遷移先名を生成する。
 	 * 
-	 * @param objectList nullチェックの対象となるオブジェクトのリスト。<br>
-	 *                   ただし、0番目の要素は遷移前のサーブレット名またはページ名。
+	 * @param object nullチェックの対象となるオブジェクト。<br>
 	 * 
 	 * @return Map&lt;String, String><br>
-	 *         "message"キーでメッセージ取得。<br>
-	 *         "nextPage"キーで遷移先のサーブレット名またはページ名取得。
+	 *         "message"キーで警告メッセージ取得。<br>
+	 *         "nextPage"キーで遷移先名"LoginLogoutServlet"を取得。
 	 */
-	public static Map<String, String> createMap(List<Object> objectList) {
+	public static Map<String, String> createMap(Object object) {
 
 		Map<String, String> map = new HashMap<>();
 
-		int nullFlag = 0;
-
-		if (objectList == null) {
-			nullFlag = 1;
-		} else {
-			for (Object object : objectList) {
-				if (object == null) {
-					nullFlag = 1;
-					break;
-				}
-			}
-		}
-
-		if (nullFlag == 1) {
+		if (object == null) {
 			map.put("message", "不正な操作、URLを検知しました。</br>ログアウト処理を実行しました。");
 			map.put("nextPage", "LoginLogoutServlet");
-		} else {
-			String thisPage = (String) objectList.get(0);
-			map.put("message", null);
-			map.put("nextPage", thisPage);
 		}
+
 		return map;
 	}
 }

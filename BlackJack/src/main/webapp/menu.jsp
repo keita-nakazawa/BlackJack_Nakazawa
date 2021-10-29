@@ -1,3 +1,5 @@
+<%@page import="model.NullChecker"%>
+<%@page import="java.util.Map"%>
 <%@page import="model.User"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
@@ -19,7 +21,9 @@
 <%
 		User loginUser = (User)session.getAttribute("loginUser");
 
-		if (loginUser != null) {
+		Map<String, String> map = NullChecker.createMap(loginUser);
+
+		if (map.isEmpty()) {
 %>	
 			<p><%=loginUser.getNickname()%>さんがログイン中</p>
 			<form action="LoginLogoutServlet">
@@ -42,7 +46,7 @@
 					</td>
 					<td>
 						<form action="RankingServlet">
-							<input type="submit" value="勝率ランキングトップ5">
+							<input type="submit" value="勝率ランキング">
 						</form>
 					</td>
 					<td>
@@ -59,7 +63,7 @@
 			</table>
 <%
 		} else {
-			request.setAttribute("message", "不正な操作、URLを検知しました。</br>ログアウト処理を実行しました。");
+			request.setAttribute("message", map.get("message"));
 			RequestDispatcher rd = request.getRequestDispatcher("LoginLogoutServlet");
 			rd.forward(request, response);
 		}
