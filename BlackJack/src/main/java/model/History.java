@@ -1,16 +1,18 @@
 package model;
 
+import java.sql.Timestamp;
+
 public class History {
 
 	private String userId;
-	private String time;
+	private Timestamp time;
 	private int result;
 
 	public String getUserId() {
 		return userId;
 	}
 	
-	public String getTime() {
+	public Timestamp getTime() {
 		return time;
 	}
 	
@@ -27,6 +29,7 @@ public class History {
 		case 1:
 			return "WIN";
 		default:
+			//念のためのdefault
 			return "ERROR";
 		}
 	}
@@ -35,7 +38,7 @@ public class History {
 		this.userId = userId;
 	}
 	
-	public void setTime(String time) {
+	public void setTime(Timestamp time) {
 		this.time = time;
 	}
 	

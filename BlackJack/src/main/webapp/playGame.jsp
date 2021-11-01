@@ -53,7 +53,7 @@
 				</tr>
 			</table>
 			
-			<p>あなた(<%=game.getPlayer().getPoint()%>点)(burst = <%=game.getPlayer().getBurst()%>)</p>
+			<p>あなた(<%=game.getPlayer().getPoint()%>点)</p>
 				<table>
 					<tr>
 <%

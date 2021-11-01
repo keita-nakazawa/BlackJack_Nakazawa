@@ -1,6 +1,7 @@
 package dao;
 
 import java.sql.SQLException;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -23,7 +24,7 @@ public class HistoryDao extends BaseDao {
 	public void addHistory(History history) {
 		
 		String userId = history.getUserId();
-		String time = history.getTime();
+		Timestamp time = history.getTime();
 		int result = history.getResult();
 		
 		try {
@@ -31,7 +32,7 @@ public class HistoryDao extends BaseDao {
 			String sql = "INSERT INTO history (user_id, time, result) VALUES (?, ?, ?)";
 			ps = con.prepareStatement(sql);
 			ps.setString(1, userId);
-			ps.setString(2, time);
+			ps.setTimestamp(2, time);
 			ps.setInt(3, result);
 			
 			ps.executeUpdate();
@@ -55,7 +56,7 @@ public class HistoryDao extends BaseDao {
 
 			while (rs.next()) {
 				History history = new History();
-				history.setTime(rs.getString("time"));
+				history.setTime(rs.getTimestamp("time"));
 				history.setResult(rs.getInt("result"));
 				historyList.add(history);
 			}
@@ -78,6 +79,7 @@ public class HistoryDao extends BaseDao {
 			ps = con.prepareStatement(sqlWin);
 			ps.setString(1, userId);
 			rs = ps.executeQuery();
+			rs.next();
 			int win = rs.getInt("count(*)");
 			
 			//SQL文(総対戦回数を取得)
@@ -85,13 +87,14 @@ public class HistoryDao extends BaseDao {
 			ps = con.prepareStatement(sqlResult);
 			ps.setString(1, userId);
 			rs = ps.executeQuery();
+			rs.next();
 			int all = rs.getInt("count(*)");
 			
 			float winRate = (float)win/(float)all;
 			
 			//SQL文(勝率を更新)
 			String sql = "UPDATE users SET win_rate = ? WHERE user_id = ?";
-			ps = con.prepareStatement(sqlResult);
+			ps = con.prepareStatement(sql);
 			ps.setFloat(1, winRate);
 			ps.setString(2, userId);
 			ps.executeUpdate();

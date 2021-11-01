@@ -1,7 +1,7 @@
 package model;
 
+import java.sql.Timestamp;
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 
 public class Game {
 
@@ -76,7 +76,7 @@ public class Game {
  
 		History history = new History();
 		history.setUserId(loginUser.getUserId());
-		history.setTime(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd(E) HH-mm-ss")));
+		history.setTime(Timestamp.valueOf(LocalDateTime.now()));
 
 		if (player.getBurst() == true) {
 			history.setResult(-1);
