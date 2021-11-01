@@ -180,10 +180,7 @@ public class UserDao extends BaseDao {
 			rs = ps.executeQuery();
 
 			while (rs.next()) {
-				User user = new User();
-				user.setUserId(rs.getString("user_id"));
-				user.setNickname(rs.getString("nickname"));
-				user.setWinRate(rs.getFloat("win_rate"));
+				User user = new User(rs.getString("user_id"), rs.getString("nickname"), rs.getFloat("win_rate"));
 				rankingList.add(user);
 			}
 		} catch (SQLException e) {

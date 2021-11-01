@@ -34,7 +34,14 @@
 			</form>
 			
 			<br>
-			
+<%
+		String message = (String)request.getAttribute("message");
+		if(message != null) {
+%>
+			<p id="message"><%=message%></p>
+<%
+		}
+%>				
 			<p>ディーラー</p>
 			<table>
 				<tr>

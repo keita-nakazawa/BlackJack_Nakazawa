@@ -6,6 +6,16 @@ public class User {
 	private String nickname;
 	private float winRate;
 	
+	public User() {
+		
+	}
+	
+	public User(String userId, String nickname, float winRate) {
+		this.userId = userId;
+		this.nickname = nickname;
+		this.winRate = winRate;
+	}
+	
 	public void setUserId(String userId) {
 		this.userId = userId;
 	}

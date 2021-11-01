@@ -2,15 +2,14 @@ package model;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.HashMap;
-import java.util.Map;
 
 public class Game {
 
 	private Deck deck;
 	private Player player;
 	private Dealer dealer;
-
+	private String gameMessage;
+	
 	public Game() {
 
 		Player player = new Player();
@@ -40,6 +39,10 @@ public class Game {
 	public Dealer getDealer() {
 		return dealer;
 	}
+	
+	public String getGameMessage() {
+		return gameMessage;
+	}
 
 	public void setDeck(Deck deck) {
 		this.deck = deck;
@@ -68,50 +71,36 @@ public class Game {
 
 	/**
 	 * プレイヤーとディーラーの点数を比較する。burstフラグも考慮する。
-	 * 
-	 * @return Map<br>
-	 *         ・"time"キーでプレイ時刻を取得する。<br>
-	 *         ・"result"キーで勝敗結果を取得する。<br>
-	 *         -1: ディーラーの勝利<br>
-	 *         0: 引き分け<br>
-	 *         1: プレイヤーの勝利<br>
-	 *         ・"message"キーで勝敗結果に基づくメッセージを取得する。
 	 */
-	public Map<String, Object> comparePoints() {
-
-		Map<String, Object> resultMap = new HashMap<>();
-
-		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("Gyyyy-LL-dd-(E) aKK-mm-ss");
-		resultMap.put("time", LocalDateTime.now().format(formatter));
+	public History comparePoints(User loginUser) {
+ 
+		History history = new History();
+		history.setUserId(loginUser.getUserId());
+		history.setTime(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd(E) HH-mm-ss")));
 
 		if (player.getBurst() == true) {
-
-			resultMap.put("result", Integer.valueOf(-1));
-			resultMap.put("message", "バーストしました。</br>ディーラーの勝利です。");
+			history.setResult(-1);
+			gameMessage = "バーストしました。</br>ディーラーの勝利です。";
 
 		} else if (dealer.getBurst() == true) {
-
-			resultMap.put("result", Integer.valueOf(1));
-			resultMap.put("message", "ディーラーがバーストしました。</br>あなたの勝利です。");
+			history.setResult(1);
+			gameMessage = "ディーラーがバーストしました。</br>あなたの勝利です。";
 
 		} else {
 
 			if (dealer.getPoint() > player.getPoint()) {
-
-				resultMap.put("result", Integer.valueOf(-1));
-				resultMap.put("message", "ディーラーの勝利です。");
+				history.setResult(-1);
+				gameMessage = "ディーラーの勝利です。";
 
 			} else if (dealer.getPoint() == player.getPoint()) {
-
-				resultMap.put("result", Integer.valueOf(0));
-				resultMap.put("message", "引き分けです。");
+				history.setResult(0);
+				gameMessage = "引き分けです。";
 
 			} else {
-
-				resultMap.put("result", Integer.valueOf(1));
-				resultMap.put("message", "あなたの勝利です。");
+				history.setResult(1);
+				gameMessage = "あなたの勝利です。";
 			}
 		}
-		return resultMap;
+		return history;
 	}
 }

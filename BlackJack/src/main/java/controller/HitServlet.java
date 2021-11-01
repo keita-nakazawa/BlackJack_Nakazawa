@@ -34,7 +34,9 @@ public class HitServlet extends HttpServlet {
 			game.setDeck(deck);
 
 			if (player.getBurst() == true) {
-				request.setAttribute("resultMap", game.comparePoints());
+				User loginUser = (User)session.getAttribute("loginUser");
+				request.setAttribute("history", game.comparePoints(loginUser));
+				request.setAttribute("gameMessage", game.getGameMessage());
 				nextPage = "ResultServlet";
 
 			} else {

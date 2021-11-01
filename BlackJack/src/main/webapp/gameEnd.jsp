@@ -1,3 +1,4 @@
+<%@page import="model.History"%>
 <%@page import="model.NullChecker"%>
 <%@page import="java.util.Map"%>
 <%@page import="model.Card"%>
@@ -23,7 +24,7 @@
 <%
 		User loginUser = (User)session.getAttribute("loginUser");
 		Game game = (Game)request.getAttribute("game");
-		Map<String, Object> resultMap = (Map)request.getAttribute("resultMap");
+		String gameMessage = (String)request.getAttribute("gameMessage");
 
 		//gameのnullチェックを行えば十分である。
 		Map<String, String> map = NullChecker.createMap(game);
@@ -63,7 +64,7 @@
 				</tr>
 			</table>
 
-			<p id="message"><%=resultMap.get("message")%></p>
+			<p id="message"><%=gameMessage%></p>
 			<table>
 				<tr>
 					<td>

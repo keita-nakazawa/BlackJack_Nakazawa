@@ -16,8 +16,8 @@
 	<body>
 		<h1>新規登録ページ</h1>
 <%
-		if(request.getAttribute("message") != null) {
-			String message = (String)request.getAttribute("message");
+		String message = (String)request.getAttribute("message");
+		if(message != null) {
 %>
 			<p id="message"><%=message%></p>
 <%

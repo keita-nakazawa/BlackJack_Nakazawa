@@ -1,6 +1,7 @@
 package controller;
 
 import java.io.IOException;
+import java.util.List;
 import java.util.Map;
 
 import javax.servlet.RequestDispatcher;
@@ -9,19 +10,20 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.*;
 
 import dao.HistoryDao;
-import model.*;
+import model.History;
+import model.NullChecker;
+import model.User;
 
-@WebServlet("/ResultServlet")
-public class ResultServlet extends HttpServlet {
-
-	protected void doGet(HttpServletRequest request, HttpServletResponse response)
-			throws ServletException, IOException {
-
+@WebServlet("/HistoryServlet")
+public class HistoryServlet extends HttpServlet {
+	
+	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		
 		HttpSession session = request.getSession();
-		Game game = (Game) session.getAttribute("game");
+		User loginUser = (User) session.getAttribute("loginUser");
 		String nextPage = new String();
 
-		Map<String, String> map = NullChecker.createMap(game);
+		Map<String, String> map = NullChecker.createMap(loginUser);
 
 		if (map.isEmpty()) {
 
@@ -30,28 +32,22 @@ public class ResultServlet extends HttpServlet {
 			// HistoryDaoのコンストラクタ実行時に作成されるメッセージを検出
 			if (historyDao.getMessage() != null) {
 				request.setAttribute("message", historyDao.getMessage());
-				nextPage = "playGame.jsp";
+				nextPage = "menu.jsp";
 
 			} else {
-
-				History history = (History) request.getAttribute("history");
-				User loginUser = (User) session.getAttribute("loginUser");
-				historyDao.addHistory(history);
-				historyDao.setWinRate(loginUser);
 				
-				//addHistory、setWinRateメソッド実行時に作成されるメッセージを検出
+				List<History> historyList =  historyDao.getHistoryList(loginUser);
+				
+				// getHistoryListメソッド実行時に作成されるメッセージを検出
 				if (historyDao.getMessage() != null) {
 					request.setAttribute("message", historyDao.getMessage());
-					nextPage = "playGame.jsp";
-				
+					nextPage = "menu.jsp";
+					
 				} else {
-					request.setAttribute("game", game);
-					session.setAttribute("game", null);
-					nextPage = "gameEnd.jsp";
+					request.setAttribute("historyList", historyList);
+					nextPage = "history.jsp";
 				}
 			}
-			
-
 		} else {
 			request.setAttribute("message", map.get("message"));
 			nextPage = map.get("nextPage");

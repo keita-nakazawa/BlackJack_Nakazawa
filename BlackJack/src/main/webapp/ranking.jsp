@@ -35,8 +35,8 @@
 			
 			<br>
 <%
-			if(request.getAttribute("message") != null) {
-				String message = (String)request.getAttribute("message");
+			String message = (String)request.getAttribute("message");
+			if(message != null) {
 %>
 				<p id="message"><%=message%></p>
 <%
@@ -54,12 +54,12 @@
 				</thead>
 				<tbody>
 <%
-					for(int rank = 0; rank < rankingList.size(); rank++) {
+					for(int row = 0; row < rankingList.size(); row++) {
 %>
 					<tr>
-						<td><%=rank + 1%></td>
-						<td><%=rankingList.get(rank).getNickname()%></td>
-						<td><%=rankingList.get(rank).getWinRate()%></td>
+						<td><%=row + 1%></td>
+						<td><%=rankingList.get(row).getNickname()%></td>
+						<td><%=rankingList.get(row).getWinRate()%></td>
 					</tr>
 <%
 					}

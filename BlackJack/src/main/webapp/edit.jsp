@@ -32,8 +32,8 @@
 			
 			<br>
 <%
-			if(request.getAttribute("message") != null) {
-				String message = (String)request.getAttribute("message");
+			String message = (String)request.getAttribute("message");
+			if(message != null) {
 %>
 				<p id="message"><%=message%></p>
 <%

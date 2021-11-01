@@ -31,7 +31,14 @@
 			</form>
 			
 			<br>
-			<br>
+<%
+			String message = (String)request.getAttribute("message");
+			if(message != null) {
+%>
+				<p id="message"><%=message%></p>
+<%
+			}
+%>
 		
 			<form action="GameStartServlet">
 				<p><input type="submit" value="ゲーム開始"></p>

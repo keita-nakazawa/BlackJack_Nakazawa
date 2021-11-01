@@ -10,7 +10,7 @@
 <html>
 	<head>
 		<meta charset="UTF-8">
-		<title>ランキング</title>
+		<title>これまでの戦績</title>
 		<style>
 			#message {
 				color : red;
@@ -24,7 +24,7 @@
 		User loginUser = (User)session.getAttribute("loginUser");
 		List<History> historyList = (List) request.getAttribute("historyList");
 
-		Map<String, String> map = NullChecker.createMap("");
+		Map<String, String> map = NullChecker.createMap(historyList);
 
 		if (map.isEmpty()) {
 %>
@@ -37,25 +37,25 @@
 
 			<h2>これまでの戦績</h2>
 			
-			<p>総対戦回数：回</p>
-			<p>勝率：% (回勝利、回敗北)</p>
+			<p>総対戦回数：<%=historyList.size()%>回</p>
+			<p>勝率：% (WIN...回、LOSE...回、DRAW...回)</p>
 			
 			<table border="1">
 				<thead>
 					<tr>
 						<td>対戦回数</td>
 						<td>日時</td>
-						<td>勝敗</td>
+						<td>結果</td>
 					</tr>
 				</thead>
 				<tbody>
 <%
-					for(int rank = 0; rank < rankingList.size(); rank++) {
+					for(int row = 0; row < historyList.size(); row++) {
 %>
 					<tr>
-						<td><%=rank + 1%></td>
-						<td><%=rankingList.get(rank).getNickname()%></td>
-						<td><%=rankingList.get(rank).getWinRate()%></td>
+						<td><%=row + 1%></td>
+						<td><%=historyList.get(row).getTime()%></td>
+						<td><%=historyList.get(row).getStrResult()%></td>
 					</tr>
 <%
 					}
