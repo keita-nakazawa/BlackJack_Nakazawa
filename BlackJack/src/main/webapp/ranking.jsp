@@ -22,7 +22,7 @@
 <%
 		User loginUser = (User)session.getAttribute("loginUser");
 		List<User> rankingList = (List)request.getAttribute("rankingList");
-		int population = (int)request.getAttribute("population");
+		Integer population = (Integer)request.getAttribute("population");
 
 		Map<String, String> map = NullChecker.createMap(rankingList);
 

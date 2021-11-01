@@ -27,16 +27,27 @@ public class RegisterServlet extends HttpServlet {
 		// 入力内容制限を無理やり破っていないかここでチェックする必要がある。
 
 		UserDao userDao = new UserDao();
-		userDao.doRegister(userId, nickname, password, password2);
 		String nextPage = new String();
-
+		
+		//UserDaoのコンストラクタ実行時に作成されるメッセージを検出
 		if (userDao.getMessage() != null) {
+			
 			request.setAttribute("message", userDao.getMessage());
 			nextPage = "register.jsp";
-
+			
 		} else {
-			request.setAttribute("message", "新規登録が完了しました");
-			nextPage = "login.jsp";
+			
+			userDao.doRegister(userId, nickname, password, password2);
+			
+			//doRegisterメソッド実行時に作成されるメッセージを検出
+			if (userDao.getMessage() != null) {
+				request.setAttribute("message", userDao.getMessage());
+				nextPage = "register.jsp";
+			
+			} else {
+				request.setAttribute("message", "新規登録が完了しました");
+				nextPage = "login.jsp";
+			}
 		}
 		
 		RequestDispatcher rd = request.getRequestDispatcher(nextPage);

@@ -23,18 +23,14 @@ public abstract class BaseDao {
 			String user = "root";
 			String password = "";
 
-			con = DriverManager.getConnection(url, user, password);		
-			
-			if (con == null) {
-				message = "DBにアクセスできません"; 
-			}
+			con = DriverManager.getConnection(url, user, password);
 			
 		} catch (ClassNotFoundException e) {
 			e.printStackTrace();
 			message = "JDBCドライバが見つかりません";
 		} catch (SQLException e) {
 			e.printStackTrace();
-			message = "SQL実行中に例外が発生しました";
+			message = "DB接続処理のSQL実行中に例外が発生しました";
 		}
 	}
 	

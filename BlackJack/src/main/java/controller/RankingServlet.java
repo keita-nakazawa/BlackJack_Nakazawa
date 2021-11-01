@@ -21,26 +21,33 @@ public class RankingServlet extends HttpServlet {
 
 		HttpSession session = request.getSession();
 		String nextPage = new String();
-		
-		Map<String, String> map = NullChecker.createMap(session.getAttribute("loginUser"));
-		
-		if (map.isEmpty()) {
-			UserDao userDao = new UserDao();
-			int population = userDao.getPopulation();
 
-			userDao = new UserDao();
-			List<User> rankingList = userDao.getRankingList();
+		Map<String, String> map = NullChecker.createMap(session.getAttribute("loginUser"));
+
+		if (map.isEmpty()) {
+
+			UserDao userDao = new UserDao();
+
+			// UserDaoのコンストラクタ実行時に作成されるメッセージを検出
+			if (userDao.getMessage() != null) {
+				request.setAttribute("message", userDao.getMessage());
+
+			} else {
+				int population = userDao.getPopulation();
+				List<User> rankingList = userDao.getRankingList();
+
+				request.setAttribute("population", population);
+				request.setAttribute("rankingList", rankingList);
+				request.setAttribute("message", userDao.getMessage());
+			}
 			
-			request.setAttribute("population", population);
-			request.setAttribute("rankingList", rankingList);
-			request.setAttribute("message", userDao.getMessage());
 			nextPage = "ranking.jsp";
-			
+
 		} else {
 			request.setAttribute("message", map.get("message"));
 			nextPage = map.get("nextPage");
 		}
-		
+
 		RequestDispatcher rd = request.getRequestDispatcher(nextPage);
 		rd.forward(request, response);
 	}

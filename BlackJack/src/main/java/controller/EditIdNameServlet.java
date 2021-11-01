@@ -15,22 +15,30 @@ public class EditIdNameServlet extends HttpServlet {
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		
+
+		request.setCharacterEncoding("UTF-8");
+
 		String userId = request.getParameter("user_id");
 		String nickname = request.getParameter("nickname");
 
-		HttpSession session = request.getSession();
-		String sessionUserId = ((User) session.getAttribute("loginUser")).getUserId();
-
 		UserDao userDao = new UserDao();
-		User loginUser = userDao.editIdName(userId, nickname, sessionUserId);
-		session.setAttribute("loginUser", loginUser);
-		request.setAttribute("message", userDao.getMessage());
+
+		// UserDaoのコンストラクタ実行時に作成されるメッセージを検出
+		if (userDao.getMessage() != null) {
+			request.setAttribute("message", userDao.getMessage());
+
+		} else {
+			HttpSession session = request.getSession();
+			String sessionUserId = ((User) session.getAttribute("loginUser")).getUserId();
+			User loginUser = userDao.editIdName(userId, nickname, sessionUserId);
+			session.setAttribute("loginUser", loginUser);
+			request.setAttribute("message", userDao.getMessage());
+		}
 
 		RequestDispatcher rd = request.getRequestDispatcher("edit.jsp");
 		rd.forward(request, response);
 	}
-	
+
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 

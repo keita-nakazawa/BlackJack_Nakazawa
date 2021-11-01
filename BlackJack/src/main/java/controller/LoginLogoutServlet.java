@@ -16,22 +16,35 @@ public class LoginLogoutServlet extends HttpServlet {
 	// ログイン処理
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
+
+		request.setCharacterEncoding("UTF-8");
+		
 		String id = request.getParameter("user_id");
 		String password = request.getParameter("password");
-		HttpSession session = request.getSession();
 
 		UserDao userDao = new UserDao();
-		User loginUser = userDao.getLoginUser(id, password);
-		
 		String nextPage = new String();
 
-		if (loginUser != null) {
-			session.setAttribute("loginUser", loginUser);
-			nextPage = "menu.jsp";
+		//UserDaoのコンストラクタ実行時に作成されるメッセージを検出
+		if (userDao.getMessage() != null) {
 			
-		} else {
 			request.setAttribute("message", userDao.getMessage());
 			nextPage = "login.jsp";
+			
+		} else {
+			
+			User loginUser = userDao.getLoginUser(id, password);
+
+			//getLoginUserメソッド実行時に作成されるメッセージを検出
+			if (userDao.getMessage() != null) {
+				request.setAttribute("message", userDao.getMessage());
+				nextPage = "login.jsp";
+			
+			} else {
+				HttpSession session = request.getSession();
+				session.setAttribute("loginUser", loginUser);
+				nextPage = "menu.jsp";
+			}
 		}
 		
 		RequestDispatcher rd = request.getRequestDispatcher(nextPage);

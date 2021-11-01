@@ -15,22 +15,35 @@ public class DeleteServlet extends HttpServlet {
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-
-		UserDao userDao = new UserDao();
-		HttpSession session = request.getSession();
 		
-		User loginUser = (User) session.getAttribute("loginUser");
-		userDao.doDelete(loginUser);
+		UserDao userDao = new UserDao();
 		String nextPage = new String();
 
+		//UserDaoのコンストラクタ実行時に作成されるメッセージを検出
 		if (userDao.getMessage() != null) {
+			
 			request.setAttribute("message", userDao.getMessage());
 			nextPage = "delete.jsp";
 
 		} else {
-			request.setAttribute("message", loginUser.getNickname() + "さんのユーザ情報を削除しました");
-			nextPage = "login.jsp";
+
+			HttpSession session = request.getSession();
+			User loginUser = (User) session.getAttribute("loginUser");
+			userDao.doDelete(loginUser);
+
+			//doDeleteメソッド実行時に作成されるメッセージを検出
+			if (userDao.getMessage() != null) {
+				request.setAttribute("message", userDao.getMessage());
+				nextPage = "delete.jsp";
+			
+			} else {
+				request.setAttribute("message", loginUser.getNickname() + "さんのユーザ情報を削除しました");
+				session.invalidate();
+				nextPage = "login.jsp";
+			}
+			
 		}
+		
 		RequestDispatcher rd = request.getRequestDispatcher(nextPage);
 		rd.forward(request, response);
 	}
