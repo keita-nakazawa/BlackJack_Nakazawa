@@ -10,6 +10,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import dao.UserDao;
+import model.ValidatorBJ;
 
 @WebServlet("/RegisterServlet")
 public class RegisterServlet extends HttpServlet {
@@ -23,9 +24,14 @@ public class RegisterServlet extends HttpServlet {
 		String nickname = request.getParameter("nickname");
 		String password = request.getParameter("password");
 		String password2 = request.getParameter("password2");
-
+		
 		// 入力内容制限を無理やり破っていないかここでチェックする必要がある。
-
+		ValidatorBJ validatorBJ = new ValidatorBJ();
+		
+		
+		
+		
+		
 		UserDao userDao = new UserDao();
 		String nextPage = new String();
 
