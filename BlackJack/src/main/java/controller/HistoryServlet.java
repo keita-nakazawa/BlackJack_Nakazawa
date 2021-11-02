@@ -10,6 +10,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.*;
 
 import dao.HistoryDao;
+import dao.UserDao;
 import model.History;
 import model.NullChecker;
 import model.User;
@@ -28,6 +29,7 @@ public class HistoryServlet extends HttpServlet {
 		if (map.isEmpty()) {
 
 			HistoryDao historyDao = new HistoryDao();
+			UserDao userDao = new UserDao();
 
 			// HistoryDaoのコンストラクタ実行時に作成されるメッセージを検出
 			if (historyDao.getMessage() != null) {
@@ -37,14 +39,21 @@ public class HistoryServlet extends HttpServlet {
 			} else {
 				
 				List<History> historyList =  historyDao.getHistoryList(loginUser);
+				User userInfo = userDao.getUserInfo(loginUser);
 				
 				// getHistoryListメソッド実行時に作成されるメッセージを検出
 				if (historyDao.getMessage() != null) {
 					request.setAttribute("message", historyDao.getMessage());
 					nextPage = "menu.jsp";
-					
+
+				// getUserInfoメソッド実行時に作成されるメッセージを検出
+				} else if (userDao.getMessage() != null) {
+					request.setAttribute("message", userDao.getMessage());
+					nextPage = "menu.jsp";
+				
 				} else {
 					request.setAttribute("historyList", historyList);
+					request.setAttribute("userInfo", userInfo);
 					nextPage = "history.jsp";
 				}
 			}

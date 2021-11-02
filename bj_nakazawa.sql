@@ -28,8 +28,8 @@ DROP TABLE IF EXISTS `history`;
 CREATE TABLE `history` (
   `game_id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `user_id` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL,
-  `time` varchar(30) NOT NULL,
-  `result` int(11) NOT NULL,
+  `timestamp` timestamp NOT NULL DEFAULT current_timestamp(),
+  `result` tinyint(4) NOT NULL,
   PRIMARY KEY (`game_id`),
   KEY `index_user_id` (`user_id`),
   CONSTRAINT `fk_user_id` FOREIGN KEY (`user_id`) REFERENCES `users` (`user_id`) ON DELETE CASCADE ON UPDATE CASCADE
@@ -56,7 +56,10 @@ CREATE TABLE `users` (
   `user_id` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL,
   `nickname` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL,
   `password` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL,
-  `win_rate` float unsigned NOT NULL,
+  `win` int(10) unsigned NOT NULL DEFAULT 0,
+  `lose` int(10) unsigned NOT NULL DEFAULT 0,
+  `draw` int(10) unsigned NOT NULL DEFAULT 0,
+  'win_rate' float unsigned NOT NULL DEFAULT 0,
   PRIMARY KEY (`user_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 /*!40101 SET character_set_client = @saved_cs_client */;

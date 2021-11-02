@@ -4,17 +4,10 @@ public class User {
 
 	private String userId;
 	private String nickname;
+	private int win;
+	private int lose;
+	private int draw;
 	private float winRate;
-	
-	public User() {
-		
-	}
-	
-	public User(String userId, String nickname, float winRate) {
-		this.userId = userId;
-		this.nickname = nickname;
-		this.winRate = winRate;
-	}
 	
 	public void setUserId(String userId) {
 		this.userId = userId;
@@ -22,6 +15,18 @@ public class User {
 	
 	public void setNickname(String nickname) {
 		this.nickname = nickname;
+	}
+	
+	public void setWin(int win) {
+		this.win = win;
+	}
+
+	public void setLose(int lose) {
+		this.lose = lose;
+	}
+
+	public void setDraw(int draw) {
+		this.draw = draw;
 	}
 	
 	public void setWinRate(float winRate) {
@@ -34,6 +39,18 @@ public class User {
 	
 	public String getNickname() {
 		return nickname;
+	}
+
+	public int getWin() {
+		return win;
+	}
+
+	public int getLose() {
+		return lose;
+	}
+
+	public int getDraw() {
+		return draw;
 	}
 	
 	public float getWinRate() {

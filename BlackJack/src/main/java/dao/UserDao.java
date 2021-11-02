@@ -5,6 +5,7 @@ import java.sql.SQLIntegrityConstraintViolationException;
 import java.util.ArrayList;
 import java.util.List;
 
+import model.History;
 import model.User;
 
 /**
@@ -28,13 +29,12 @@ public class UserDao extends BaseDao {
 		if (password.equals(password2)) {
 
 			try {
-				// SQL文(win_rateカラムには0を設定)
-				String sql = "INSERT INTO users VALUES (?, ?, ?, 0)";
+				// SQL文
+				String sql = "INSERT INTO users(user_id, nickname, password) VALUES (?, ?, ?)";
 				ps = con.prepareStatement(sql);
 				ps.setString(1, userId);
 				ps.setString(2, nickname);
 				ps.setString(3, password);
-
 				ps.executeUpdate();
 
 			} catch (SQLIntegrityConstraintViolationException e) {
@@ -61,7 +61,6 @@ public class UserDao extends BaseDao {
 			ps = con.prepareStatement(sql);
 			ps.setString(1, userId);
 			ps.setString(2, password);
-
 			rs = ps.executeQuery();
 
 			if (rs.next()) {
@@ -90,7 +89,6 @@ public class UserDao extends BaseDao {
 			String sql = "DELETE FROM users WHERE user_id = ?";
 			ps = con.prepareStatement(sql);
 			ps.setString(1, loginUser.getUserId());
-
 			ps.executeUpdate();
 
 		} catch (SQLException e) {
@@ -115,7 +113,6 @@ public class UserDao extends BaseDao {
 			ps.setString(1, userId);
 			ps.setString(2, nickname);
 			ps.setString(3, sessionUserId);
-
 			ps.executeUpdate();
 			message = "ユーザID、ニックネームを変更しました。";
 
@@ -169,29 +166,6 @@ public class UserDao extends BaseDao {
 		}
 	}
 
-	public List<User> getRankingList() {
-
-		List<User> rankingList = new ArrayList<User>();
-
-		try {
-			// SQL文
-			String sql = "SELECT * FROM users ORDER BY win_rate DESC LIMIT 5";
-			ps = con.prepareStatement(sql);
-			rs = ps.executeQuery();
-
-			while (rs.next()) {
-				User user = new User(rs.getString("user_id"), rs.getString("nickname"), rs.getFloat("win_rate"));
-				rankingList.add(user);
-			}
-		} catch (SQLException e) {
-			e.printStackTrace();
-			message = "SQL実行中に例外が発生しました";
-		} finally {
-			closeAll();
-		}
-		return rankingList;
-	}
-
 	public int getPopulation() {
 
 		int population = 0;
@@ -211,4 +185,85 @@ public class UserDao extends BaseDao {
 		} 
 		return population;
 	}
+	
+	public List<User> getRankingList() {
+
+		List<User> rankingList = new ArrayList<User>();
+
+		try {
+			// SQL文
+			String sql = "SELECT * FROM users ORDER BY win_rate DESC LIMIT 5";
+			ps = con.prepareStatement(sql);
+			rs = ps.executeQuery();
+
+			while (rs.next()) {
+				User user = new User();
+				user.setNickname(rs.getString("nickname"));
+				user.setWinRate(rs.getFloat("win_rate"));
+				rankingList.add(user);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+			message = "SQL実行中に例外が発生しました";
+		} finally {
+			closeAll();
+		}
+		return rankingList;
+	}
+	
+	public User getUserInfo(User loginUser) {
+		
+		User user = new User();
+		String userId = loginUser.getUserId();
+		
+		try {
+			//SQL文
+			String sql = "SELECT * FROM users WHERE user_id = ?";
+			ps = con.prepareStatement(sql);
+			ps.setString(1, userId);
+			rs = ps.executeQuery();
+			
+			rs.next();
+			user.setWin(rs.getInt("win"));
+			user.setLose(rs.getInt("lose"));
+			user.setDraw(rs.getInt("draw"));
+			user.setWinRate(rs.getFloat("win_rate"));
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+			message = "SQL実行中に例外が発生しました";
+		} finally {
+			closeAll();
+		}
+		return user;
+	}
+	
+	public void updateResult(User loginUser, History history) {
+		
+		String userId = loginUser.getUserId();
+		String strResult = history.getStrResult();
+		
+		try {
+			// SQL文(win,lose,drawカラムのいずれかを更新)
+			String sql = String.format("UPDATE users SET %s = %s + 1 WHERE user_id = ?", strResult, strResult);
+			ps = con.prepareStatement(sql);
+			ps.setString(1, userId);
+			System.out.println(ps);
+			ps.executeUpdate();
+
+			// SQL文(win_rateカラムを更新)
+			sql = "UPDATE users SET win_rate = 100 * win / (win + lose + draw) WHERE user_id = ?";
+			ps = con.prepareStatement(sql);
+			ps.setString(1, userId);
+			System.out.println(ps);
+			ps.executeUpdate();
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+			message = "SQL実行中に例外が発生しました";
+		} finally {
+			closeAll();
+		}
+	}
+
 }

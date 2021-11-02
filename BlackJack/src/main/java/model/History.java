@@ -5,15 +5,15 @@ import java.sql.Timestamp;
 public class History {
 
 	private String userId;
-	private Timestamp time;
+	private Timestamp timestamp;
 	private int result;
 
 	public String getUserId() {
 		return userId;
 	}
 	
-	public Timestamp getTime() {
-		return time;
+	public Timestamp getTimestamp() {
+		return timestamp;
 	}
 	
 	public int getResult() {
@@ -22,15 +22,15 @@ public class History {
 	
 	public String getStrResult() {
 		switch(result) {
-		case -1:
-			return "LOSE";
-		case 0:
-			return "DRAW";
 		case 1:
-			return "WIN";
+			return "win";
+		case -1:
+			return "lose";
+		case 0:
+			return "draw";
 		default:
 			//念のためのdefault
-			return "ERROR";
+			return "error";
 		}
 	}
 
@@ -38,8 +38,8 @@ public class History {
 		this.userId = userId;
 	}
 	
-	public void setTime(Timestamp time) {
-		this.time = time;
+	public void setTimestamp(Timestamp timestamp) {
+		this.timestamp = timestamp;
 	}
 	
 	public void setResult(int result) {

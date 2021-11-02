@@ -1,8 +1,5 @@
 package model;
 
-import java.sql.Timestamp;
-import java.time.LocalDateTime;
-
 public class Game {
 
 	private Deck deck;
@@ -76,7 +73,6 @@ public class Game {
  
 		History history = new History();
 		history.setUserId(loginUser.getUserId());
-		history.setTime(Timestamp.valueOf(LocalDateTime.now()));
 
 		if (player.getBurst() == true) {
 			history.setResult(-1);

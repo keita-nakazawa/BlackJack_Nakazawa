@@ -23,7 +23,9 @@
 <%
 		User loginUser = (User)session.getAttribute("loginUser");
 		List<History> historyList = (List) request.getAttribute("historyList");
+		User userInfo = (User) request.getAttribute("userInfo");
 
+		//historyListのnullチェックを行えば十分である。
 		Map<String, String> map = NullChecker.createMap(historyList);
 
 		if (map.isEmpty()) {
@@ -38,7 +40,7 @@
 			<h2>これまでの戦績</h2>
 			
 			<p>総対戦回数：<%=historyList.size()%>回</p>
-			<p>勝率：% (WIN...回、LOSE...回、DRAW...回)</p>
+			<p>勝率：<%=userInfo.getWinRate()%>% (win...<%=userInfo.getWin()%>回、lose...<%=userInfo.getLose()%>回、draw...<%=userInfo.getDraw()%>回)</p>
 			
 			<table border="1">
 				<thead>
@@ -54,7 +56,7 @@
 %>
 					<tr>
 						<td><%=row + 1%></td>
-						<td><%=historyList.get(row).getTime()%></td>
+						<td><%=historyList.get(row).getTimestamp()%></td>
 						<td><%=historyList.get(row).getStrResult()%></td>
 					</tr>
 <%

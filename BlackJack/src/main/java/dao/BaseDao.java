@@ -11,9 +11,7 @@ public abstract class BaseDao {
 	protected String message;
 	
 	/**
-	 * DB接続処理<br>
-	 * DBを起動していないとcon==nullとなり、UserDaoクラスで
-	 * NullPointerExceptionを発生させるのでしっかりcatchすること。
+	 * DB接続処理
 	 */
 	protected void getConnect() {
 		try {
