@@ -26,42 +26,30 @@ public class ResultServlet extends HttpServlet {
 
 		if (map.isEmpty()) {
 
+			History history = (History) request.getAttribute("history");
+			User loginUser = (User) session.getAttribute("loginUser");
+
 			HistoryDao historyDao = new HistoryDao();
 			UserDao userDao = new UserDao();
+			historyDao.addHistory(history);
+			userDao.updateResult(loginUser, history);
 
-			// HistoryDaoのコンストラクタ実行時に作成されるメッセージを検出
+			// historyDaoからメッセージを抽出
 			if (historyDao.getMessage() != null) {
 				request.setAttribute("message", historyDao.getMessage());
 				nextPage = "playGame.jsp";
-				
-			// UserDaoのコンストラクタ実行時に作成されるメッセージを検出
+
+			// userDaoからメッセージを抽出
 			} else if (userDao.getMessage() != null) {
 				request.setAttribute("message", userDao.getMessage());
 				nextPage = "playGame.jsp";
-				
-			} else {
 
-				History history = (History) request.getAttribute("history");
-				User loginUser = (User) session.getAttribute("loginUser");
-				historyDao.addHistory(history);
-				userDao.updateResult(loginUser, history);
-					
-				//addHistoryメソッド実行時に作成されるメッセージを検出
-				if (historyDao.getMessage() != null) {
-					request.setAttribute("message", historyDao.getMessage());
-					nextPage = "playGame.jsp";
-					
-				//updateメソッド実行時に作成されるメッセージを検出
-				} else if (userDao.getMessage() != null) {
-					request.setAttribute("message", userDao.getMessage());
-					nextPage = "playGame.jsp";
-					
-				} else {
-					request.setAttribute("game", game);
-					session.setAttribute("game", null);
-					nextPage = "gameEnd.jsp";
-				}
+			} else {
+				request.setAttribute("game", game);
+				session.setAttribute("game", null);
+				nextPage = "gameEnd.jsp";
 			}
+
 		} else {
 			request.setAttribute("message", map.get("message"));
 			nextPage = map.get("nextPage");

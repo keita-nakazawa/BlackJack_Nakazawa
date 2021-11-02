@@ -17,9 +17,10 @@ import model.User;
 
 @WebServlet("/HistoryServlet")
 public class HistoryServlet extends HttpServlet {
-	
-	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		
+
+	protected void doGet(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
+
 		HttpSession session = request.getSession();
 		User loginUser = (User) session.getAttribute("loginUser");
 		String nextPage = new String();
@@ -31,32 +32,25 @@ public class HistoryServlet extends HttpServlet {
 			HistoryDao historyDao = new HistoryDao();
 			UserDao userDao = new UserDao();
 
-			// HistoryDaoのコンストラクタ実行時に作成されるメッセージを検出
+			List<History> historyList = historyDao.getHistoryList(loginUser);
+			User userInfo = userDao.getUserInfo(loginUser);
+
+			// historyDaoからメッセージを抽出
 			if (historyDao.getMessage() != null) {
 				request.setAttribute("message", historyDao.getMessage());
 				nextPage = "menu.jsp";
 
-			} else {
-				
-				List<History> historyList =  historyDao.getHistoryList(loginUser);
-				User userInfo = userDao.getUserInfo(loginUser);
-				
-				// getHistoryListメソッド実行時に作成されるメッセージを検出
-				if (historyDao.getMessage() != null) {
-					request.setAttribute("message", historyDao.getMessage());
-					nextPage = "menu.jsp";
+			// userDaoからメッセージを抽出
+			} else if (userDao.getMessage() != null) {
+				request.setAttribute("message", userDao.getMessage());
+				nextPage = "menu.jsp";
 
-				// getUserInfoメソッド実行時に作成されるメッセージを検出
-				} else if (userDao.getMessage() != null) {
-					request.setAttribute("message", userDao.getMessage());
-					nextPage = "menu.jsp";
-				
-				} else {
-					request.setAttribute("historyList", historyList);
-					request.setAttribute("userInfo", userInfo);
-					nextPage = "history.jsp";
-				}
+			} else {
+				request.setAttribute("historyList", historyList);
+				request.setAttribute("userInfo", userInfo);
+				nextPage = "history.jsp";
 			}
+
 		} else {
 			request.setAttribute("message", map.get("message"));
 			nextPage = map.get("nextPage");

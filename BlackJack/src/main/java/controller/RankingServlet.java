@@ -27,28 +27,18 @@ public class RankingServlet extends HttpServlet {
 		if (map.isEmpty()) {
 
 			UserDao userDao = new UserDao();
+			int population = userDao.getPopulation();
+			List<User> rankingList = userDao.getRankingList();
 
-			// UserDaoのコンストラクタ実行時に作成されるメッセージを検出
+			// uesrDaoからメッセージを抽出
 			if (userDao.getMessage() != null) {
-				
 				request.setAttribute("message", userDao.getMessage());
 				nextPage = "menu.jsp";
-
+				
 			} else {
-				
-				int population = userDao.getPopulation();
-				List<User> rankingList = userDao.getRankingList();
-				
-				// getPopulation,RankingListメソッド実行時に作成されるメッセージを検出
-				if (userDao.getMessage() != null) {
-					request.setAttribute("message", userDao.getMessage());
-					nextPage = "menu.jsp";
-					
-				} else {
-					request.setAttribute("population", population);
-					request.setAttribute("rankingList", rankingList);
-					nextPage = "ranking.jsp";
-				}
+				request.setAttribute("population", population);
+				request.setAttribute("rankingList", rankingList);
+				nextPage = "ranking.jsp";
 			}
 		} else {
 			

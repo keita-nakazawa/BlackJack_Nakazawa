@@ -13,7 +13,7 @@ import dao.UserDao;
 
 @WebServlet("/RegisterServlet")
 public class RegisterServlet extends HttpServlet {
-	
+
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 
@@ -28,28 +28,19 @@ public class RegisterServlet extends HttpServlet {
 
 		UserDao userDao = new UserDao();
 		String nextPage = new String();
-		
-		//UserDaoのコンストラクタ実行時に作成されるメッセージを検出
+
+		userDao.doRegister(userId, nickname, password, password2);
+
+		// userDaoからメッセージを抽出
 		if (userDao.getMessage() != null) {
-			
 			request.setAttribute("message", userDao.getMessage());
 			nextPage = "register.jsp";
-			
+
 		} else {
-			
-			userDao.doRegister(userId, nickname, password, password2);
-			
-			//doRegisterメソッド実行時に作成されるメッセージを検出
-			if (userDao.getMessage() != null) {
-				request.setAttribute("message", userDao.getMessage());
-				nextPage = "register.jsp";
-			
-			} else {
-				request.setAttribute("message", "新規登録が完了しました");
-				nextPage = "login.jsp";
-			}
+			request.setAttribute("message", "新規登録が完了しました");
+			nextPage = "login.jsp";
 		}
-		
+
 		RequestDispatcher rd = request.getRequestDispatcher(nextPage);
 		rd.forward(request, response);
 	}

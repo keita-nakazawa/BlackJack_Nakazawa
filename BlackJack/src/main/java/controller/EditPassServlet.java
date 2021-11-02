@@ -21,18 +21,13 @@ public class EditPassServlet extends HttpServlet {
 		String newPassword2 = request.getParameter("new_password2");
 
 		UserDao userDao = new UserDao();
-
-		// UserDaoのコンストラクタ実行時に作成されるメッセージを検出
-		if (userDao.getMessage() != null) {
-			request.setAttribute("message", userDao.getMessage());
-
-		} else {
-			HttpSession session = request.getSession();
-			String sessionUserId = ((User) session.getAttribute("loginUser")).getUserId();
-			userDao.editPassword(oldPassword, newPassword, newPassword2, sessionUserId);
-			request.setAttribute("message", userDao.getMessage());
-		}
+		HttpSession session = request.getSession();
+		String sessionUserId = ((User) session.getAttribute("loginUser")).getUserId();
+		userDao.editPassword(oldPassword, newPassword, newPassword2, sessionUserId);
 		
+		// userDaoからメッセージを抽出
+		request.setAttribute("message", userDao.getMessage());
+
 		RequestDispatcher rd = request.getRequestDispatcher("edit.jsp");
 		rd.forward(request, response);
 	}

@@ -22,18 +22,13 @@ public class EditIdNameServlet extends HttpServlet {
 		String nickname = request.getParameter("nickname");
 
 		UserDao userDao = new UserDao();
+		HttpSession session = request.getSession();
+		String sessionUserId = ((User) session.getAttribute("loginUser")).getUserId();
+		User loginUser = userDao.editIdName(userId, nickname, sessionUserId);
 
-		// UserDaoのコンストラクタ実行時に作成されるメッセージを検出
-		if (userDao.getMessage() != null) {
-			request.setAttribute("message", userDao.getMessage());
-
-		} else {
-			HttpSession session = request.getSession();
-			String sessionUserId = ((User) session.getAttribute("loginUser")).getUserId();
-			User loginUser = userDao.editIdName(userId, nickname, sessionUserId);
-			session.setAttribute("loginUser", loginUser);
-			request.setAttribute("message", userDao.getMessage());
-		}
+		session.setAttribute("loginUser", loginUser);
+		// userDaoからメッセージを抽出
+		request.setAttribute("message", userDao.getMessage());
 
 		RequestDispatcher rd = request.getRequestDispatcher("edit.jsp");
 		rd.forward(request, response);
