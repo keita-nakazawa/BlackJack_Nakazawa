@@ -59,7 +59,7 @@ CREATE TABLE `users` (
   `win` int(10) unsigned NOT NULL DEFAULT 0,
   `lose` int(10) unsigned NOT NULL DEFAULT 0,
   `draw` int(10) unsigned NOT NULL DEFAULT 0,
-  'win_rate' float unsigned NOT NULL DEFAULT 0,
+  `win_rate` float unsigned NOT NULL DEFAULT 0,
   PRIMARY KEY (`user_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 /*!40101 SET character_set_client = @saved_cs_client */;
