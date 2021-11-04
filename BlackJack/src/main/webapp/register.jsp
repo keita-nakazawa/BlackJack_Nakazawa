@@ -40,13 +40,13 @@
 				<tr>	
 					<td>パスワード</td>
 					<td>
-						<input type="password" name="password" pattern="^[!-~&&[^&quot;&amp;&lt;&gt;]]{8,20}$" maxlength="20" placeholder="半角英数字記号8～20文字" required>
+						<input type="password" name="password" pattern="^[!#-%'-;=?-~]{8,20}$" maxlength="20" placeholder="半角英数字記号8～20文字" required>
 					</td>
 				</tr>	
 				<tr>
 					<td>パスワード2回目</td>
 					<td>
-						<input type="password" name="password2" pattern="^[!-~&&[^&quot;&amp;&lt;&gt;]]{8,20}$" maxlength="20" placeholder="再入力" required>
+						<input type="password" name="password2" pattern="^[!#-%'-;=?-~]{8,20}$" maxlength="20" placeholder="再入力" required>
 					</td>
 				</tr>	
 			</table>

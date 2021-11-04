@@ -35,12 +35,12 @@
 			
 			<br>
 <%
-		String message = (String)request.getAttribute("message");
-		if(message != null) {
+			String message = (String)request.getAttribute("message");
+			if(message != null) {
 %>
-			<p id="message"><%=message%></p>
+				<p id="message"><%=message%></p>
 <%
-		}
+			}
 %>				
 			<p>ディーラー</p>
 			<table>

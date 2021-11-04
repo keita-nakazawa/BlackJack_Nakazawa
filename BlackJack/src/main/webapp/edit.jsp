@@ -71,13 +71,13 @@
 					<tr>
 						<td>新しいパスワード</td>
 						<td>
-							<input type="password" name="new_password" pattern="^[!-~&&[^&quot;&amp;&lt;&gt;]]{8,20}$" maxlength="20" placeholder="半角英数字記号8～20文字以内" required>
+							<input type="password" name="new_password" pattern="^[!#-%'-;=?-~]{8,20}$" maxlength="20" placeholder="半角英数字記号8～20文字以内" required>
 						</td>
 					</tr>	
 					<tr>
 						<td>新しいパスワード2回目</td>
 						<td>
-							<input type="password" name="new_password2" pattern="^[!-~&&[^&quot;&amp;&lt;&gt;]]{8,20}$" maxlength="20" placeholder="再入力" required>
+							<input type="password" name="new_password2" pattern="^[!#-%'-;=?-~]{8,20}$" maxlength="20" placeholder="再入力" required>
 						</td>
 					</tr>	
 				</table>

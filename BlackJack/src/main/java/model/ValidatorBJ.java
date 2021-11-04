@@ -11,7 +11,7 @@ public class ValidatorBJ {
 	// 「" & < >」以外の文字で20文字以内
 	private static final Pattern nicknamePattern = Pattern.compile("^[^\"&<>]{1,20}$");
 	// 半角英数字または「" < >」以外の記号で20文字以内
-	private static final Pattern passwordPattern = Pattern.compile("^[!-~&&[^\"&<>]]{8,20}$");
+	private static final Pattern passwordPattern = Pattern.compile("^[!#-%'-;=?-~]{8,20}$");
 
 	private Map<String, String> strMap = new HashMap<>();
 
