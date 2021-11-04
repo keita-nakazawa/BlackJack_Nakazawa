@@ -19,13 +19,13 @@ public class LoginLogoutServlet extends HttpServlet {
 
 		request.setCharacterEncoding("UTF-8");
 
-		String id = request.getParameter("user_id");
+		String userId = request.getParameter("user_id");
 		String password = request.getParameter("password");
 
 		UserDao userDao = new UserDao();
+		User loginUser = userDao.getLoginUser(userId, password);
+		
 		String nextPage = new String();
-
-		User loginUser = userDao.getLoginUser(id, password);
 
 		// userDaoからメッセージを抽出
 		if (userDao.getMessage() != null) {
@@ -40,7 +40,6 @@ public class LoginLogoutServlet extends HttpServlet {
 
 		RequestDispatcher rd = request.getRequestDispatcher(nextPage);
 		rd.forward(request, response);
-
 	}
 
 	// ログアウト処理

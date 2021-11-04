@@ -9,6 +9,7 @@ import javax.servlet.http.*;
 
 import dao.UserDao;
 import model.User;
+import model.ValidatorBJ;
 
 @WebServlet("/EditIdNameServlet")
 public class EditIdNameServlet extends HttpServlet {
@@ -21,14 +22,25 @@ public class EditIdNameServlet extends HttpServlet {
 		String userId = request.getParameter("user_id");
 		String nickname = request.getParameter("nickname");
 
-		UserDao userDao = new UserDao();
-		HttpSession session = request.getSession();
-		String sessionUserId = ((User) session.getAttribute("loginUser")).getUserId();
-		User loginUser = userDao.editIdName(userId, nickname, sessionUserId);
+		ValidatorBJ validatorBJ = new ValidatorBJ();
+		validatorBJ.putStr("userId", userId);
+		validatorBJ.putStr("nickname", nickname);
+		validatorBJ.excuteValidation();
 
-		session.setAttribute("loginUser", loginUser);
-		// userDaoからメッセージを抽出
-		request.setAttribute("message", userDao.getMessage());
+		// validatorBJからメッセージを抽出
+		if (validatorBJ.getMessage() != null) {
+			request.setAttribute("message", validatorBJ.getMessage());
+
+		} else {
+			UserDao userDao = new UserDao();
+			HttpSession session = request.getSession();
+			String sessionUserId = ((User) session.getAttribute("loginUser")).getUserId();
+			User loginUser = userDao.editIdName(userId, nickname, sessionUserId);
+
+			// userDaoからメッセージを抽出
+			request.setAttribute("message", userDao.getMessage());
+			session.setAttribute("loginUser", loginUser);
+		}
 
 		RequestDispatcher rd = request.getRequestDispatcher("edit.jsp");
 		rd.forward(request, response);

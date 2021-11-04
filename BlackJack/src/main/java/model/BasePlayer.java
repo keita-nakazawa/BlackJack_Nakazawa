@@ -1,6 +1,6 @@
 package model;
 
-public abstract class PlayerBase {
+public abstract class BasePlayer {
 	
 	protected Hand hand = new Hand();
 	protected int point = 0;
