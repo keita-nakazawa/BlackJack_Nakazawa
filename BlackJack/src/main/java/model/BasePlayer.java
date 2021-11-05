@@ -1,10 +1,13 @@
 package model;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public abstract class BasePlayer {
 	
 	protected Hand hand = new Hand();
-	protected int point = 0;
-	protected boolean burst = false;
+	protected List<Integer> pointList = new ArrayList<>();
+	protected List<Boolean> burstList = new ArrayList<>();
 	
 	public void drawCard(Card card) {
 		hand.addCard(card);
@@ -14,25 +17,23 @@ public abstract class BasePlayer {
 		return hand;
 	}
 	
-	public int getPoint() {
-		return point;
+	public List<Integer> getPointList() {
+		return pointList;
 	}
 	
-	public boolean getBurst() {
-		return burst;
+	public List<Boolean> getBurstList() {
+		return burstList;
 	}
 	
-	public void setPoint() {
-		int pointCounter = 0;
+	public void setPointList() {
 		for(Card card: hand.getListOfHand()) {
-			pointCounter += card.getIntPoint();
+			for (int point: card.getIntPointList()) {
+				//
+			}
 		}
-		point = pointCounter;
 	}
 	
-	public void setBurst() {
-		 if(point > 21) {
-			 burst = true;
-		 }
+	public void setBurstList() {
+		 
 	}
 }
