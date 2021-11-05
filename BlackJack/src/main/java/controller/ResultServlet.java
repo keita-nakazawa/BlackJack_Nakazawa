@@ -29,8 +29,8 @@ public class ResultServlet extends HttpServlet {
 			History history = (History) request.getAttribute("history");
 			User loginUser = (User) session.getAttribute("loginUser");
 
-			HistoryDao historyDao = new HistoryDao();
-			UserDao userDao = new UserDao();
+			HistoryDao historyDao = new HistoryDao(session);
+			UserDao userDao = new UserDao(session);
 			historyDao.addHistory(history);
 			userDao.updateResult(loginUser, history);
 
@@ -51,6 +51,7 @@ public class ResultServlet extends HttpServlet {
 			}
 
 		} else {
+			
 			request.setAttribute("message", map.get("message"));
 			nextPage = map.get("nextPage");
 		}

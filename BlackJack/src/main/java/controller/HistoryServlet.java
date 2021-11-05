@@ -29,8 +29,8 @@ public class HistoryServlet extends HttpServlet {
 
 		if (map.isEmpty()) {
 
-			HistoryDao historyDao = new HistoryDao();
-			UserDao userDao = new UserDao();
+			HistoryDao historyDao = new HistoryDao(session);
+			UserDao userDao = new UserDao(session);
 
 			List<History> historyList = historyDao.getHistoryList(loginUser);
 			User userInfo = userDao.getUserInfo(loginUser);

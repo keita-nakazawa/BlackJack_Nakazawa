@@ -2,6 +2,8 @@ package dao;
 
 import java.sql.*;
 
+import javax.servlet.http.HttpSession;
+
 public abstract class BaseDao {
 
 	protected Connection con = null;
@@ -13,7 +15,7 @@ public abstract class BaseDao {
 	/**
 	 * DB接続処理
 	 */
-	protected void getConnect() {
+	protected void getConnect(HttpSession session) {
 		try {
 			Class.forName("org.mariadb.jdbc.Driver");
 
@@ -22,6 +24,7 @@ public abstract class BaseDao {
 			String password = "";
 
 			con = DriverManager.getConnection(url, user, password);
+			session.setAttribute("con", con);
 			
 		} catch (ClassNotFoundException e) {
 			e.printStackTrace();
@@ -37,9 +40,6 @@ public abstract class BaseDao {
 	 */
 	protected void closeAll() {
 		try {
-			if (con != null) {
-				con.close();
-			}
 			if (ps != null) {
 				ps.close();
 			}

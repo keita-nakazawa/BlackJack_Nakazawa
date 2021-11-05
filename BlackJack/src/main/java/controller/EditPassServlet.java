@@ -31,8 +31,8 @@ public class EditPassServlet extends HttpServlet {
 			request.setAttribute("message", validatorBJ.getMessage());
 
 		} else {
-			UserDao userDao = new UserDao();
 			HttpSession session = request.getSession();
+			UserDao userDao = new UserDao(session);
 			String sessionUserId = ((User) session.getAttribute("loginUser")).getUserId();
 			userDao.editPassword(oldPassword, newPassword, newPassword2, sessionUserId);
 			

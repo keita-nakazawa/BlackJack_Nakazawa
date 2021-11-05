@@ -55,6 +55,6 @@
 			<p><input type="submit" value="登録"></p>
 		</form>
 		
-			<a href="login.jsp">メニューへ戻る</a>
+			<a href="login.jsp">ログインページへ戻る</a>
 	</body>
 </html>

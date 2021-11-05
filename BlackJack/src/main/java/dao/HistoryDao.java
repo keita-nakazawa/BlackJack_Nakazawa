@@ -1,8 +1,11 @@
 package dao;
 
+import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+
+import javax.servlet.http.HttpSession;
 
 import model.History;
 import model.User;
@@ -14,10 +17,17 @@ public class HistoryDao extends BaseDao {
 
 	/**
 	 * コンストラクタ<br>
-	 * 初期処理としてDBに接続する。
+	 * 初期処理として、セッションに保存されているDBコネクションを参照するかDBに新規接続する。
 	 */
-	public HistoryDao() {
-		getConnect();
+	public HistoryDao(HttpSession session) {
+
+		Connection sessionCon = (Connection) session.getAttribute("con");
+
+		if (sessionCon != null) {
+			con = sessionCon;
+		} else {
+			getConnect(session);
+		}
 	}
 
 	/**
@@ -30,13 +40,11 @@ public class HistoryDao extends BaseDao {
 		int result = history.getResult();
 
 		try {
-			if (con != null) {
-				String sql = "INSERT INTO history (user_id, result) VALUES (?, ?)";
-				ps = con.prepareStatement(sql);
-				ps.setString(1, userId);
-				ps.setInt(2, result);
-				ps.executeUpdate();
-			}
+			String sql = "INSERT INTO history (user_id, result) VALUES (?, ?)";
+			ps = con.prepareStatement(sql);
+			ps.setString(1, userId);
+			ps.setInt(2, result);
+			ps.executeUpdate();
 
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -52,18 +60,16 @@ public class HistoryDao extends BaseDao {
 		List<History> historyList = new ArrayList<>();
 
 		try {
-			if (con != null) {
-				String sql = "SELECT timestamp, result FROM history WHERE user_id = ?";
-				ps = con.prepareStatement(sql);
-				ps.setString(1, loginUser.getUserId());
-				rs = ps.executeQuery();
+			String sql = "SELECT timestamp, result FROM history WHERE user_id = ?";
+			ps = con.prepareStatement(sql);
+			ps.setString(1, loginUser.getUserId());
+			rs = ps.executeQuery();
 
-				while (rs.next()) {
-					History history = new History();
-					history.setTimestamp(rs.getTimestamp("timestamp"));
-					history.setResult(rs.getInt("result"));
-					historyList.add(history);
-				}
+			while (rs.next()) {
+				History history = new History();
+				history.setTimestamp(rs.getTimestamp("timestamp"));
+				history.setResult(rs.getInt("result"));
+				historyList.add(history);
 			}
 
 		} catch (SQLException e) {

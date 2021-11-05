@@ -26,7 +26,7 @@ public class RankingServlet extends HttpServlet {
 
 		if (map.isEmpty()) {
 
-			UserDao userDao = new UserDao();
+			UserDao userDao = new UserDao(session);
 			int population = userDao.getPopulation();
 			List<User> rankingList = userDao.getRankingList();
 

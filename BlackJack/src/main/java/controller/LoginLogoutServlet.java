@@ -22,7 +22,9 @@ public class LoginLogoutServlet extends HttpServlet {
 		String userId = request.getParameter("user_id");
 		String password = request.getParameter("password");
 
-		UserDao userDao = new UserDao();
+		HttpSession session = request.getSession();
+		session.setAttribute("con", null);
+		UserDao userDao = new UserDao(session);
 		User loginUser = userDao.getLoginUser(userId, password);
 		
 		String nextPage = new String();
@@ -33,7 +35,6 @@ public class LoginLogoutServlet extends HttpServlet {
 			nextPage = "login.jsp";
 
 		} else {
-			HttpSession session = request.getSession();
 			session.setAttribute("loginUser", loginUser);
 			nextPage = "menu.jsp";
 		}

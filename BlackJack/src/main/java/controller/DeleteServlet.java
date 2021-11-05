@@ -16,10 +16,10 @@ public class DeleteServlet extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 
-		UserDao userDao = new UserDao();
+		HttpSession session = request.getSession();
+		UserDao userDao = new UserDao(session);
 		String nextPage = new String();
 		
-		HttpSession session = request.getSession();
 		User loginUser = (User) session.getAttribute("loginUser");
 		userDao.doDelete(loginUser);
 

@@ -32,8 +32,8 @@ public class EditIdNameServlet extends HttpServlet {
 			request.setAttribute("message", validatorBJ.getMessage());
 
 		} else {
-			UserDao userDao = new UserDao();
 			HttpSession session = request.getSession();
+			UserDao userDao = new UserDao(session);
 			String sessionUserId = ((User) session.getAttribute("loginUser")).getUserId();
 			User loginUser = userDao.editIdName(userId, nickname, sessionUserId);
 

@@ -5,9 +5,7 @@ import java.io.IOException;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
-import javax.servlet.http.HttpServlet;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.*;
 
 import dao.UserDao;
 import model.ValidatorBJ;
@@ -41,8 +39,10 @@ public class RegisterServlet extends HttpServlet {
 			nextPage = "register.jsp";
 			
 		} else {
-			
-			UserDao userDao = new UserDao();
+
+			HttpSession session = request.getSession();
+			session.setAttribute("con", null);
+			UserDao userDao = new UserDao(session);
 			userDao.doRegister(userId, nickname, password, password2);
 
 			// userDaoからメッセージを抽出
