@@ -9,11 +9,7 @@
 	<head>
 		<meta charset="UTF-8">
 		<title>メニュー</title>
-		<style>
-			#message {
-				color : red;
-			}
-		</style>
+		<link rel="stylesheet" type="text/css" href="css/game.css">
 	</head>
 
 	<body>
@@ -25,10 +21,10 @@
 
 		if (map.isEmpty()) {
 %>	
-			<p><%=loginUser.getNickname()%>さんがログイン中</p>
-			<form action="LoginLogoutServlet">
-				<p><input type="submit" value="ログアウト"></p>
-			</form>
+			<p id="logout">
+				<%=loginUser.getNickname()%>さんがログイン中<br>
+				<a type="button" href="LoginLogoutServlet">ログアウト</a>
+			</p>
 			
 			<br>
 <%
@@ -39,32 +35,21 @@
 <%
 			}
 %>
-		
-			<form action="GameStartServlet">
-				<p><input type="submit" value="ゲーム開始"></p>
-			</form>
+			<a href="GameStartServlet">ゲーム開始</a>
 			
 			<table>
 				<tr>
 					<td>
-						<form action="HistoryServlet">
-							<input type="submit" value="これまでの戦績">
-						</form>
+						<a href="HistoryServlet">これまでの戦績</a>
 					</td>
 					<td>
-						<form action="RankingServlet">
-							<input type="submit" value="勝率ランキング">
-						</form>
+						<a href="RankingServlet">勝率ランキング</a>
 					</td>
 					<td>
-						<form action="edit.jsp">
-							<input type="submit" value="ユーザ情報変更">
-						</form>
+						<a href="edit.jsp">ユーザ情報変更</a>
 					</td>
 					<td>
-						<form action="delete.jsp">
-							<input type="submit" value="ユーザ削除">
-						</form>
+						<a href="delete.jsp">ユーザ削除</a>
 					</td>
 				</tr>
 			</table>

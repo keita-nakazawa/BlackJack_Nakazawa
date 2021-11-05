@@ -1,0 +1,16 @@
+@charset "UTF-8";
+
+#message {
+	color: red;
+}
+
+#logout {
+	text-align: right;
+}
+
+.card {
+	border: 2px solid;
+	padding: 20px;
+	text-align: center;
+	
+}

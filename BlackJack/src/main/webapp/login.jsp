@@ -6,11 +6,7 @@
 	<head>
 		<meta charset="UTF-8">
 		<title>ログインページ</title>
-		<style>
-			#message {
-				color : red;
-			}
-		</style>
+		<link rel="stylesheet" type="text/css" href="css/game.css">
 	</head>
 
 	<body>
@@ -38,8 +34,6 @@
 			<p><input type="submit" value="ログイン"></p>
 		</form>
 		
-		<form action="register.jsp">
-			 <p><input type="submit" value="新規登録はこちら"></p>
-		</form>
+		<a href="register.jsp">新規登録はこちら</a>
 	</body>
 </html>

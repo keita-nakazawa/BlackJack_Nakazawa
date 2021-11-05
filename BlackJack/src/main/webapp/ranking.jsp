@@ -10,11 +10,7 @@
 	<head>
 		<meta charset="UTF-8">
 		<title>ランキング</title>
-		<style>
-			#message {
-				color : red;
-			}
-		</style>
+		<link rel="stylesheet" type="text/css" href="css/game.css">
 	</head>
 
 	<body>
@@ -28,10 +24,10 @@
 
 		if (map.isEmpty()) {
 %>
-			<p><%=loginUser.getNickname()%>さんがログイン中</p>
-			<form action="LoginLogoutServlet">
-				<p><input type="submit" value="ログアウト"></p>
-			</form>
+			<p id="logout">
+				<%=loginUser.getNickname()%>さんがログイン中<br>
+				<a href="LoginLogoutServlet">ログアウト</a>
+			</p>
 			
 			<br>
 <%
@@ -67,9 +63,7 @@
 				</tbody>
 			</table>
 			
-			<form action="menu.jsp">
-				<p><input type="submit" value="メニューへ戻る"></p>
-			</form>
+			<a href="menu.jsp">メニューへ戻る</a>
 <%
 		} else {
 			request.setAttribute("message", map.get("message"));

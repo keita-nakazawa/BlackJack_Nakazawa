@@ -12,11 +12,7 @@
 	<head>
 		<meta charset="UTF-8">
 		<title>ゲーム終了</title>
-		<style>
-			#message {
-				color : red;
-			}
-		</style>
+		<link rel="stylesheet" type="text/css" href="css/game.css">
 	</head>
 
 	<body>
@@ -31,10 +27,10 @@
 
 		if (map.isEmpty()) {
 %>
-			<p><%=loginUser.getNickname()%>さんがログイン中</p>
-			<form action="LoginLogoutServlet">
-				<p><input type="submit" value="ログアウト"></p>
-			</form>
+			<p id="logout">
+				<%=loginUser.getNickname()%>さんがログイン中<br>
+				<a href="LoginLogoutServlet">ログアウト</a>
+			</p>
 			
 			<br>
 			
@@ -44,7 +40,7 @@
 <%
 				for(Card card: game.getDealer().getHand().getListOfHand()) {
 %>
-					<td><%=card.getStrMark()%><%=card.getStrNumber()%></td>
+					<td class="card"><%=card.getStrMark()%><br><%=card.getStrNumber()%></td>
 <%
 				}
 %>
@@ -57,7 +53,7 @@
 <%
 				for(Card card: game.getPlayer().getHand().getListOfHand()) {
 %>
-					<td><%=card.getStrMark()%><%=card.getStrNumber()%></td>
+					<td class="card"><%=card.getStrMark()%><br><%=card.getStrNumber()%></td>
 <%
 				}
 %>
@@ -68,14 +64,10 @@
 			<table>
 				<tr>
 					<td>
-						<form action="GameStartServlet">
-							<input type="submit" value="再戦">
-						</form>
+						<a href="GameStartServlet">再戦</a>
 					</td>
 					<td>
-						<form action="menu.jsp">
-							<input type="submit" value="ゲーム終了">
-						</form>
+						<a href="menu.jsp">ゲーム終了</a>
 					</td>
 				</tr>
 			</table>

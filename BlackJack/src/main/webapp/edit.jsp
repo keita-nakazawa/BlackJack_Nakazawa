@@ -9,11 +9,7 @@
 	<head>
 		<meta charset="UTF-8">
 		<title>ユーザ情報変更</title>
-		<style>
-			#message {
-				color : red;
-			}
-		</style>
+		<link rel="stylesheet" type="text/css" href="css/game.css">
 	</head>
 
 	<body>
@@ -25,10 +21,10 @@
 
 		if (map.isEmpty()) {
 %>	
-			<p><%=loginUser.getNickname()%>さんがログイン中</p>
-			<form action="LoginLogoutServlet">
-				<p><input type="submit" value="ログアウト"></p>
-			</form>
+			<p id="logout">
+				<%=loginUser.getNickname()%>さんがログイン中<br>
+				<a href="LoginLogoutServlet">ログアウト</a>
+			</p>
 			
 			<br>
 <%
@@ -56,7 +52,7 @@
 					</tr>
 				</table>
 				
-			<p>使用不可記号...「&quot; &amp; &lt; &gt;」</p>
+				<p>使用不可記号...「&quot; &amp; &lt; &gt;」</p>
 				<p><input type="submit" value="ユーザID、ニックネームを変更"></p>
 			</form>	
 			
@@ -82,15 +78,13 @@
 					</tr>	
 				</table>
 				
-			<p>使用不可記号...「&quot; &amp; &lt; &gt;」</p>
+				<p>使用不可記号...「&quot; &amp; &lt; &gt;」</p>
 				<p><input type="submit" value="パスワードを変更"></p>
 			</form>
 			
 			<br>
 			
-			<form action="menu.jsp">
-					<p><input type="submit" value="メニューへ戻る"></p>
-			</form>
+			<a href="menu.jsp">メニューへ戻る</a>
 <%
 		} else {
 			request.setAttribute("message", map.get("message"));

@@ -11,11 +11,7 @@
 	<head>
 		<meta charset="UTF-8">
 		<title>BlackJack</title>
-		<style>
-			#message {
-				color : red;
-			}
-		</style>
+		<link rel="stylesheet" type="text/css" href="css/game.css">
 	</head>
 
 	<body>
@@ -28,10 +24,10 @@
 
 		if (map.isEmpty()) {
 %>	
-			<p><%=loginUser.getNickname()%>さんがログイン中</p>
-			<form action="LoginLogoutServlet">
-				<p><input type="submit" value="ログアウト"></p>
-			</form>
+			<p id="logout">
+				<%=loginUser.getNickname()%>さんがログイン中<br>
+				<a href="LoginLogoutServlet">ログアウト</a>
+			</p>
 			
 			<br>
 <%
@@ -48,8 +44,8 @@
 <%
 					Card card0 = game.getDealer().getHand().getListOfHand().get(0);
 %>
-					<td><%=card0.getStrMark()%><%=card0.getStrNumber()%></td>
-					<td>?</td>
+					<td class="card"><%=card0.getStrMark()%><br><%=card0.getStrNumber()%></td>
+					<td class="card">？</td>
 				</tr>
 			</table>
 			
@@ -59,7 +55,7 @@
 <%
 					for(Card card: game.getPlayer().getHand().getListOfHand()) {
 %>
-						<td><%=card.getStrMark()%><%=card.getStrNumber()%></td>
+						<td class="card"><%=card.getStrMark()%><br><%=card.getStrNumber()%></td>
 <%
 					}
 %>
@@ -69,14 +65,10 @@
 			<table>
 				<tr>
 					<td>
-						<form action="HitServlet">
-							<input type="submit" value="ヒット">
-						</form>
+						<a href="HitServlet">ヒット</a>
 					</td>
 					<td>
-						<form action="StandServlet">
-							<input type="submit" value="スタンド">
-						</form>
+						<a href="StandServlet">スタンド</a>
 					</td>
 				</tr>
 			</table>
