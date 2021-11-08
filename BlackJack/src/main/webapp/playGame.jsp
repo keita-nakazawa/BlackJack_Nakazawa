@@ -26,7 +26,7 @@
 %>	
 			<p id="logout">
 				<%=loginUser.getNickname()%>さんがログイン中<br>
-				<a href="LoginLogoutServlet">ログアウト</a>
+				<a href="LoginLogoutServlet" class="button">ログアウト</a>
 			</p>
 			
 			<br>
@@ -50,25 +50,27 @@
 			</table>
 			
 			<p>あなた(<%=game.getPlayer().getPoint()%>点)</p>
-				<table>
-					<tr>
+			<table>
+				<tr>
 <%
-					for(Card card: game.getPlayer().getHand().getListOfHand()) {
+				for(Card card: game.getPlayer().getHand().getListOfHand()) {
 %>
-						<td class="card"><%=card.getStrMark()%><br><%=card.getStrNumber()%></td>
+					<td class="card"><%=card.getStrMark()%><br><%=card.getStrNumber()%></td>
 <%
-					}
+				}
 %>
-					</tr>
-				</table>
-		
+				</tr>
+			</table>
+
+			<br>
+
 			<table>
 				<tr>
 					<td>
-						<a href="HitServlet">ヒット</a>
+						<a href="HitServlet" class="game_button">ヒット</a>
 					</td>
 					<td>
-						<a href="StandServlet">スタンド</a>
+						<a href="StandServlet" class="game_button">スタンド</a>
 					</td>
 				</tr>
 			</table>

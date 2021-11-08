@@ -52,9 +52,9 @@
 			</table>
 			
 			<p>使用不可記号...「&quot; &amp; &lt; &gt;」</p>
-			<p><input type="submit" value="登録"></p>
+			<p><input type="submit" value="登録" class="button"></p>
 		</form>
 		
-			<a href="login.jsp">ログインページへ戻る</a>
+			<a href="login.jsp" class="button">ログインページへ戻る</a>
 	</body>
 </html>

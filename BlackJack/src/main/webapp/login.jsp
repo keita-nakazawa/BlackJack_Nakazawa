@@ -31,9 +31,9 @@
 				</tr>
 			</table>
 			
-			<p><input type="submit" value="ログイン"></p>
+			<p><input type="submit" value="ログイン" class="button"></p>
 		</form>
 		
-		<a href="register.jsp">新規登録はこちら</a>
+		<a href="register.jsp" class="button">新規登録はこちら</a>
 	</body>
 </html>

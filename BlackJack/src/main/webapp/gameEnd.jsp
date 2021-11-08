@@ -29,7 +29,7 @@
 %>
 			<p id="logout">
 				<%=loginUser.getNickname()%>さんがログイン中<br>
-				<a href="LoginLogoutServlet">ログアウト</a>
+				<a href="LoginLogoutServlet" class="button">ログアウト</a>
 			</p>
 			
 			<br>
@@ -64,10 +64,10 @@
 			<table>
 				<tr>
 					<td>
-						<a href="GameStartServlet">再戦</a>
+						<a href="GameStartServlet" class="game_button">再戦</a>
 					</td>
 					<td>
-						<a href="menu.jsp">ゲーム終了</a>
+						<a href="menu.jsp" class="game_button">ゲーム終了</a>
 					</td>
 				</tr>
 			</table>

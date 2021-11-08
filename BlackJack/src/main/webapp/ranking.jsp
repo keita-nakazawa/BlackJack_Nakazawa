@@ -26,7 +26,7 @@
 %>
 			<p id="logout">
 				<%=loginUser.getNickname()%>さんがログイン中<br>
-				<a href="LoginLogoutServlet">ログアウト</a>
+				<a href="LoginLogoutServlet" class="button">ログアウト</a>
 			</p>
 			
 			<br>
@@ -63,7 +63,9 @@
 				</tbody>
 			</table>
 			
-			<a href="menu.jsp">メニューへ戻る</a>
+			<br>
+			
+			<a href="menu.jsp" class="button">メニューへ戻る</a>
 <%
 		} else {
 			request.setAttribute("message", map.get("message"));

@@ -23,7 +23,7 @@
 %>	
 			<p id="logout">
 				<%=loginUser.getNickname()%>さんがログイン中<br>
-				<a type="button" href="LoginLogoutServlet">ログアウト</a>
+				<a href="LoginLogoutServlet" class="button">ログアウト</a>
 			</p>
 			
 			<br>
@@ -35,21 +35,24 @@
 <%
 			}
 %>
-			<a href="GameStartServlet">ゲーム開始</a>
+			<a href="GameStartServlet" class="game_button">ゲーム開始</a>
+			
+			<br>
+			<br>
 			
 			<table>
 				<tr>
 					<td>
-						<a href="HistoryServlet">これまでの戦績</a>
+						<a href="HistoryServlet" class="button">これまでの戦績</a>
 					</td>
 					<td>
-						<a href="RankingServlet">勝率ランキング</a>
+						<a href="RankingServlet" class="button">勝率ランキング</a>
 					</td>
 					<td>
-						<a href="edit.jsp">ユーザ情報変更</a>
+						<a href="edit.jsp" class="button">ユーザ情報変更</a>
 					</td>
 					<td>
-						<a href="delete.jsp">ユーザ削除</a>
+						<a href="delete.jsp" class="button">ユーザ削除</a>
 					</td>
 				</tr>
 			</table>

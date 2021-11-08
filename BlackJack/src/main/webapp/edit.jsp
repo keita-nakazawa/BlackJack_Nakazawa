@@ -23,7 +23,7 @@
 %>	
 			<p id="logout">
 				<%=loginUser.getNickname()%>さんがログイン中<br>
-				<a href="LoginLogoutServlet">ログアウト</a>
+				<a href="LoginLogoutServlet" class="button">ログアウト</a>
 			</p>
 			
 			<br>
@@ -53,7 +53,7 @@
 				</table>
 				
 				<p>使用不可記号...「&quot; &amp; &lt; &gt;」</p>
-				<p><input type="submit" value="ユーザID、ニックネームを変更"></p>
+				<p><input type="submit" value="ユーザID、ニックネームを変更" class="button"></p>
 			</form>	
 			
 			<form action="EditPassServlet" method="POST">	
@@ -79,12 +79,12 @@
 				</table>
 				
 				<p>使用不可記号...「&quot; &amp; &lt; &gt;」</p>
-				<p><input type="submit" value="パスワードを変更"></p>
+				<p><input type="submit" value="パスワードを変更" class="button"></p>
 			</form>
 			
 			<br>
 			
-			<a href="menu.jsp">メニューへ戻る</a>
+			<a href="menu.jsp" class="button">メニューへ戻る</a>
 <%
 		} else {
 			request.setAttribute("message", map.get("message"));

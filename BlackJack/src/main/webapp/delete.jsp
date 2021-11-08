@@ -23,7 +23,7 @@
 %>	
 			<p id="logout">
 				<%=loginUser.getNickname()%>さんがログイン中<br>
-				<a href="LoginLogoutServlet">ログアウト</a>
+				<a href="LoginLogoutServlet" class="button">ログアウト</a>
 			</p>
 	
 			<br>
@@ -47,10 +47,10 @@
 				</tr>
 			</table>
 			<form action="DeleteServlet" method="POST">
-				<p><input type="submit" value="削除"></p>
+				<p><input type="submit" value="削除" class="button"></p>
 			</form>
 			
-			<a href="menu.jsp">メニューへ戻る</a>
+			<a href="menu.jsp" class="button">メニューへ戻る</a>
 <%
 		} else {
 			request.setAttribute("message", map.get("message"));
