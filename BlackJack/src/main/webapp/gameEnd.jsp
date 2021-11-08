@@ -34,26 +34,26 @@
 			
 			<br>
 			
-			<p>ディーラー(<%=game.getDealer().getPoint()%>点)</p>
+			<p>ディーラー(<%=game.getDealer().getPlayerPoint()%>点)</p>
 			<table>
 				<tr>
 <%
 				for(Card card: game.getDealer().getHand().getListOfHand()) {
 %>
-					<td class="card"><%=card.getStrMark()%><br><%=card.getStrNumber()%></td>
+					<td class="card"><%=card.getMark()%><br><%=card.getNumber()%></td>
 <%
 				}
 %>
 				</tr>
 			</table>
 			
-			<p>あなた(<%=game.getPlayer().getPoint()%>点)</p>
+			<p>あなた(<%=game.getPlayer().getPlayerPoint()%>点)</p>
 			<table>
 				<tr>
 <%
 				for(Card card: game.getPlayer().getHand().getListOfHand()) {
 %>
-					<td class="card"><%=card.getStrMark()%><br><%=card.getStrNumber()%></td>
+					<td class="card"><%=card.getMark()%><br><%=card.getNumber()%></td>
 <%
 				}
 %>

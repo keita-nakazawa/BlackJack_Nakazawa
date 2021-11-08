@@ -25,20 +25,21 @@ public class HitServlet extends HttpServlet {
 
 			Player player = game.getPlayer();
 			Deck deck = game.getDeck();
-
-			player.drawCard(deck.removeCard());
-			player.setPoint();
-			player.setBurst();
+			player.hit(deck);
 
 			game.setPlayer(player);
 			game.setDeck(deck);
 
-			if (player.getBurst() == true) {
+			if (player.getPlayerBurst()) {
 				User loginUser = (User)session.getAttribute("loginUser");
 				request.setAttribute("history", game.comparePoints(loginUser));
 				request.setAttribute("gameMessage", game.getGameMessage());
 				nextPage = "ResultServlet";
 
+			} else if (player.getPlayerPoint() == 21) {
+				session.setAttribute("game", game);
+				nextPage = "StandServlet";
+				
 			} else {
 				session.setAttribute("game", game);
 				nextPage = "playGame.jsp";

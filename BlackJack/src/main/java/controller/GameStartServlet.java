@@ -23,12 +23,20 @@ public class GameStartServlet extends HttpServlet {
 		Map<String, String> map = NullChecker.createMap(session.getAttribute("loginUser"));
 
 		if (map.isEmpty()) {
+			
 			Game oldGame = (Game) session.getAttribute("game");
 			Game newGame = new Game();
-			session.setAttribute("game", newGame.start(oldGame));
-			nextPage = "playGame.jsp";
+			Game game = newGame.start(oldGame);
+			session.setAttribute("game", game);
+			
+			if (game.getPlayer().getPlayerPoint() == 21) {
+				nextPage = "StandServlet";
+			} else {
+				nextPage = "playGame.jsp";
+			}
 			
 		} else {
+			
 			request.setAttribute("message", map.get("message"));
 			nextPage = map.get("nextPage");
 		}

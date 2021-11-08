@@ -10,16 +10,20 @@ public class Card {
 		this.number = number;
 	}
 	
-	public String getStrMark() {
-		return mark.getMark();
+	public String getMark() {
+		return mark.mark;
 	}
 	
-	public String getStrNumber() {
-		return number.getNumber();
+	public String getNumber() {
+		return number.number;
 	}
 	
-	public int getIntPoint() {
-		return number.getPoint();
+	public int getPoint() {
+		return number.point;
+	}
+
+	public int getPointAce() {
+		return number.pointAce;
 	}
 }
 
@@ -30,14 +34,10 @@ enum Mark {
 	DIAMOND("♦"),
 	CLUB("♣");
 	
-	private String mark;
+	protected String mark;
 	
 	private Mark(String mark) {
 		this.mark = mark;
-	}
-	
-	public String getMark() {
-		return mark;
 	}
 }
 
@@ -57,9 +57,9 @@ enum Number {
 	QUEEN("Q",10),
 	KING("K",10);
 	
-	private String number;
-	private int point;
-	private int pointAce;
+	protected String number;
+	protected int point;
+	protected int pointAce;
 	
 	private Number(String number, int point) {
 		this.number = number;
@@ -70,17 +70,5 @@ enum Number {
 		this.number = number;
 		this.point = point;
 		this.pointAce = pointAce;
-	}
-	
-	public String getNumber() {
-		return number;
-	}
-	
-	public int getPoint() {
-		return point;
-	}
-	
-	public int getPointAce() {
-		return pointAce;
 	}
 }

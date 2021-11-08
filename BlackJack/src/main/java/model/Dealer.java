@@ -6,10 +6,12 @@ public class Dealer extends BasePlayer {
 	private static final int CRITERIA = 17;
 
 	public void stand(Deck deck) {
-		while (point < CRITERIA) {
-			drawCard(deck.removeCard());
-			setPoint();
+		while (getPlayerPoint() < CRITERIA) {
+			Card newCard = deck.removeCard();
+			drawCard(newCard);
+			setPoint(newCard);
 			setBurst();
+			setPlayerPoint();
 		}
 	}
 }

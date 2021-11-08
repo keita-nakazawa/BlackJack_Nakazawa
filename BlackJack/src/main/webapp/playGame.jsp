@@ -1,3 +1,5 @@
+<%@page import="model.Dealer"%>
+<%@page import="model.Player"%>
 <%@page import="java.util.Map"%>
 <%@page import="model.NullChecker"%>
 <%@page import="model.Card"%>
@@ -19,6 +21,8 @@
 <%
 		User loginUser = (User)session.getAttribute("loginUser");
 		Game game = (Game)session.getAttribute("game");
+		Player player = game.getPlayer();
+		Dealer dealer = game.getDealer();
 		
 		Map<String, String> map = NullChecker.createMap(game);
 
@@ -37,25 +41,41 @@
 				<p id="message"><%=message%></p>
 <%
 			}
+			
+			
+			Card card0 = dealer.getHand().getListOfHand().get(0);
 %>				
-			<p>ディーラー</p>
+			<p>ディーラー(<%=card0.getPoint()%>点
+<%
+			if (card0.getNumber().equals("A")) {
+%>
+				 or <%=card0.getPointAce()%>点
+<%
+			}
+%>
+			 + ？点)</p>
 			<table>
 				<tr>
-<%
-					Card card0 = game.getDealer().getHand().getListOfHand().get(0);
-%>
-					<td class="card"><%=card0.getStrMark()%><br><%=card0.getStrNumber()%></td>
+					<td class="card"><%=card0.getMark()%><br><%=card0.getNumber()%></td>
 					<td class="card">？</td>
 				</tr>
 			</table>
 			
-			<p>あなた(<%=game.getPlayer().getPoint()%>点)</p>
+			<p>あなた(<%=player.getPoint()%>点
+<%
+			if ((player.getBurst2() == false) && (player.getPoint() != player.getPoint2())) {
+%>
+				 or <%=player.getPoint2()%>点
+<%
+			}
+%>
+			)</p>
 			<table>
 				<tr>
 <%
-				for(Card card: game.getPlayer().getHand().getListOfHand()) {
+				for(Card card: player.getHand().getListOfHand()) {
 %>
-					<td class="card"><%=card.getStrMark()%><br><%=card.getStrNumber()%></td>
+					<td class="card"><%=card.getMark()%><br><%=card.getNumber()%></td>
 <%
 				}
 %>

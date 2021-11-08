@@ -14,11 +14,17 @@ public class Game {
 		Deck deck = new Deck();
 
 		for (int i = 0; i < 2; i++) {
-			player.drawCard(deck.removeCard());
-			dealer.drawCard(deck.removeCard());
+			Card newCard = deck.removeCard();
+			player.drawCard(newCard);
+			player.setPoint(newCard);
+			
+			newCard = deck.removeCard();
+			dealer.drawCard(newCard);
+			dealer.setPoint(newCard);
 		}
-		player.setPoint();
-		dealer.setPoint();
+		
+		player.setPlayerPoint();
+		dealer.setPlayerPoint();
 
 		this.deck = deck;
 		this.player = player;
@@ -67,28 +73,28 @@ public class Game {
 	}
 
 	/**
-	 * プレイヤーとディーラーの点数を比較する。burstフラグも考慮する。
+	 * プレイヤーとディーラーの点数を比較する。バースト判定フラグも考慮する。
 	 */
 	public History comparePoints(User loginUser) {
  
 		History history = new History();
 		history.setUserId(loginUser.getUserId());
-
-		if (player.getBurst() == true) {
+		
+		if (player.getPlayerBurst() == true) {
 			history.setResult(-1);
 			gameMessage = "バーストしました。</br>ディーラーの勝利です。";
 
-		} else if (dealer.getBurst() == true) {
+		} else if (dealer.getPlayerBurst() == true) {
 			history.setResult(1);
 			gameMessage = "ディーラーがバーストしました。</br>あなたの勝利です。";
 
 		} else {
 
-			if (dealer.getPoint() > player.getPoint()) {
+			if (dealer.getPlayerPoint() > player.getPlayerPoint()) {
 				history.setResult(-1);
 				gameMessage = "ディーラーの勝利です。";
 
-			} else if (dealer.getPoint() == player.getPoint()) {
+			} else if (dealer.getPlayerPoint() == player.getPlayerPoint()) {
 				history.setResult(0);
 				gameMessage = "引き分けです。";
 

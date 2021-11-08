@@ -24,7 +24,6 @@ public class StandServlet extends HttpServlet {
 		if (map.isEmpty()) {
 			Dealer dealer = game.getDealer();
 			Deck deck = game.getDeck();
-
 			dealer.stand(deck);
 			
 			game.setDealer(dealer);
