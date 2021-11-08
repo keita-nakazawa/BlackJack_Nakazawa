@@ -43,7 +43,7 @@ enum Mark {
 
 enum Number {
 	
-	ACE("A",1),
+	ACE("A",1, 11),
 	TWO("2",2),
 	THREE("3",3),
 	FOUR("4",4),
@@ -59,10 +59,17 @@ enum Number {
 	
 	private String number;
 	private int point;
+	private int pointAce;
 	
-	private Number(String number,int point) {
+	private Number(String number, int point) {
 		this.number = number;
 		this.point = point;
+	}
+	
+	private Number(String number, int point, int pointAce) {
+		this.number = number;
+		this.point = point;
+		this.pointAce = pointAce;
 	}
 	
 	public String getNumber() {
@@ -71,5 +78,9 @@ enum Number {
 	
 	public int getPoint() {
 		return point;
+	}
+	
+	public int getPointAce() {
+		return pointAce;
 	}
 }

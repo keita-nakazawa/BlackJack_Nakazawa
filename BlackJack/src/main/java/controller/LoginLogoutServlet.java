@@ -7,6 +7,7 @@ import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.*;
 
+import dao.BaseDao;
 import dao.UserDao;
 import model.User;
 
@@ -26,7 +27,7 @@ public class LoginLogoutServlet extends HttpServlet {
 		session.setAttribute("con", null);
 		UserDao userDao = new UserDao(session);
 		User loginUser = userDao.getLoginUser(userId, password);
-		
+
 		String nextPage = new String();
 
 		// userDaoからメッセージを抽出
@@ -46,9 +47,16 @@ public class LoginLogoutServlet extends HttpServlet {
 	// ログアウト処理
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
+		
 		HttpSession session = request.getSession();
+		
+		BaseDao baseDao = new BaseDao();
+		baseDao.closeCon(session);
 		session.invalidate();
 
+		if (baseDao.getMessage() != null) {
+			request.setAttribute("message", baseDao.getMessage());
+		}
 		RequestDispatcher rd = request.getRequestDispatcher("login.jsp");
 		rd.forward(request, response);
 	}

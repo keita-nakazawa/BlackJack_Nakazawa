@@ -4,7 +4,7 @@ import java.sql.*;
 
 import javax.servlet.http.HttpSession;
 
-public abstract class BaseDao {
+public class BaseDao {
 
 	protected Connection con = null;
 	protected PreparedStatement ps = null;
@@ -36,7 +36,7 @@ public abstract class BaseDao {
 	}
 	
 	/**
-	 * DBとの接続を解除
+	 * PreparedStatment、ResultSetオブジェクトのクローズ処理
 	 */
 	protected void closeAll() {
 		try {
@@ -48,7 +48,24 @@ public abstract class BaseDao {
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
-			message = "close処理中に例外が発生しました";
+			message = "クローズ処理中に例外が発生しました";
+		}
+	}
+	
+	/**
+	 * セッションに退避してあったConnectionオブジェクトのクローズ処理
+	 */
+	public void closeCon(HttpSession session) {
+		
+		Connection sessionCon = (Connection) session.getAttribute("con");
+		
+		try {
+			if (sessionCon != null) {
+				sessionCon.close();
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			message = "クローズ処理中に例外が発生しました";
 		}
 	}
 	
