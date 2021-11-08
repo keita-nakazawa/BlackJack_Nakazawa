@@ -27,6 +27,8 @@
 			</p>
 			
 			<br>
+			
+			<p>現在のチップ所持枚数：</p>
 <%
 			String message = (String)request.getAttribute("message");
 			if(message != null) {
@@ -35,9 +37,23 @@
 <%
 			}
 %>
-			<a href="GameStartServlet" class="game_button">ゲーム開始</a>
+			<form action="GameStartServlet" method="POST">
+				<select name="chip">
+					<option value="" selected disabled>--BET額を指定してください--</option>
+					<option value="1">1</option>
+					<option value="2">2</option>
+					<option value="3">3</option>
+					<option value="4">4</option>
+					<option value="5">5</option>
+					<option value="6">6</option>
+					<option value="7">7</option>
+					<option value="8">8</option>
+					<option value="9">9</option>
+					<option value="10">10</option>
+				</select>
+				<p><input type="submit" value="ゲーム開始" class="game_button"></p>
+			</form>
 			
-			<br>
 			<br>
 			
 			<table>
