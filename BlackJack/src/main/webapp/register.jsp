@@ -6,11 +6,7 @@
 	<head>
 		<meta charset="UTF-8">
 		<title>新規登録ページ</title>
-		<style>
-			#message {
-				color : red;
-			}
-		</style>
+		<link rel="stylesheet" type="text/css" href="css/game.css">
 	</head>
 
 	<body>

@@ -15,6 +15,10 @@
 	
 }
 
+a {
+	text-decoration: none;		/* 下線削除 */	
+}
+
 .button {
 	display       : inline-block;
 	border-radius : 5%;          /* 角丸       */
