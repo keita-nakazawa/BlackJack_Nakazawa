@@ -12,9 +12,10 @@ public class ValidatorBJ {
 	private static final Pattern nicknamePattern = Pattern.compile("^[^\"&<>]{1,20}$");
 	// 半角英数字または「" < >」以外の記号で20文字以内
 	private static final Pattern passwordPattern = Pattern.compile("^[!#-%'-;=?-~]{8,20}$");
-
+	//1～10の半角数字
+	private static final Pattern betPattern = Pattern.compile("^[1-9]$|^10$");
+	
 	private Map<String, String> strMap = new HashMap<>();
-
 	private String message;
 
 	public void excuteValidation() {
@@ -25,18 +26,26 @@ public class ValidatorBJ {
 			String value = strMap.get(key);
 
 			switch (key) {
+			
 			case "userId":
 				match = userIdPattern.matcher(value).find();
 				break;
+				
 			case "nickname":
 				match = nicknamePattern.matcher(value).find();
 				break;
+				
 			case "password":
 			case "password2":
 			case "newPassword":
 			case "newPassword2":
 				match = passwordPattern.matcher(value).find();
 				break;
+				
+			case "bet":
+				match = betPattern.matcher(value).find();
+				break;
+				
 			default:
 				match = false;
 				message = "バリデーションを実行できませんでした。";

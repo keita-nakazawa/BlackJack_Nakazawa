@@ -23,12 +23,11 @@
 %>	
 			<p id="logout">
 				<%=loginUser.getNickname()%>さんがログイン中<br>
+				現在のチップ所持枚数：<%=loginUser.getChip()%><br>
 				<a href="LoginLogoutServlet" class="button">ログアウト</a>
 			</p>
 			
 			<br>
-			
-			<p>現在のチップ所持枚数：</p>
 <%
 			String message = (String)request.getAttribute("message");
 			if(message != null) {
@@ -37,19 +36,19 @@
 <%
 			}
 %>
+			<p>BET額を1～10の間で指定し、ゲーム開始ボタンを押してください。</p>
 			<form action="GameStartServlet" method="POST">
-				<select name="chip">
-					<option value="" selected disabled>--BET額を指定してください--</option>
-					<option value="1">1</option>
-					<option value="2">2</option>
-					<option value="3">3</option>
-					<option value="4">4</option>
-					<option value="5">5</option>
-					<option value="6">6</option>
-					<option value="7">7</option>
-					<option value="8">8</option>
-					<option value="9">9</option>
-					<option value="10">10</option>
+				<select name="bet">
+					<option selected>1</option>
+					<option>2</option>
+					<option>3</option>
+					<option>4</option>
+					<option>5</option>
+					<option>6</option>
+					<option>7</option>
+					<option>8</option>
+					<option>9</option>
+					<option>10</option>
 				</select>
 				<p><input type="submit" value="ゲーム開始" class="game_button"></p>
 			</form>

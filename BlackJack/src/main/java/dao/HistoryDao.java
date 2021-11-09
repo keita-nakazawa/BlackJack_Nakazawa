@@ -31,7 +31,7 @@ public class HistoryDao extends BaseDao {
 	}
 
 	/**
-	 * historyテーブルにユーザIDと勝敗結果(int)を記録する。<br>
+	 * historyテーブルにユーザIDとチップ増減数を記録する。<br>
 	 * プレイ時刻はDB側のDEFAULT句で自動的に記録される。
 	 */
 	public void addHistory(History history) {

@@ -20,7 +20,8 @@
 <%
 		User loginUser = (User)session.getAttribute("loginUser");
 		Game game = (Game)request.getAttribute("game");
-		String gameMessage = (String)request.getAttribute("gameMessage");
+		History history = (History)request.getAttribute("history");
+		int previousBet = (Integer)request.getAttribute("previousBet");
 
 		//gameのnullチェックを行えば十分である。
 		Map<String, String> map = NullChecker.createMap(game);
@@ -29,48 +30,54 @@
 %>
 			<p id="logout">
 				<%=loginUser.getNickname()%>さんがログイン中<br>
+				現在のチップ所持枚数：<%=loginUser.getChip()%><br>
 				<a href="LoginLogoutServlet" class="button">ログアウト</a>
 			</p>
 			
 			<br>
 			
-			<p>ディーラー(<%=game.getDealer().getPlayerPoint()%>点)</p>
+			<p>ディーラー</p>
 			<table>
 				<tr>
 <%
 				for(Card card: game.getDealer().getHand().getListOfHand()) {
 %>
-					<td class="card"><%=card.getMark()%><br><%=card.getNumber()%></td>
+					<td class="card">
+						<%=card.getMark()%><br><%=card.getNumber()%>
+					</td>
 <%
 				}
 %>
+				<td>(<%=game.getDealer().getPlayerPoint()%>点)</td>
 				</tr>
 			</table>
 			
-			<p>あなた(<%=game.getPlayer().getPlayerPoint()%>点)</p>
+			<p>あなた</p>
 			<table>
 				<tr>
 <%
-				for(Card card: game.getPlayer().getHand().getListOfHand()) {
+					for(Card card: game.getPlayer().getHand().getListOfHand()) {
 %>
-					<td class="card"><%=card.getMark()%><br><%=card.getNumber()%></td>
+						<td class="card">
+							<%=card.getMark()%><br><%=card.getNumber()%>
+						</td>
 <%
-				}
+					}
 %>
+					<td>(<%=game.getPlayer().getPlayerPoint()%>点)</td>
+					<td><%=history.getResultMessage()%></td>
+					<td><%=history.getSignedResult()%></td>
 				</tr>
 			</table>
 
-			<p id="message"><%=gameMessage%></p>
-			<table>
-				<tr>
-					<td>
-						<a href="GameStartServlet" class="game_button">再戦</a>
-					</td>
-					<td>
-						<a href="menu.jsp" class="game_button">ゲーム終了</a>
-					</td>
-				</tr>
-			</table>
+			<br>
+
+			<form action="GameStartServlet" method="POST">
+				<input type="hidden" name="bet" value="<%=previousBet%>">
+				<input type="submit" value="同じBET額で再戦" class="game_button">
+			</form>
+		
+			<p><a href="menu.jsp" class="button">メニューへ戻る</a></p>
 <%
 		} else {
 			request.setAttribute("message", map.get("message"));

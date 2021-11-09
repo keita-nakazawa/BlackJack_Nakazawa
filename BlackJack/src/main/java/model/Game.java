@@ -5,14 +5,16 @@ public class Game {
 	private Deck deck;
 	private Player player;
 	private Dealer dealer;
-	private String gameMessage;
+	private int turnCount = 0;
 	
-	public Game() {
+	public Game(int bet) {
 
 		Player player = new Player();
 		Dealer dealer = new Dealer();
 		Deck deck = new Deck();
 
+		player.setBet(bet);
+		
 		for (int i = 0; i < 2; i++) {
 			Card newCard = deck.removeCard();
 			player.drawCard(newCard);
@@ -42,10 +44,6 @@ public class Game {
 	public Dealer getDealer() {
 		return dealer;
 	}
-	
-	public String getGameMessage() {
-		return gameMessage;
-	}
 
 	public void setDeck(Deck deck) {
 		this.deck = deck;
@@ -58,8 +56,13 @@ public class Game {
 	public void setDealer(Dealer dealer) {
 		this.dealer = dealer;
 	}
+	
+	public void addTurnCount() {
+		turnCount += 1;
+	}
 
 	/**
+	 * 終了していないゲームセッションがあるか確認する。
 	 * @return Game<br>
 	 *         パラメータがnullの場合は自身を、nullでない場合はパラメータを返す。
 	 */
@@ -80,27 +83,29 @@ public class Game {
 		History history = new History();
 		history.setUserId(loginUser.getUserId());
 		
-		if (player.getPlayerBurst() == true) {
-			history.setResult(-1);
-			gameMessage = "バーストしました。</br>ディーラーの勝利です。";
+		if (player.isBurst()) {
+			history.setResult(player.getBet() * (-1));
 
-		} else if (dealer.getPlayerBurst() == true) {
-			history.setResult(1);
-			gameMessage = "ディーラーがバーストしました。</br>あなたの勝利です。";
+		} else if (dealer.isBurst()) {
+			history.setResult(player.getBet());
 
 		} else {
 
 			if (dealer.getPlayerPoint() > player.getPlayerPoint()) {
-				history.setResult(-1);
-				gameMessage = "ディーラーの勝利です。";
+				history.setResult(player.getBet() * (-1));
 
 			} else if (dealer.getPlayerPoint() == player.getPlayerPoint()) {
+				//3枚以上のカードでの「21」がナチュラルBJに対して負けるというルールは適用しない。
 				history.setResult(0);
-				gameMessage = "引き分けです。";
 
 			} else {
-				history.setResult(1);
-				gameMessage = "あなたの勝利です。";
+				if (player.isBlackJack() && (turnCount == 0)) {
+					//ナチュラルBJ時はBET額を1.5倍して小数点以下切り上げ
+					history.setNaturalBJ();
+					history.setResult((int) Math.ceil(player.getBet() * 1.5));
+				} else {
+					history.setResult(player.getBet());
+				}
 			}
 		}
 		return history;

@@ -8,7 +8,6 @@ import java.util.List;
 
 import javax.servlet.http.HttpSession;
 
-import model.History;
 import model.User;
 
 /**
@@ -65,7 +64,7 @@ public class UserDao extends BaseDao {
 	/**
 	 * ログインフォームの入力内容が正しいかDBに問い合わせる。 conのnullチェックを行う。
 	 * 
-	 * @return 入力内容が正しい場合は、そのユーザIDとニックネームを有するUserオブジェクト
+	 * @return 入力内容が正しい場合は、そのユーザIDとニックネームとチップ所持枚数を有するUserオブジェクト
 	 */
 	public User getLoginUser(String userId, String password) {
 
@@ -83,6 +82,7 @@ public class UserDao extends BaseDao {
 					// ログイン情報が正しい場合の処理
 					user.setUserId(rs.getString("user_id"));
 					user.setNickname(rs.getString("nickname"));
+					user.setChip(rs.getInt("chip"));
 				} else {
 					// ログイン情報が誤っている場合の処理
 					message = "ログインに失敗しました。";
@@ -216,14 +216,14 @@ public class UserDao extends BaseDao {
 		List<User> rankingList = new ArrayList<User>();
 
 		try {
-			String sql = "SELECT * FROM users ORDER BY win_rate DESC LIMIT 5";
+			String sql = "SELECT * FROM users ORDER BY chip DESC LIMIT 5";
 			ps = con.prepareStatement(sql);
 			rs = ps.executeQuery();
 
 			while (rs.next()) {
 				User user = new User();
 				user.setNickname(rs.getString("nickname"));
-				user.setWinRate(rs.getFloat("win_rate"));
+				user.setChip(rs.getInt("chip"));
 				rankingList.add(user);
 			}
 
@@ -239,53 +239,44 @@ public class UserDao extends BaseDao {
 	/**
 	 * usersテーブルからログイン中ユーザの情報を取得する。
 	 * 
-	 * @return 勝利回数、敗北回数、引き分け回数、勝率を有するUserオブジェクト
+	 * @return 所持チップ枚数を有するUserオブジェクト
 	 */
-	public User getUserInfo(User loginUser) {
-
-		User user = new User();
-		String userId = loginUser.getUserId();
-
-		try {
-			String sql = "SELECT * FROM users WHERE user_id = ?";
-			ps = con.prepareStatement(sql);
-			ps.setString(1, userId);
-			rs = ps.executeQuery();
-
-			rs.next();
-			user.setWin(rs.getInt("win"));
-			user.setLose(rs.getInt("lose"));
-			user.setDraw(rs.getInt("draw"));
-			user.setWinRate(rs.getFloat("win_rate"));
-
-		} catch (SQLException e) {
-			e.printStackTrace();
-			message = "SQL実行中に例外が発生しました";
-		} finally {
-			closeAll();
-		}
-		return user;
-	}
+//	public User getUserInfo(User loginUser) {
+//
+//		User user = new User();
+//		String userId = loginUser.getUserId();
+//
+//		try {
+//			String sql = "SELECT * FROM users WHERE user_id = ?";
+//			ps = con.prepareStatement(sql);
+//			ps.setString(1, userId);
+//			rs = ps.executeQuery();
+//
+//			rs.next();
+//			user.setChip(rs.getInt("chip"));
+//
+//		} catch (SQLException e) {
+//			e.printStackTrace();
+//			message = "SQL実行中に例外が発生しました";
+//		} finally {
+//			closeAll();
+//		}
+//		return user;
+//	}
 
 	/**
-	 * usersテーブルのwin,lose,drawカラムのいずれかに1を加算し、win_rateカラムを更新する。
+	 * usersテーブルのchipカラムを更新
 	 */
-	public void updateResult(User loginUser, History history) {
+	public void updateChip(User loginUser) {
 
 		String userId = loginUser.getUserId();
-		String strResult = history.getStrResult();
+		int chip = loginUser.getChip();
 
 		try {
-			// win,lose,drawカラムのいずれかに1を加算
-			String sql = String.format("UPDATE users SET %s = %s + 1 WHERE user_id = ?", strResult, strResult);
+			String sql = "UPDATE users SET chip = ? WHERE user_id = ?";
 			ps = con.prepareStatement(sql);
-			ps.setString(1, userId);
-			ps.executeUpdate();
-
-			// win_rateカラムを更新
-			sql = "UPDATE users SET win_rate = 100 * win / (win + lose + draw) WHERE user_id = ?";
-			ps = con.prepareStatement(sql);
-			ps.setString(1, userId);
+			ps.setInt(1, chip);
+			ps.setString(2, userId);
 			ps.executeUpdate();
 
 		} catch (SQLException e) {

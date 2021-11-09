@@ -30,6 +30,7 @@
 %>	
 			<p id="logout">
 				<%=loginUser.getNickname()%>さんがログイン中<br>
+				現在のチップ所持枚数：<%=loginUser.getChip()%><br>
 				<a href="LoginLogoutServlet" class="button">ログアウト</a>
 			</p>
 			
@@ -45,40 +46,49 @@
 			
 			Card card0 = dealer.getHand().getListOfHand().get(0);
 %>				
-			<p>ディーラー(<%=card0.getPoint()%>点
-<%
-			if (card0.getNumber().equals("A")) {
-%>
-				 or <%=card0.getPointAce()%>点
-<%
-			}
-%>
-			 + ？点)</p>
+			<p>ディーラー</p>
 			<table>
 				<tr>
 					<td class="card"><%=card0.getMark()%><br><%=card0.getNumber()%></td>
 					<td class="card">？</td>
+					<td>
+						　(<%=card0.getPoint()%>点
+<%
+						if (card0.getNumber().equals("A")) {
+%>
+							or <%=card0.getPointAce()%>点
+<%
+						}
+%>
+						+ ？点)
+					</td>
 				</tr>
 			</table>
 			
-			<p>あなた(<%=player.getPoint()%>点
-<%
-			if ((player.getBurst2() == false) && (player.getPoint() != player.getPoint2())) {
-%>
-				 or <%=player.getPoint2()%>点
-<%
-			}
-%>
-			)</p>
+			<p>あなた</p>
 			<table>
 				<tr>
 <%
-				for(Card card: player.getHand().getListOfHand()) {
+					for(Card card: player.getHand().getListOfHand()) {
 %>
-					<td class="card"><%=card.getMark()%><br><%=card.getNumber()%></td>
+						<td class="card">
+							<%=card.getMark()%><br><%=card.getNumber()%>
+						</td>
 <%
-				}
+					}
 %>
+					<td>
+						　(<%=player.getPoint()%>点
+<%
+						if ((player.getBurst2() == false) && (player.getPoint() != player.getPoint2())) {
+%>
+							or <%=player.getPoint2()%>点
+<%
+						}
+%>
+						)
+					</td>
+					<td>　BET額：<%=player.getBet()%></td>
 				</tr>
 			</table>
 

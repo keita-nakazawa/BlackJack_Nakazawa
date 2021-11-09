@@ -31,7 +31,6 @@ public class StandServlet extends HttpServlet {
 			
 			User loginUser = (User)session.getAttribute("loginUser");
 			request.setAttribute("history", game.comparePoints(loginUser));
-			request.setAttribute("gameMessage", game.getGameMessage());
 			nextPage = "ResultServlet";
 			
 		} else {

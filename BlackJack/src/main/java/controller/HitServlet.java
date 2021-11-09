@@ -29,14 +29,14 @@ public class HitServlet extends HttpServlet {
 
 			game.setPlayer(player);
 			game.setDeck(deck);
+			game.addTurnCount();
 
-			if (player.getPlayerBurst()) {
+			if (player.isBurst()) {
 				User loginUser = (User)session.getAttribute("loginUser");
 				request.setAttribute("history", game.comparePoints(loginUser));
-				request.setAttribute("gameMessage", game.getGameMessage());
 				nextPage = "ResultServlet";
 
-			} else if (player.getPlayerPoint() == 21) {
+			} else if (player.isBlackJack()) {
 				session.setAttribute("game", game);
 				nextPage = "StandServlet";
 				

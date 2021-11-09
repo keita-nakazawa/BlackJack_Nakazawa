@@ -7,42 +7,55 @@ public class History {
 	private String userId;
 	private Timestamp timestamp;
 	private int result;
+	private boolean naturalBJ = false;
 
 	public String getUserId() {
 		return userId;
 	}
-	
+
 	public Timestamp getTimestamp() {
 		return timestamp;
 	}
-	
+
 	public int getResult() {
 		return result;
 	}
-	
-	public String getStrResult() {
-		switch(result) {
-		case 1:
-			return "win";
-		case -1:
-			return "lose";
-		case 0:
-			return "draw";
-		default:
-			//念のためのdefault
-			return "error";
+
+	public String getSignedResult() {
+		if (result > 0) {
+			return "+" + String.valueOf(result);
+		} else {
+			return String.valueOf(result);
+		}
+	}
+
+	public String getResultMessage() {
+		if (result > 0) {
+			if (naturalBJ) {
+				return "NaturalBJ!!";
+			} else {
+				return "Win";
+			}
+		} else if (result < 0) {
+			return "Lose";
+		} else {
+			return "Draw";
 		}
 	}
 
 	public void setUserId(String userId) {
 		this.userId = userId;
 	}
-	
+
 	public void setTimestamp(Timestamp timestamp) {
 		this.timestamp = timestamp;
 	}
-	
+
 	public void setResult(int result) {
 		this.result = result;
+	}
+	
+	public void setNaturalBJ() {
+		naturalBJ = true;
 	}
 }

@@ -19,7 +19,7 @@ public class BaseDao {
 		try {
 			Class.forName("org.mariadb.jdbc.Driver");
 
-			String url = "jdbc:mysql://localhost/bj_nakazawa";
+			String url = "jdbc:mysql://localhost/bj_chip_nakazawa";
 			String user = "root";
 			String password = "";
 
@@ -65,7 +65,7 @@ public class BaseDao {
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
-			message = "クローズ処理中に例外が発生しました";
+			message = "Connectionのクローズ処理中に例外が発生しました";
 		}
 	}
 	

@@ -4,10 +4,7 @@ public class User {
 
 	private String userId;
 	private String nickname;
-	private int win;
-	private int lose;
-	private int draw;
-	private float winRate;
+	private int chip;
 	
 	public void setUserId(String userId) {
 		this.userId = userId;
@@ -17,20 +14,8 @@ public class User {
 		this.nickname = nickname;
 	}
 	
-	public void setWin(int win) {
-		this.win = win;
-	}
-
-	public void setLose(int lose) {
-		this.lose = lose;
-	}
-
-	public void setDraw(int draw) {
-		this.draw = draw;
-	}
-	
-	public void setWinRate(float winRate) {
-		this.winRate = winRate;
+	public void setChip(int chip) {
+		this.chip = chip;
 	}
 		
 	public String getUserId() {
@@ -41,21 +26,14 @@ public class User {
 		return nickname;
 	}
 
-	public int getWin() {
-		return win;
-	}
-
-	public int getLose() {
-		return lose;
-	}
-
-	public int getDraw() {
-		return draw;
+	public int getChip() {
+		return chip;
 	}
 	
-	public float getWinRate() {
-		return winRate;
+	public void addChip(int result) {
+		chip += result;
 	}
+
 	
 //	public boolean isEmpty() {
 //		if(userId.isEmpty() && nickname.isEmpty()) {

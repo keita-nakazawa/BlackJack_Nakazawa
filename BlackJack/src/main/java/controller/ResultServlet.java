@@ -28,11 +28,12 @@ public class ResultServlet extends HttpServlet {
 
 			History history = (History) request.getAttribute("history");
 			User loginUser = (User) session.getAttribute("loginUser");
+			loginUser.addChip(history.getResult());
 
 			HistoryDao historyDao = new HistoryDao(session);
 			UserDao userDao = new UserDao(session);
 			historyDao.addHistory(history);
-			userDao.updateResult(loginUser, history);
+			userDao.updateChip(loginUser);
 
 			// historyDaoからメッセージを抽出
 			if (historyDao.getMessage() != null) {
@@ -45,6 +46,8 @@ public class ResultServlet extends HttpServlet {
 				nextPage = "playGame.jsp";
 
 			} else {
+				session.setAttribute("loginUser", loginUser);
+				request.setAttribute("previousBet", game.getPlayer().getBet());
 				request.setAttribute("game", game);
 				session.setAttribute("game", null);
 				nextPage = "gameEnd.jsp";

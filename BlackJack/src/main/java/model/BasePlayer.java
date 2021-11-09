@@ -2,6 +2,8 @@ package model;
 
 public abstract class BasePlayer {
 
+	protected static final int BLACKJACK = 21;
+	
 	protected Hand hand = new Hand();
 	protected int point = 0;
 	protected int point2 = 0;
@@ -38,7 +40,7 @@ public abstract class BasePlayer {
 		return burst2;
 	}
 
-	public boolean getPlayerBurst() {
+	public boolean isBurst() {
 		return playerBurst;
 	}
 
@@ -56,13 +58,13 @@ public abstract class BasePlayer {
 
 	public void setBurst() {
 
-		if (point > 21) {
+		if (point > BLACKJACK) {
 			burst = true;
 		}
-		if (point2 > 21) {
+		if (point2 > BLACKJACK) {
 			burst2 = true;
 		}
-		if ((point > 21) && (point2 > 21)) {
+		if ((point > BLACKJACK) && (point2 > BLACKJACK)) {
 			playerBurst = true;
 		}
 	}
