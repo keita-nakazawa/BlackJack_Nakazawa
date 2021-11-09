@@ -36,7 +36,7 @@ enum Mark {
 	
 	protected String mark;
 	
-	private Mark(String mark) {
+	Mark(String mark) {
 		this.mark = mark;
 	}
 }
@@ -61,12 +61,12 @@ enum Number {
 	protected int point;
 	protected int pointAce;
 	
-	private Number(String number, int point) {
+	Number(String number, int point) {
 		this.number = number;
 		this.point = point;
 	}
 	
-	private Number(String number, int point, int pointAce) {
+	Number(String number, int point, int pointAce) {
 		this.number = number;
 		this.point = point;
 		this.pointAce = pointAce;

@@ -74,7 +74,7 @@
 
 			<form action="GameStartServlet" method="POST">
 				<input type="hidden" name="bet" value="<%=previousBet%>">
-				<input type="submit" value="同じBET額で再戦" class="game_button">
+				<input type="submit" value="同じBET額(<%=previousBet%>)で再戦" class="game_button">
 			</form>
 		
 			<p><a href="menu.jsp" class="button">メニューへ戻る</a></p>

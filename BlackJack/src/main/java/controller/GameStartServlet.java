@@ -43,6 +43,8 @@ public class GameStartServlet extends HttpServlet {
 				Game game = newGame.start(oldGame);
 				session.setAttribute("game", game);
 
+				
+				
 				if (game.getPlayer().isBlackJack()) {
 					nextPage = "StandServlet";
 				} else {
