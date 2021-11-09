@@ -26,6 +26,7 @@
 %>
 			<p id="logout">
 				<%=loginUser.getNickname()%>さんがログイン中<br>
+				現在のチップ所持枚数：<%=loginUser.getChip()%><br>
 				<a href="LoginLogoutServlet" class="button">ログアウト</a>
 			</p>
 			
@@ -38,14 +39,14 @@
 <%
 			}
 %>
-			<h2>勝率ランキングトップ5</h2>
+			<h2>ランキングトップ5</h2>
 			<p>現在の総プレイ人口：<%=population%>人</p>
 			<table border="1">
 				<thead>
 					<tr>
 						<td>順位</td>
 						<td>ニックネーム</td>
-						<td>勝率(%)</td>
+						<td>チップ所持枚数</td>
 					</tr>
 				</thead>
 				<tbody>
@@ -55,7 +56,7 @@
 					<tr>
 						<td><%=row + 1%></td>
 						<td><%=rankingList.get(row).getNickname()%></td>
-						<td><%=rankingList.get(row).getWinRate()%></td>
+						<td><%=rankingList.get(row).getChip()%></td>
 					</tr>
 <%
 					}

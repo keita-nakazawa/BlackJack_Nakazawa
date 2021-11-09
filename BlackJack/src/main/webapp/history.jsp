@@ -28,6 +28,7 @@
 %>
 			<p id="logout">
 				<%=loginUser.getNickname()%>さんがログイン中<br>
+				現在のチップ所持枚数：<%=loginUser.getChip()%><br>
 				<a href="LoginLogoutServlet" class="button">ログアウト</a>
 			</p>
 			
@@ -36,14 +37,13 @@
 			<h2>これまでの戦績</h2>
 			
 			<p>総対戦回数：<%=historyList.size()%>回</p>
-			<p>勝率：<%=userInfo.getWinRate()%>% (win...<%=userInfo.getWin()%>回、lose...<%=userInfo.getLose()%>回、draw...<%=userInfo.getDraw()%>回)</p>
 			
 			<table border="1">
 				<thead>
 					<tr>
 						<td>対戦回数</td>
 						<td>日時</td>
-						<td>結果</td>
+						<td>チップ増減</td>
 					</tr>
 				</thead>
 				<tbody>
@@ -53,7 +53,7 @@
 					<tr>
 						<td><%=row + 1%></td>
 						<td><%=historyList.get(row).getTimestamp()%></td>
-						<td><%=historyList.get(row).getStrResult()%></td>
+						<td><%=historyList.get(row).getSignedResult()%></td>
 					</tr>
 <%
 					}

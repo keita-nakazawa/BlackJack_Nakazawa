@@ -61,7 +61,7 @@
 						<a href="HistoryServlet" class="button">これまでの戦績</a>
 					</td>
 					<td>
-						<a href="RankingServlet" class="button">勝率ランキング</a>
+						<a href="RankingServlet" class="button">ランキング</a>
 					</td>
 					<td>
 						<a href="edit.jsp" class="button">ユーザ情報変更</a>
