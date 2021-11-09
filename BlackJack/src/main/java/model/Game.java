@@ -84,10 +84,18 @@ public class Game {
 		history.setUserId(loginUser.getUserId());
 		
 		if (player.isBurst()) {
+			
 			history.setResult(player.getBet() * (-1));
 
 		} else if (dealer.isBurst()) {
-			history.setResult(player.getBet());
+			
+			if (player.isBlackJack() && (turnCount == 0)) {
+				//ナチュラルBJ時はBET額を1.5倍して小数点以下切り上げ
+				history.setNaturalBJ();
+				history.setResult((int) Math.ceil(player.getBet() * 1.5));
+			} else {
+				history.setResult(player.getBet());
+			}
 
 		} else {
 

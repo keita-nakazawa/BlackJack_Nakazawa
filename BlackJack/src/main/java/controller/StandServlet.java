@@ -42,9 +42,9 @@ public class StandServlet extends HttpServlet {
 		rd.forward(request, response);
 	}
 	
+	//ナチュラルBJ時の処理
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		doGet(request, response);
 	}
-
 }

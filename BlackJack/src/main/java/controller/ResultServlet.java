@@ -62,4 +62,10 @@ public class ResultServlet extends HttpServlet {
 		RequestDispatcher rd = request.getRequestDispatcher(nextPage);
 		rd.forward(request, response);
 	}
+
+	//ナチュラルBJ時の処理
+	protected void doPost(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
+		doGet(request, response);
+	}
 }
