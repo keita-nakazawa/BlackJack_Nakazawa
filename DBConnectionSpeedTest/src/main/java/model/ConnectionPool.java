@@ -4,5 +4,5 @@ import java.sql.Connection;
 
 public class ConnectionPool {
 
-	public Connection con = null;
+	public Connection conn = null;
 }
