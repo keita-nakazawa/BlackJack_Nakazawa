@@ -3,9 +3,10 @@ package model;
 public class Game {
 
 	private Deck deck;
-	private Player player;
+	private SplitPlayers splitPlayers = new SplitPlayers();
 	private Dealer dealer;
-	private int turnCount = 0;
+	private boolean allEndFlag = false;
+	private String gameMessage;
 	
 	public Game(int bet) {
 
@@ -27,9 +28,10 @@ public class Game {
 		
 		player.setPlayerPoint();
 		dealer.setPlayerPoint();
+		player.setSplitFlag();
 
 		this.deck = deck;
-		this.player = player;
+		splitPlayers.getList().add(player);
 		this.dealer = dealer;
 	}
 
@@ -37,30 +39,41 @@ public class Game {
 		return deck;
 	}
 
-	public Player getPlayer() {
-		return player;
+	public SplitPlayers getSplitPlayers() {
+		return splitPlayers;
 	}
 
 	public Dealer getDealer() {
 		return dealer;
 	}
 
+	public String getGameMessage() {
+		return gameMessage;
+	}
+
 	public void setDeck(Deck deck) {
 		this.deck = deck;
 	}
-
-	public void setPlayer(Player player) {
-		this.player = player;
+	
+	public void setPlayer(int index, Player player) {
+		splitPlayers.getList().set(index, player);
 	}
-
+	
 	public void setDealer(Dealer dealer) {
 		this.dealer = dealer;
 	}
 	
-	public void addTurnCount() {
-		turnCount += 1;
+	public void setAllEndFlag() {
+		for (Player player: splitPlayers.getList()) {
+			if (player.isEnd()) {
+				allEndFlag = true;
+			} else {
+				allEndFlag = false;
+				break;
+			}
+		}
 	}
-
+	
 	/**
 	 * 終了していないゲームセッションがあるか確認する。
 	 * @return Game<br>
@@ -108,9 +121,9 @@ public class Game {
 
 			} else {
 				if (player.isBlackJack() && (turnCount == 0)) {
-					//ナチュラルBJ時はBET額を1.5倍して小数点以下切り上げ
+					//ナチュラルBJ時はBET額を1.5倍して小数点以下切り捨て
 					history.setNaturalBJ();
-					history.setResult((int) Math.ceil(player.getBet() * 1.5));
+					history.setResult((int) Math.floor(player.getBet() * 1.5));
 				} else {
 					history.setResult(player.getBet());
 				}

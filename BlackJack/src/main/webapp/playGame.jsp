@@ -1,3 +1,4 @@
+<%@page import="model.SplitPlayers"%>
 <%@page import="model.Dealer"%>
 <%@page import="model.Player"%>
 <%@page import="java.util.Map"%>
@@ -21,7 +22,7 @@
 <%
 		User loginUser = (User)session.getAttribute("loginUser");
 		Game game = (Game)session.getAttribute("game");
-		Player player = game.getPlayer();
+		SplitPlayers splitPlayers = game.getSplitPlayers();
 		Dealer dealer = game.getDealer();
 		
 		Map<String, String> map = NullChecker.createMap(game);
@@ -44,65 +45,92 @@
 			}
 			
 			
-			Card card0 = dealer.getHand().getListOfHand().get(0);
+			Card firstCard = dealer.getHand().getListOfHand().get(0);
 %>				
 			<p>ディーラー</p>
+			
 			<table>
 				<tr>
-					<td class="card"><%=card0.getMark()%><br><%=card0.getNumber()%></td>
+					<td class="card"><%=firstCard.getMark()%><br><%=firstCard.getNumber()%></td>
 					<td class="card">？</td>
 					<td>
-						　(<%=card0.getPoint()%>点
+						(<%=firstCard.getPoint()%>点
 <%
-						if (card0.getNumber().equals("A")) {
+					if (firstCard.getNumber().equals("A")) {
 %>
-							or <%=card0.getPointAce()%>点
+						or <%=firstCard.getPointAce()%>点
 <%
-						}
+					}
 %>
 						+ ？点)
 					</td>
 				</tr>
 			</table>
 			
+			
 			<p>あなた</p>
+			
 			<table>
+<%
+			int index = 0;
+			for(Player player: splitPlayers.getList()) {
+%>			
 				<tr>
 <%
-					for(Card card: player.getHand().getListOfHand()) {
+				for(Card card: player.getHand().getListOfHand()) {
 %>
-						<td class="card">
-							<%=card.getMark()%><br><%=card.getNumber()%>
-						</td>
+					<td class="card">
+						<%=card.getMark()%><br><%=card.getNumber()%>
+					</td>
+<%
+				}
+%>
+					<td>
+						(<%=player.getPoint()%>点
+<%
+					if ((player.getBurst2() == false) && (player.getPoint() != player.getPoint2())) {
+%>
+						or <%=player.getPoint2()%>点
 <%
 					}
 %>
-					<td>
-						　(<%=player.getPoint()%>点
-<%
-						if ((player.getBurst2() == false) && (player.getPoint() != player.getPoint2())) {
-%>
-							or <%=player.getPoint2()%>点
-<%
-						}
-%>
 						)
 					</td>
-					<td>　BET額：<%=player.getBet()%></td>
+					<td>BET額：<%=player.getBet()%></td>
 				</tr>
 			</table>
-
-			<br>
-
+			
 			<table>
 				<tr>
 					<td>
-						<a href="HitServlet" class="game_button">ヒット</a>
+						<form action="HitServlet" method="POST">
+							<input type="hidden" name="index" value="<%=index%>">
+							<input type="submit" value="ヒット" class="game_button">
+						</form>
 					</td>
 					<td>
-						<a href="StandServlet" class="game_button">スタンド</a>
+						<form action="StandServlet" method="POST">
+							<input type="hidden" name="index" value="<%=index%>">
+							<input type="submit" value="スタンド" class="game_button">
+						</form>
 					</td>
+<%
+				if (player.canSplit()) {
+%>
+					<td>
+						<form action="SplitServlet" method="POST">
+							<input type="hidden" name="index" value="<%=index%>">
+							<input type="submit" value="スプリット" class="game_button">
+						</form>
+					</td>
+<%						
+				}
+				index++;
+%>
 				</tr>
+<%						
+			}
+%>
 			</table>
 <%
 		} else {

@@ -1,7 +1,6 @@
 package controller;
 
 import java.io.IOException;
-import java.util.Map;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -12,39 +11,35 @@ import model.*;
 
 @WebServlet("/StandServlet")
 public class StandServlet extends HttpServlet {
-	protected void doGet(HttpServletRequest request, HttpServletResponse response)
+	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 
 		HttpSession session = request.getSession();
 		Game game = (Game) session.getAttribute("game");
 		String nextPage = new String();
 
-		Map<String, String> map = NullChecker.createMap(game);
 		
-		if (map.isEmpty()) {
-			Dealer dealer = game.getDealer();
-			Deck deck = game.getDeck();
-			dealer.stand(deck);
-			
-			game.setDealer(dealer);
-			game.setDeck(deck);
-			
-			User loginUser = (User)session.getAttribute("loginUser");
-			request.setAttribute("history", game.comparePoints(loginUser));
-			nextPage = "ResultServlet";
-			
-		} else {
-			request.setAttribute("message", map.get("message"));
-			nextPage = map.get("nextPage");
-		}
 		
+		Dealer dealer = game.getDealer();
+		Deck deck = game.getDeck();
+		dealer.stand(deck);
+
+		game.setDealer(dealer);
+		game.setDeck(deck);
+
+		User loginUser = (User) session.getAttribute("loginUser");
+		request.setAttribute("history", game.comparePoints(loginUser));
+		nextPage = "ResultServlet";
+
 		RequestDispatcher rd = request.getRequestDispatcher(nextPage);
 		rd.forward(request, response);
 	}
-	
-	//ナチュラルBJ時の処理
-	protected void doPost(HttpServletRequest request, HttpServletResponse response)
+
+	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		doGet(request, response);
+
+		request.setAttribute("message", "不正な操作、URLを検知しました。</br>ログアウト処理を実行しました。");
+		RequestDispatcher rd = request.getRequestDispatcher("LoginLogoutServlet");
+		rd.forward(request, response);
 	}
 }

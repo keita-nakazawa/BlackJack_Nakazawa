@@ -19,7 +19,7 @@ public abstract class BasePlayer {
 	public Hand getHand() {
 		return hand;
 	}
-
+	
 	public int getPoint() {
 		return point;
 	}

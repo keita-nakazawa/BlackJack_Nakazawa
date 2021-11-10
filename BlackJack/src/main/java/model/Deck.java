@@ -24,8 +24,4 @@ public class Deck {
 	public List<Card> getListOfDeck() {
 		return deck;
 	}
-	
-//	public void setDeck(List<Card> deck) {
-//		this.deck = deck;
-//	}
 }

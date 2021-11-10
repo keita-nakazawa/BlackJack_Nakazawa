@@ -1,7 +1,6 @@
 package controller;
 
 import java.io.IOException;
-import java.util.Map;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -9,7 +8,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.*;
 
 import model.Game;
-import model.NullChecker;
+import model.Player;
 import model.ValidatorBJ;
 
 @WebServlet("/GameStartServlet")
@@ -21,40 +20,32 @@ public class GameStartServlet extends HttpServlet {
 		HttpSession session = request.getSession();
 		String nextPage = new String();
 
-		Map<String, String> map = NullChecker.createMap(session.getAttribute("loginUser"));
+		ValidatorBJ validatorBJ = new ValidatorBJ();
+		validatorBJ.putStr("bet", request.getParameter("bet"));
+		validatorBJ.excuteValidation();
 
-		if (map.isEmpty()) {
+		// validatorBJからメッセージを抽出
+		if (validatorBJ.getMessage() != null) {
 
-			ValidatorBJ validatorBJ = new ValidatorBJ();
-			validatorBJ.putStr("bet", request.getParameter("bet"));
-			validatorBJ.excuteValidation();
+			request.setAttribute("message", validatorBJ.getMessage());
+			nextPage = "menu.jsp";
 
-			// validatorBJからメッセージを抽出
-			if (validatorBJ.getMessage() != null) {
-				
-				request.setAttribute("message", validatorBJ.getMessage());
-				nextPage = "menu.jsp";
-
-			} else {
-				
-				int bet = Integer.parseInt(request.getParameter("bet"));
-				Game oldGame = (Game) session.getAttribute("game");
-				Game newGame = new Game(bet);
-				Game game = newGame.start(oldGame);
-				session.setAttribute("game", game);
-
-				
-				
-				if (game.getPlayer().isBlackJack()) {
-					nextPage = "StandServlet";
-				} else {
-					nextPage = "playGame.jsp";
-				}
-			}
 		} else {
 
-			request.setAttribute("message", map.get("message"));
-			nextPage = map.get("nextPage");
+			int bet = Integer.parseInt(request.getParameter("bet"));
+			Game oldGame = (Game) session.getAttribute("game");
+			Game newGame = new Game(bet);
+			Game game = newGame.start(oldGame);
+
+			Player player = game.getSplitPlayers().getList().get(0);
+			if (player.isBlackJack()) {
+				player.setNaturalBJFlag();
+				nextPage = "StandServlet";
+			} else {
+				nextPage = "playGame.jsp";
+			}
+			
+			session.setAttribute("game", game);
 		}
 
 		RequestDispatcher rd = request.getRequestDispatcher(nextPage);
