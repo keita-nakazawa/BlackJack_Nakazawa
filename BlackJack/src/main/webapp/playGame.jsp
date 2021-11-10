@@ -69,70 +69,76 @@
 			
 			
 			<p>あなた</p>
-			
-			<table>
 <%
 			int index = 0;
 			for(Player player: splitPlayers.getList()) {
-%>			
-				<tr>
+%>	
+				<table>
+					<tr>
 <%
-				for(Card card: player.getHand().getListOfHand()) {
+					for(Card card: player.getHand().getListOfHand()) {
 %>
-					<td class="card">
-						<%=card.getMark()%><br><%=card.getNumber()%>
-					</td>
-<%
-				}
-%>
-					<td>
-						(<%=player.getPoint()%>点
-<%
-					if ((player.getBurst2() == false) && (player.getPoint() != player.getPoint2())) {
-%>
-						or <%=player.getPoint2()%>点
+						<td class="card">
+							<%=card.getMark()%><br><%=card.getNumber()%>
+						</td>
 <%
 					}
 %>
-						)
-					</td>
-					<td>BET額：<%=player.getBet()%></td>
-				</tr>
-			</table>
-			
-			<table>
-				<tr>
-					<td>
-						<form action="HitServlet" method="POST">
-							<input type="hidden" name="index" value="<%=index%>">
-							<input type="submit" value="ヒット" class="game_button">
-						</form>
-					</td>
-					<td>
-						<form action="StandServlet" method="POST">
-							<input type="hidden" name="index" value="<%=index%>">
-							<input type="submit" value="スタンド" class="game_button">
-						</form>
-					</td>
+						<td>
+							(<%=player.getPoint()%>点
 <%
-				if (player.canSplit()) {
+						if ((player.getBurst2() == false) && (player.getPoint() != player.getPoint2())) {
 %>
-					<td>
-						<form action="SplitServlet" method="POST">
-							<input type="hidden" name="index" value="<%=index%>">
-							<input type="submit" value="スプリット" class="game_button">
-						</form>
-					</td>
+							or <%=player.getPoint2()%>点
+<%
+						}
+%>
+							)
+						</td>
+						<td>BET額：<%=player.getBet()%></td>
+					</tr>
+				</table>
+<%
+				if (!(player.isEnd())) {
+%>
+					<table>
+						<tr>
+							<td>
+								<form action="HitServlet" method="POST">
+									<input type="hidden" name="index" value="<%=index%>">
+									<input type="submit" value="ヒット" class="game_button">
+								</form>
+							</td>
+							<td>
+								<form action="StandServlet" method="POST">
+									<input type="hidden" name="index" value="<%=index%>">
+									<input type="submit" value="スタンド" class="game_button">
+								</form>
+							</td>
+<%
+							if (player.canSplit()) {
+%>
+							<td>
+								<form action="SplitServlet" method="POST">
+									<input type="hidden" name="index" value="<%=index%>">
+									<input type="submit" value="スプリット" class="game_button">
+								</form>
+							</td>
 <%						
+							}
+							index++;
+%>
+						</tr>
+					</table>
+<%						
+				} else {
+%>
+					<p class="????????"><%=player.getPlayerMessage()%></p>
+<%
 				}
-				index++;
-%>
-				</tr>
-<%						
+
 			}
-%>
-			</table>
-<%
+			
 		} else {
 			request.setAttribute("message", map.get("message"));
 			RequestDispatcher rd = request.getRequestDispatcher(map.get("nextPage"));

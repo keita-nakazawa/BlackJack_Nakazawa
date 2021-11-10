@@ -5,7 +5,7 @@ public class Game {
 	private Deck deck;
 	private SplitPlayers splitPlayers = new SplitPlayers();
 	private Dealer dealer;
-	private boolean allEndFlag = false;
+	private boolean gameEndFlag = false;
 	private String gameMessage;
 	
 	public Game(int bet) {
@@ -47,6 +47,10 @@ public class Game {
 		return dealer;
 	}
 
+	public boolean isEnd() {
+		return gameEndFlag;
+	}
+	
 	public String getGameMessage() {
 		return gameMessage;
 	}
@@ -62,16 +66,20 @@ public class Game {
 	public void setDealer(Dealer dealer) {
 		this.dealer = dealer;
 	}
-	
-	public void setAllEndFlag() {
+
+	public void setGameEndFlag() {
 		for (Player player: splitPlayers.getList()) {
 			if (player.isEnd()) {
-				allEndFlag = true;
+				gameEndFlag = true;
 			} else {
-				allEndFlag = false;
+				gameEndFlag = false;
 				break;
 			}
 		}
+	}
+
+	public void setGameMessage(String gameMessage) {
+		this.gameMessage = gameMessage;
 	}
 	
 	/**
@@ -91,7 +99,7 @@ public class Game {
 	/**
 	 * プレイヤーとディーラーの点数を比較する。バースト判定フラグも考慮する。
 	 */
-	public History comparePoints(User loginUser) {
+	public HistoryList comparePoints(User loginUser) {
  
 		History history = new History();
 		history.setUserId(loginUser.getUserId());

@@ -9,9 +9,7 @@ import javax.servlet.http.*;
 
 import dao.HistoryDao;
 import dao.UserDao;
-import model.Game;
-import model.History;
-import model.User;
+import model.*;
 
 @WebServlet("/ResultServlet")
 public class ResultServlet extends HttpServlet {
@@ -22,6 +20,16 @@ public class ResultServlet extends HttpServlet {
 		HttpSession session = request.getSession();
 		Game game = (Game) session.getAttribute("game");
 		String nextPage = new String();
+		
+		Dealer dealer = game.getDealer();
+		Deck deck = game.getDeck();
+		dealer.action(deck);
+		game.setDealer(dealer);
+		game.setDeck(deck);
+		
+		
+		
+		
 
 		History history = (History) request.getAttribute("history");
 		User loginUser = (User) session.getAttribute("loginUser");

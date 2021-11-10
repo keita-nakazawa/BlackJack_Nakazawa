@@ -7,7 +7,9 @@ import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.*;
 
-import model.*;
+import model.Deck;
+import model.Game;
+import model.Player;
 
 @WebServlet("/HitServlet")
 public class HitServlet extends HttpServlet {
@@ -22,34 +24,44 @@ public class HitServlet extends HttpServlet {
 		int index = Integer.parseInt(request.getParameter("index"));
 		int splitPlayerSize = game.getSplitPlayers().getSize();
 		
-		if (index >= 0 && index < splitPlayerSize) {
+		if ((index >= 0) && (index < splitPlayerSize)) {
 			
 			Player player = game.getSplitPlayers().getPlayer(index);
 			
 			if (!(player.isEnd())) {
 				Deck deck = game.getDeck();
 				player.hit(deck);
+				//ヒット時のsetSplitFlagは必ずfalseを返す。
 				player.setSplitFlag();
+
+				if (player.isBurst()) {
+					player.setEndFlag();
+					player.setPlayerMessage("バースト");
+					nextPage = "CheckEndFlagServlet";
+					
+				} else if (player.isBlackJack()) {
+					player.setEndFlag();
+					player.setPlayerMessage("結果待ち");
+					nextPage = "CheckEndFlagServlet";
+					
+				} else {
+					nextPage = "playGame.jsp";
+				}
 
 				game.setPlayer(index, player);
 				game.setDeck(deck);
-
-				if (player.isBurst()) {
-					User loginUser = (User) session.getAttribute("loginUser");
-					request.setAttribute("history", game.comparePoints(loginUser));
-					nextPage = "ResultServlet";
-
-				} else if (player.isBlackJack()) {
-					session.setAttribute("game", game);
-					nextPage = "StandServlet";
-
-				} else {
-					session.setAttribute("game", game);
-					nextPage = "playGame.jsp";
-				}
+				
+			} else {
+				game.setGameMessage("無効な操作です。");
+				nextPage = "playGame.jsp";
 			}
+			
+		} else {
+			game.setGameMessage("無効な操作です。");
+			nextPage = "playGame.jsp";
 		}
 		
+		session.setAttribute("game", game);
 		RequestDispatcher rd = request.getRequestDispatcher(nextPage);
 		rd.forward(request, response);
 	}

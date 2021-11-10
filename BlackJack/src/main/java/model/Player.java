@@ -9,6 +9,7 @@ public class Player extends BasePlayer{
 	private boolean splitFlag = false;
 	//既に結果の出た手札ならtrue
 	private boolean endFlag = false;
+	private String playerMessage;
 	
 	public boolean isNaturalBJ() {
 		return naturalBJFlag;
@@ -44,8 +45,16 @@ public class Player extends BasePlayer{
 		return endFlag;
 	}
 
-	public void setEndFlag(boolean endFlag) {
-		this.endFlag = endFlag;
+	public void setEndFlag() {
+		endFlag = true;
+	}
+
+	public String getPlayerMessage() {
+		return playerMessage;
+	}
+
+	public void setPlayerMessage(String playerMessage) {
+		this.playerMessage = playerMessage;
 	}
 
 	public void hit(Deck deck) {

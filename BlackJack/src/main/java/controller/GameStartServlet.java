@@ -40,7 +40,9 @@ public class GameStartServlet extends HttpServlet {
 			Player player = game.getSplitPlayers().getList().get(0);
 			if (player.isBlackJack()) {
 				player.setNaturalBJFlag();
-				nextPage = "StandServlet";
+				player.setEndFlag();
+				game.setPlayer(0, player);
+				nextPage = "CheckEndFlagServlet";
 			} else {
 				nextPage = "playGame.jsp";
 			}
