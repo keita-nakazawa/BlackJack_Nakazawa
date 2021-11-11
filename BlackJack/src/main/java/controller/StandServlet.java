@@ -42,6 +42,8 @@ public class StandServlet extends HttpServlet {
 
 			request.setAttribute("message", map.get("message"));
 			nextPage = map.get("nextPage");
+			LoginLogoutServlet lls = new LoginLogoutServlet();
+			lls.doGet(request, response);
 		}
 
 		RequestDispatcher rd = request.getRequestDispatcher(nextPage);
@@ -51,7 +53,7 @@ public class StandServlet extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 
-		request.setAttribute("message", "不正な操作、URLを検知しました。</br>ログアウト処理を実行しました。");
+		request.setAttribute("message", "不正な操作・URLを検知したため、強制ログアウトしました。");
 		RequestDispatcher rd = request.getRequestDispatcher("LoginLogoutServlet");
 		rd.forward(request, response);
 	}

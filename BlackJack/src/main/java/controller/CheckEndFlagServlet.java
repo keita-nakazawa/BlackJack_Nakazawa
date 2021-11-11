@@ -47,7 +47,7 @@ public class CheckEndFlagServlet extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 
-		request.setAttribute("message", "不正な操作、URLを検知しました。</br>ログアウト処理を実行しました。");
+		request.setAttribute("message", "不正な操作・URLを検知したため、強制ログアウトしました。");
 		RequestDispatcher rd = request.getRequestDispatcher("LoginLogoutServlet");
 		rd.forward(request, response);
 	}

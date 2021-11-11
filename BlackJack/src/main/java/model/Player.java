@@ -120,6 +120,10 @@ public class Player extends BasePlayer{
 			this.setBurst();
 			this.setPlayerPoint();
 			this.setSplitFlag();
+			if (this.playerPoint == BLACKJACK) {
+				this.setEndFlag();
+				this.setPlayerMessage();
+			}
 			
 			splitPlayer.addPoint(removedCard);
 			deckCard = deck.removeCard();
@@ -128,7 +132,12 @@ public class Player extends BasePlayer{
 			splitPlayer.setBurst();
 			splitPlayer.setPlayerPoint();
 			splitPlayer.setSplitFlag();
+			if (splitPlayer.playerPoint == BLACKJACK) {
+				splitPlayer.setEndFlag();
+				splitPlayer.setPlayerMessage();
+			}
 			splitPlayer.bet = bet;
+			
 		} else {
 			splitPlayer = null;
 		}

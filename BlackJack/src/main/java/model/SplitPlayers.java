@@ -5,8 +5,8 @@ import java.util.List;
 
 public class SplitPlayers {
 
-	//スプリットにより増やせる手札の上限値。0の場合は上限値なし。
-	private final static int MAX_SPLIT_PLAYER = 2;
+	//スプリットにより増やせる手札の上限値。0の場合は上限値なし。1の場合はスプリット不可。
+	private final static int MAX_SPLIT_PLAYER = 0;
 	private List<Player> splitPlayerList = new ArrayList<>();
 	
 	public int getMAXSize() {

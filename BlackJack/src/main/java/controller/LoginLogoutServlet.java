@@ -18,28 +18,35 @@ public class LoginLogoutServlet extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 
-		request.setCharacterEncoding("UTF-8");
-		String userId = request.getParameter("user_id");
-		String password = request.getParameter("password");
-
-		HttpSession session = request.getSession();
-		UserDao userDao = new UserDao(session);
-		User loginUser = userDao.getLoginUser(userId, password);
-
-		String nextPage = new String();
-
-		// userDaoからメッセージを抽出
-		if (userDao.getMessage() != null) {
-			request.setAttribute("message", userDao.getMessage());
-			nextPage = "login.jsp";
-
+		//他のサーブレットからメッセージ付きでフォワードされてきたときはログアウト処理を実行
+		if (request.getAttribute("message") != null) {
+			doGet(request, response);
+			
 		} else {
-			session.setAttribute("loginUser", loginUser);
-			nextPage = "menu.jsp";
-		}
+			request.setCharacterEncoding("UTF-8");
+			String userId = request.getParameter("user_id");
+			String password = request.getParameter("password");
 
-		RequestDispatcher rd = request.getRequestDispatcher(nextPage);
-		rd.forward(request, response);
+			HttpSession session = request.getSession();
+			UserDao userDao = new UserDao(session);
+			User loginUser = userDao.getLoginUser(userId, password);
+
+			String nextPage = new String();
+
+			// userDaoからメッセージを抽出
+			if (userDao.getMessage() != null) {
+				request.setAttribute("message", userDao.getMessage());
+				nextPage = "login.jsp";
+
+			} else {
+				session.setAttribute("loginUser", loginUser);
+				nextPage = "menu.jsp";
+			}
+
+			RequestDispatcher rd = request.getRequestDispatcher(nextPage);
+			rd.forward(request, response);
+		}
+		
 	}
 
 	// ログアウト処理

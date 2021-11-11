@@ -85,6 +85,7 @@
 					}
 %>
 						<td>
+						
 							(<%=player.getPoint()%>点
 <%
 						if ((player.getBurst2() == false) && (player.getPoint() != player.getPoint2())) {
@@ -116,7 +117,7 @@
 								</form>
 							</td>
 <%
-							if ((player.canSplit()) && (splitPlayers.getSize() < splitPlayers.getMAXSize())) {
+							if ((player.canSplit()) && ((splitPlayers.getSize() < splitPlayers.getMAXSize()) || (splitPlayers.getMAXSize() == 0))) {
 %>
 							<td>
 								<form action="SplitServlet" method="POST">
@@ -126,17 +127,17 @@
 							</td>
 <%						
 							}
-							index++;
 %>
 						</tr>
 					</table>
-<%						
+<%
 				} else {
 %>
 					<p class="game_button"><%=player.getPlayerMessage()%></p>
 <%
 				}
 
+				index++;
 			}
 			
 		} else {

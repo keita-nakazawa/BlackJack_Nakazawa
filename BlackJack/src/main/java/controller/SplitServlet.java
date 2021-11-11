@@ -31,7 +31,7 @@ public class SplitServlet extends HttpServlet {
 			if ((index >= 0) && (index < splitPlayers.getSize())) {
 				Deck deck = game.getDeck();
 				splitPlayers.splitPlayer(index, deck);
-				nextPage = "playGame.jsp";
+				nextPage = "CheckEndFlagServlet";
 				
 			} else {
 				request.setAttribute("message", "無効な操作です。");
@@ -51,7 +51,7 @@ public class SplitServlet extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 
-		request.setAttribute("message", "不正な操作、URLを検知しました。</br>ログアウト処理を実行しました。");
+		request.setAttribute("message", "不正な操作・URLを検知したため、強制ログアウトしました。");
 		RequestDispatcher rd = request.getRequestDispatcher("LoginLogoutServlet");
 		rd.forward(request, response);
 	}

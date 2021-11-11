@@ -50,6 +50,9 @@ public class ValidatorBJ {
 				
 			case "index":
 				match = indexPattern.matcher(value).find();
+				if (!match) {
+					message = "無効な操作です。";
+				}
 				break;
 				
 			default:
