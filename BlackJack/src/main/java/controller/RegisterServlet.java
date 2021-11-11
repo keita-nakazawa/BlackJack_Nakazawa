@@ -41,7 +41,6 @@ public class RegisterServlet extends HttpServlet {
 		} else {
 
 			HttpSession session = request.getSession();
-			session.setAttribute("con", null);
 			UserDao userDao = new UserDao(session);
 			userDao.doRegister(userId, nickname, password, password2);
 

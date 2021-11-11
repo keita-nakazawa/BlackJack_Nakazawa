@@ -14,6 +14,8 @@ public class ValidatorBJ {
 	private static final Pattern passwordPattern = Pattern.compile("^[!#-%'-;=?-~]{8,20}$");
 	//1～10の半角数字
 	private static final Pattern betPattern = Pattern.compile("^[1-9]$|^10$");
+	//半角数字
+	private static final Pattern indexPattern = Pattern.compile("[0-9]");
 	
 	private Map<String, String> strMap = new HashMap<>();
 	private String message;
@@ -44,6 +46,10 @@ public class ValidatorBJ {
 				
 			case "bet":
 				match = betPattern.matcher(value).find();
+				break;
+				
+			case "index":
+				match = indexPattern.matcher(value).find();
 				break;
 				
 			default:

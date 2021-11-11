@@ -13,6 +13,27 @@ public class BaseDao {
 	protected String message;
 	
 	/**
+	 * ログアウト時のみ使用するコンストラクタ
+	 */
+	public BaseDao() {
+	}
+	
+	/**
+	 * コンストラクタ<br>
+	 * 初期処理として、セッションに保存されているDBコネクションを参照するかDBに新規接続する。
+	 */
+	public BaseDao(HttpSession session) {
+
+		Connection sessionCon = (Connection) session.getAttribute("con");
+
+		if (sessionCon != null) {
+			con = sessionCon;
+		} else {
+			getConnect(session);
+		}
+	}
+	
+	/**
 	 * DB接続処理
 	 */
 	protected void getConnect(HttpSession session) {
@@ -54,6 +75,7 @@ public class BaseDao {
 	
 	/**
 	 * セッションに退避してあったConnectionオブジェクトのクローズ処理
+	 * ただし、クローズしないうちにセッション切れが起きた場合はクローズ不可能状態になってしまう。
 	 */
 	public void closeCon(HttpSession session) {
 		
@@ -62,6 +84,8 @@ public class BaseDao {
 		try {
 			if (sessionCon != null) {
 				sessionCon.close();
+			} else {
+				message = "Connectionのクローズ処理が完了していない可能性があります。";
 			}
 		} catch (Exception e) {
 			e.printStackTrace();

@@ -2,16 +2,28 @@ package model;
 
 public class Dealer extends BasePlayer {
 
-	//ディーラーは自分の点数がこの値以上になるまでカードを引き続ける。
+	// ディーラーは自分の点数がこの値以上になるまでカードを引き続ける。
 	private static final int CRITERIA = 17;
 
-	public void action(Deck deck) {
-		while (getPlayerPoint() < CRITERIA) {
-			Card newCard = deck.removeCard();
-			drawCard(newCard);
-			setPoint(newCard);
-			setBurst();
-			setPlayerPoint();
+	/**
+	 * プレイヤーの手札が1つでも結果待ち状態である場合、<br>
+	 * ディーラーは基準を満たすまでカードを引き続ける。<br>
+	 * プレイヤーの手札がすべてバースト状態である場合、<br>
+	 * ディーラーは何もしない。
+	 */
+	public void action(SplitPlayers splitPlayers, Deck deck) {
+		
+		for (Player player: splitPlayers.getList()) {
+			if (!(player.isBurst())) {
+				while (getPlayerPoint() < CRITERIA) {
+					Card newCard = deck.removeCard();
+					drawCard(newCard);
+					addPoint(newCard);
+					setBurst();
+					setPlayerPoint();
+				}
+				break;
+			}
 		}
 	}
 }

@@ -1,6 +1,7 @@
 package controller;
 
 import java.io.IOException;
+import java.util.Map;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -8,6 +9,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.*;
 
 import dao.UserDao;
+import model.NullChecker;
 import model.User;
 import model.ValidatorBJ;
 
@@ -17,30 +19,44 @@ public class EditPassServlet extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 
-		String oldPassword = request.getParameter("old_password");
-		String newPassword = request.getParameter("new_password");
-		String newPassword2 = request.getParameter("new_password2");
+		HttpSession session = request.getSession();
+		User loginUser = (User) session.getAttribute("loginUser");
+		String nextPage = new String();
 
-		ValidatorBJ validatorBJ = new ValidatorBJ();
-		validatorBJ.putStr("newPassword", newPassword);
-		validatorBJ.putStr("newPassword2", newPassword2);
-		validatorBJ.excuteValidation();
+		Map<String, String> map = NullChecker.createMap(loginUser);
 
-		// validatorBJからメッセージを抽出
-		if (validatorBJ.getMessage() != null) {
-			request.setAttribute("message", validatorBJ.getMessage());
+		if (map.isEmpty()) {
+
+			String oldPassword = request.getParameter("old_password");
+			String newPassword = request.getParameter("new_password");
+			String newPassword2 = request.getParameter("new_password2");
+
+			ValidatorBJ validatorBJ = new ValidatorBJ();
+			validatorBJ.putStr("newPassword", newPassword);
+			validatorBJ.putStr("newPassword2", newPassword2);
+			validatorBJ.excuteValidation();
+
+			// validatorBJからメッセージを抽出
+			if (validatorBJ.getMessage() != null) {
+				request.setAttribute("message", validatorBJ.getMessage());
+
+			} else {
+				UserDao userDao = new UserDao(session);
+				String sessionUserId = loginUser.getUserId();
+				userDao.editPassword(oldPassword, newPassword, newPassword2, sessionUserId);
+
+				// userDaoからメッセージを抽出
+				request.setAttribute("message", userDao.getMessage());
+			}
+			nextPage = "edit.jsp";
 
 		} else {
-			HttpSession session = request.getSession();
-			UserDao userDao = new UserDao(session);
-			String sessionUserId = ((User) session.getAttribute("loginUser")).getUserId();
-			userDao.editPassword(oldPassword, newPassword, newPassword2, sessionUserId);
-			
-			// userDaoからメッセージを抽出
-			request.setAttribute("message", userDao.getMessage());
+
+			request.setAttribute("message", map.get("message"));
+			nextPage = map.get("nextPage");
 		}
-		
-		RequestDispatcher rd = request.getRequestDispatcher("edit.jsp");
+
+		RequestDispatcher rd = request.getRequestDispatcher(nextPage);
 		rd.forward(request, response);
 	}
 

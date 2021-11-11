@@ -1,3 +1,6 @@
+<%@page import="model.Dealer"%>
+<%@page import="model.SplitPlayers"%>
+<%@page import="model.Player"%>
 <%@page import="model.History"%>
 <%@page import="model.NullChecker"%>
 <%@page import="java.util.Map"%>
@@ -20,6 +23,8 @@
 <%
 		User loginUser = (User)session.getAttribute("loginUser");
 		Game game = (Game)request.getAttribute("game");
+		SplitPlayers splitPlayers = game.getSplitPlayers();
+		Dealer dealer = game.getDealer();
 		History history = (History)request.getAttribute("history");
 		int previousBet = (Integer)request.getAttribute("previousBet");
 
@@ -40,7 +45,7 @@
 			<table>
 				<tr>
 <%
-				for(Card card: game.getDealer().getHand().getListOfHand()) {
+				for(Card card: dealer.getHand().getListOfHand()) {
 %>
 					<td class="card">
 						<%=card.getMark()%><br><%=card.getNumber()%>
@@ -48,26 +53,32 @@
 <%
 				}
 %>
-				<td>(<%=game.getDealer().getPlayerPoint()%>点)</td>
+				<td>(<%=dealer.getPlayerPoint()%>点)</td>
 				</tr>
 			</table>
 			
 			<p>あなた</p>
 			<table>
+<%
+			for(Player player: splitPlayers.getList()) {
+%>
 				<tr>
 <%
-					for(Card card: game.getPlayer().getHand().getListOfHand()) {
+				for(Card card: player.getHand().getListOfHand()) {
 %>
-						<td class="card">
-							<%=card.getMark()%><br><%=card.getNumber()%>
-						</td>
+					<td class="card">
+						<%=card.getMark()%><br><%=card.getNumber()%>
+					</td>
 <%
-					}
+				}
 %>
-					<td>(<%=game.getPlayer().getPlayerPoint()%>点)</td>
-					<td><%=history.getResultMessage()%></td>
-					<td><%=history.getSignedResult()%></td>
+					<td>(<%=player.getPlayerPoint()%>点)</td>
+					<td><%=player.getResultMessage()%></td>
+					<td><%=player.getSignedEachResult()%></td>
 				</tr>
+<%
+			}
+%>
 			</table>
 
 			<br>

@@ -10,8 +10,9 @@ import javax.servlet.http.*;
 
 import model.*;
 
-@WebServlet("/HitServlet")
-public class HitServlet extends HttpServlet {
+@WebServlet("/SplitServlet")
+public class SplitServlet extends HttpServlet {
+
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 
@@ -28,20 +29,9 @@ public class HitServlet extends HttpServlet {
 			SplitPlayers splitPlayers = game.getSplitPlayers();
 
 			if ((index >= 0) && (index < splitPlayers.getSize())) {
-
-				Player player = splitPlayers.getPlayer(index);
 				Deck deck = game.getDeck();
-				player.hit(deck);
-				player.setSplitFlag();
-
-				if ((player.isBurst()) || (player.isBlackJack())) {
-					player.setEndFlag();
-					player.setPlayerMessage();
-					nextPage = "CheckEndFlagServlet";
-
-				} else {
-					nextPage = "playGame.jsp";
-				}
+				splitPlayers.splitPlayer(index, deck);
+				nextPage = "playGame.jsp";
 				
 			} else {
 				request.setAttribute("message", "無効な操作です。");

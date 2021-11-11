@@ -44,7 +44,7 @@ public abstract class BasePlayer {
 		return playerBurst;
 	}
 
-	public void setPoint(Card newCard) {
+	public void addPoint(Card newCard) {
 
 		//いかなるときも point≦point2 となる
 		if (newCard.getNumber().equals("A")) {
@@ -55,7 +55,7 @@ public abstract class BasePlayer {
 			point += newCard.getPoint();
 		}
 	}
-
+	
 	public void setBurst() {
 
 		if (point > BLACKJACK) {

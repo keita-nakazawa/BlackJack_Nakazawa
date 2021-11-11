@@ -1,14 +1,14 @@
 package controller;
 
 import java.io.IOException;
+import java.util.Map;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.*;
 
-import model.Game;
-import model.Player;
+import model.*;
 
 @WebServlet("/StandServlet")
 public class StandServlet extends HttpServlet {
@@ -19,24 +19,31 @@ public class StandServlet extends HttpServlet {
 		Game game = (Game) session.getAttribute("game");
 		String nextPage = new String();
 
-		// indexのバリデーション必要
-		int index = Integer.parseInt(request.getParameter("index"));
-		int splitPlayerSize = game.getSplitPlayers().getSize();
+		Map<String, String> map = NullChecker.createMap(game);
 
-		if ((index >= 0) && (index < splitPlayerSize)) {
+		if (map.isEmpty()) {
 
-			Player player = game.getSplitPlayers().getPlayer(index);
-			player.setEndFlag();
-			player.setPlayerMessage("結果待ち");
-			game.setPlayer(index, player);
-			nextPage = "CheckEndFlagServlet";
+			// indexのバリデーション必要
+			int index = Integer.parseInt(request.getParameter("index"));
+			SplitPlayers splitPlayers = game.getSplitPlayers();
+
+			if ((index >= 0) && (index < splitPlayers.getSize())) {
+				Player player = splitPlayers.getPlayer(index);
+				player.setEndFlag();
+				player.setPlayerMessage();
+				nextPage = "CheckEndFlagServlet";
+
+			} else {
+				request.setAttribute("message", "無効な操作です。");
+				nextPage = "playGame.jsp";
+			}
 
 		} else {
-			game.setGameMessage("無効な操作です。");
-			nextPage = "playGame.jsp";
+
+			request.setAttribute("message", map.get("message"));
+			nextPage = map.get("nextPage");
 		}
-		
-		session.setAttribute("game", game);
+
 		RequestDispatcher rd = request.getRequestDispatcher(nextPage);
 		rd.forward(request, response);
 	}

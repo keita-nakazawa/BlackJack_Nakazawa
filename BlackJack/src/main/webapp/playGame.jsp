@@ -116,7 +116,7 @@
 								</form>
 							</td>
 <%
-							if (player.canSplit()) {
+							if ((player.canSplit()) && (splitPlayers.getSize() < splitPlayers.getMAXSize())) {
 %>
 							<td>
 								<form action="SplitServlet" method="POST">
@@ -133,7 +133,7 @@
 <%						
 				} else {
 %>
-					<p class="????????"><%=player.getPlayerMessage()%></p>
+					<p class="game_button"><%=player.getPlayerMessage()%></p>
 <%
 				}
 

@@ -19,12 +19,10 @@ public class LoginLogoutServlet extends HttpServlet {
 			throws ServletException, IOException {
 
 		request.setCharacterEncoding("UTF-8");
-
 		String userId = request.getParameter("user_id");
 		String password = request.getParameter("password");
 
 		HttpSession session = request.getSession();
-		session.setAttribute("con", null);
 		UserDao userDao = new UserDao(session);
 		User loginUser = userDao.getLoginUser(userId, password);
 

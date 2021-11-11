@@ -1,6 +1,7 @@
 package controller;
 
 import java.io.IOException;
+import java.util.Map;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -8,6 +9,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.*;
 
 import dao.UserDao;
+import model.NullChecker;
 import model.User;
 import model.ValidatorBJ;
 
@@ -17,32 +19,48 @@ public class EditIdNameServlet extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 
-		request.setCharacterEncoding("UTF-8");
+		HttpSession session = request.getSession();
+		User loginUser = (User) session.getAttribute("loginUser");
+		String nextPage = new String();
 
-		String userId = request.getParameter("user_id");
-		String nickname = request.getParameter("nickname");
+		Map<String, String> map = NullChecker.createMap(loginUser);
 
-		ValidatorBJ validatorBJ = new ValidatorBJ();
-		validatorBJ.putStr("userId", userId);
-		validatorBJ.putStr("nickname", nickname);
-		validatorBJ.excuteValidation();
+		if (map.isEmpty()) {
 
-		// validatorBJからメッセージを抽出
-		if (validatorBJ.getMessage() != null) {
-			request.setAttribute("message", validatorBJ.getMessage());
+			request.setCharacterEncoding("UTF-8");
+			String userId = request.getParameter("user_id");
+			String nickname = request.getParameter("nickname");
+
+			ValidatorBJ validatorBJ = new ValidatorBJ();
+			validatorBJ.putStr("userId", userId);
+			validatorBJ.putStr("nickname", nickname);
+			validatorBJ.excuteValidation();
+
+			// validatorBJからメッセージを抽出
+			if (validatorBJ.getMessage() != null) {
+				request.setAttribute("message", validatorBJ.getMessage());
+
+			} else {
+				int chip = loginUser.getChip();
+				
+				String sessionUserId = loginUser.getUserId();
+				UserDao userDao = new UserDao(session);
+				loginUser = userDao.editIdName(userId, nickname, sessionUserId);
+				loginUser.setChip(chip);
+				
+				// userDaoからメッセージを抽出
+				request.setAttribute("message", userDao.getMessage());
+				session.setAttribute("loginUser", loginUser);
+			}
+			nextPage = "edit.jsp";
 
 		} else {
-			HttpSession session = request.getSession();
-			UserDao userDao = new UserDao(session);
-			String sessionUserId = ((User) session.getAttribute("loginUser")).getUserId();
-			User loginUser = userDao.editIdName(userId, nickname, sessionUserId);
 
-			// userDaoからメッセージを抽出
-			request.setAttribute("message", userDao.getMessage());
-			session.setAttribute("loginUser", loginUser);
+			request.setAttribute("message", map.get("message"));
+			nextPage = map.get("nextPage");
 		}
 
-		RequestDispatcher rd = request.getRequestDispatcher("edit.jsp");
+		RequestDispatcher rd = request.getRequestDispatcher(nextPage);
 		rd.forward(request, response);
 	}
 

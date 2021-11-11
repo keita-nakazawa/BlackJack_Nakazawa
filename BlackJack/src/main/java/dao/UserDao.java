@@ -1,6 +1,5 @@
 package dao;
 
-import java.sql.Connection;
 import java.sql.SQLException;
 import java.sql.SQLIntegrityConstraintViolationException;
 import java.util.ArrayList;
@@ -15,19 +14,8 @@ import model.User;
  */
 public class UserDao extends BaseDao {
 
-	/**
-	 * コンストラクタ<br>
-	 * 初期処理として、セッションに保存されているDBコネクションを参照するかDBに新規接続する。
-	 */
 	public UserDao(HttpSession session) {
-
-		Connection sessionCon = (Connection) session.getAttribute("con");
-
-		if (sessionCon != null) {
-			con = sessionCon;
-		} else {
-			getConnect(session);
-		}
+		super(session);
 	}
 
 	/**
@@ -102,10 +90,12 @@ public class UserDao extends BaseDao {
 	public void doDelete(User loginUser) {
 
 		try {
-			String sql = "DELETE FROM users WHERE user_id = ?";
-			ps = con.prepareStatement(sql);
-			ps.setString(1, loginUser.getUserId());
-			ps.executeUpdate();
+			if (con != null) {
+				String sql = "DELETE FROM users WHERE user_id = ?";
+				ps = con.prepareStatement(sql);
+				ps.setString(1, loginUser.getUserId());
+				ps.executeUpdate();
+			}
 
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -125,13 +115,15 @@ public class UserDao extends BaseDao {
 		User loginUser = new User();
 
 		try {
-			String sql = "UPDATE users SET user_id = ?, nickname = ? WHERE user_id = ?";
-			ps = con.prepareStatement(sql);
-			ps.setString(1, userId);
-			ps.setString(2, nickname);
-			ps.setString(3, sessionUserId);
-			ps.executeUpdate();
-			message = "ユーザID、ニックネームを変更しました。";
+			if (con != null) {
+				String sql = "UPDATE users SET user_id = ?, nickname = ? WHERE user_id = ?";
+				ps = con.prepareStatement(sql);
+				ps.setString(1, userId);
+				ps.setString(2, nickname);
+				ps.setString(3, sessionUserId);
+				ps.executeUpdate();
+				message = "ユーザID、ニックネームを変更しました。";
+			}
 
 		} catch (SQLIntegrityConstraintViolationException e) {
 			e.printStackTrace();
@@ -157,18 +149,20 @@ public class UserDao extends BaseDao {
 		if (newPassword.equals(newPassword2)) {
 
 			try {
-				String sql = "UPDATE users SET password = ? WHERE (user_id = ?) && (password = ?)";
-				ps = con.prepareStatement(sql);
-				ps.setString(1, newPassword);
-				ps.setString(2, sessionUserId);
-				ps.setString(3, oldPassword);
+				if (con != null) {
+					String sql = "UPDATE users SET password = ? WHERE (user_id = ?) && (password = ?)";
+					ps = con.prepareStatement(sql);
+					ps.setString(1, newPassword);
+					ps.setString(2, sessionUserId);
+					ps.setString(3, oldPassword);
 
-				int changedRows = ps.executeUpdate();
+					int changedRows = ps.executeUpdate();
 
-				if (changedRows == 0) {
-					message = "古いパスワードが間違っています。";
-				} else {
-					message = "パスワードを変更しました。";
+					if (changedRows == 0) {
+						message = "古いパスワードが間違っています。";
+					} else {
+						message = "パスワードを変更しました。";
+					}
 				}
 
 			} catch (SQLException e) {
@@ -190,12 +184,14 @@ public class UserDao extends BaseDao {
 		int population = 0;
 
 		try {
-			String sql = "SELECT count(*) FROM users";
-			ps = con.prepareStatement(sql);
-			rs = ps.executeQuery();
+			if (con != null) {
+				String sql = "SELECT count(*) FROM users";
+				ps = con.prepareStatement(sql);
+				rs = ps.executeQuery();
 
-			rs.next();
-			population = rs.getInt("count(*)");
+				rs.next();
+				population = rs.getInt("count(*)");
+			}
 
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -216,15 +212,17 @@ public class UserDao extends BaseDao {
 		List<User> rankingList = new ArrayList<User>();
 
 		try {
-			String sql = "SELECT * FROM users ORDER BY chip DESC LIMIT 5";
-			ps = con.prepareStatement(sql);
-			rs = ps.executeQuery();
+			if (con != null) {
+				String sql = "SELECT * FROM users ORDER BY chip DESC LIMIT 5";
+				ps = con.prepareStatement(sql);
+				rs = ps.executeQuery();
 
-			while (rs.next()) {
-				User user = new User();
-				user.setNickname(rs.getString("nickname"));
-				user.setChip(rs.getInt("chip"));
-				rankingList.add(user);
+				while (rs.next()) {
+					User user = new User();
+					user.setNickname(rs.getString("nickname"));
+					user.setChip(rs.getInt("chip"));
+					rankingList.add(user);
+				}
 			}
 
 		} catch (SQLException e) {
@@ -237,34 +235,6 @@ public class UserDao extends BaseDao {
 	}
 
 	/**
-	 * usersテーブルからログイン中ユーザの情報を取得する。
-	 * 
-	 * @return 所持チップ枚数を有するUserオブジェクト
-	 */
-//	public User getUserInfo(User loginUser) {
-//
-//		User user = new User();
-//		String userId = loginUser.getUserId();
-//
-//		try {
-//			String sql = "SELECT * FROM users WHERE user_id = ?";
-//			ps = con.prepareStatement(sql);
-//			ps.setString(1, userId);
-//			rs = ps.executeQuery();
-//
-//			rs.next();
-//			user.setChip(rs.getInt("chip"));
-//
-//		} catch (SQLException e) {
-//			e.printStackTrace();
-//			message = "SQL実行中に例外が発生しました";
-//		} finally {
-//			closeAll();
-//		}
-//		return user;
-//	}
-
-	/**
 	 * usersテーブルのchipカラムを更新
 	 */
 	public void updateChip(User loginUser) {
@@ -273,11 +243,13 @@ public class UserDao extends BaseDao {
 		int chip = loginUser.getChip();
 
 		try {
-			String sql = "UPDATE users SET chip = ? WHERE user_id = ?";
-			ps = con.prepareStatement(sql);
-			ps.setInt(1, chip);
-			ps.setString(2, userId);
-			ps.executeUpdate();
+			if (con != null) {
+				String sql = "UPDATE users SET chip = ? WHERE user_id = ?";
+				ps = con.prepareStatement(sql);
+				ps.setInt(1, chip);
+				ps.setString(2, userId);
+				ps.executeUpdate();
+			}
 
 		} catch (SQLException e) {
 			e.printStackTrace();

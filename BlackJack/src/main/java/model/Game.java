@@ -5,9 +5,9 @@ public class Game {
 	private Deck deck;
 	private SplitPlayers splitPlayers = new SplitPlayers();
 	private Dealer dealer;
+	// splitPlayers中のすべてのPlayerオブジェクトのendFlagがtrueの場合、true
 	private boolean gameEndFlag = false;
-	private String gameMessage;
-	
+
 	public Game(int bet) {
 
 		Player player = new Player();
@@ -15,23 +15,23 @@ public class Game {
 		Deck deck = new Deck();
 
 		player.setBet(bet);
-		
+
 		for (int i = 0; i < 2; i++) {
 			Card newCard = deck.removeCard();
 			player.drawCard(newCard);
-			player.setPoint(newCard);
-			
+			player.addPoint(newCard);
+
 			newCard = deck.removeCard();
 			dealer.drawCard(newCard);
-			dealer.setPoint(newCard);
+			dealer.addPoint(newCard);
 		}
-		
+
 		player.setPlayerPoint();
 		dealer.setPlayerPoint();
 		player.setSplitFlag();
 
 		this.deck = deck;
-		splitPlayers.getList().add(player);
+		splitPlayers.addPlayer(player);
 		this.dealer = dealer;
 	}
 
@@ -50,25 +50,17 @@ public class Game {
 	public boolean isEnd() {
 		return gameEndFlag;
 	}
-	
-	public String getGameMessage() {
-		return gameMessage;
-	}
 
 	public void setDeck(Deck deck) {
 		this.deck = deck;
 	}
-	
-	public void setPlayer(int index, Player player) {
-		splitPlayers.getList().set(index, player);
-	}
-	
+
 	public void setDealer(Dealer dealer) {
 		this.dealer = dealer;
 	}
 
 	public void setGameEndFlag() {
-		for (Player player: splitPlayers.getList()) {
+		for (Player player : splitPlayers.getList()) {
 			if (player.isEnd()) {
 				gameEndFlag = true;
 			} else {
@@ -77,15 +69,10 @@ public class Game {
 			}
 		}
 	}
-
-	public void setGameMessage(String gameMessage) {
-		this.gameMessage = gameMessage;
-	}
 	
 	/**
 	 * 終了していないゲームセッションがあるか確認する。
-	 * @return Game<br>
-	 *         パラメータがnullの場合は自身を、nullでない場合はパラメータを返す。
+	 * @return oldGameがnullの場合は自身を、nullでない場合はoldGameを返す。
 	 */
 	public Game start(Game oldGame) {
 
@@ -97,46 +84,53 @@ public class Game {
 	}
 
 	/**
-	 * プレイヤーとディーラーの点数を比較する。バースト判定フラグも考慮する。
+	 * プレイヤーのすべての手札とディーラーの手札で点数を比較し、チップ収支の総計を求める。
+	 * @return DBのhistoryテーブルへの記録に用いるHistoryオブジェクト
 	 */
-	public HistoryList comparePoints(User loginUser) {
- 
+	public History comparePoints(User loginUser) {
+
 		History history = new History();
 		history.setUserId(loginUser.getUserId());
 		
-		if (player.isBurst()) {
-			
-			history.setResult(player.getBet() * (-1));
+		int result = 0;
+		for (Player player: getSplitPlayers().getList()) {
 
-		} else if (dealer.isBurst()) {
-			
-			if (player.isBlackJack() && (turnCount == 0)) {
-				//ナチュラルBJ時はBET額を1.5倍して小数点以下切り上げ
-				history.setNaturalBJ();
-				history.setResult((int) Math.ceil(player.getBet() * 1.5));
-			} else {
-				history.setResult(player.getBet());
-			}
+			if (player.isBurst()) {
 
-		} else {
+				player.setEachResult(player.getBet() * (-1));
 
-			if (dealer.getPlayerPoint() > player.getPlayerPoint()) {
-				history.setResult(player.getBet() * (-1));
+			} else if (dealer.isBurst()) {
 
-			} else if (dealer.getPlayerPoint() == player.getPlayerPoint()) {
-				//3枚以上のカードでの「21」がナチュラルBJに対して負けるというルールは適用しない。
-				history.setResult(0);
-
-			} else {
-				if (player.isBlackJack() && (turnCount == 0)) {
-					//ナチュラルBJ時はBET額を1.5倍して小数点以下切り捨て
-					history.setNaturalBJ();
-					history.setResult((int) Math.floor(player.getBet() * 1.5));
+				if (player.isNaturalBJ()) {
+					//BET額を1.5倍して小数点以下切り捨て
+					player.setEachResult((int) Math.floor(player.getBet() * 1.5));
 				} else {
-					history.setResult(player.getBet());
+					player.setEachResult(player.getBet());
+				}
+
+			} else {
+
+				if (dealer.getPlayerPoint() > player.getPlayerPoint()) {
+					player.setEachResult(player.getBet() * (-1));
+
+				} else if (dealer.getPlayerPoint() == player.getPlayerPoint()) {
+					// 3枚以上のカードでの「21」がナチュラルBJに対して負けるというルールは適用しない。
+					player.setEachResult(0);
+
+				} else {
+					if (player.isNaturalBJ()) {
+						// ナチュラルBJ時はBET額を1.5倍して小数点以下切り捨て
+						player.setEachResult((int) Math.floor(player.getBet() * 1.5));
+					} else {
+						player.setEachResult(player.getBet());
+					}
 				}
 			}
+
+			result += player.getEachResult();
 		}
+		history.setResult(result);
+
 		return history;
 	}
 }

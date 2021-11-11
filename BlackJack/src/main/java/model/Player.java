@@ -2,6 +2,7 @@ package model;
 
 public class Player extends BasePlayer{
 
+	//BET額
 	private int bet;
 	//ナチュラルBJの可能性があるならtrue
 	private boolean naturalBJFlag = false;
@@ -9,6 +10,9 @@ public class Player extends BasePlayer{
 	private boolean splitFlag = false;
 	//既に結果の出た手札ならtrue
 	private boolean endFlag = false;
+	//チップ収支
+	private int eachResult;
+	//"バースト" or "結果待ち" 
 	private String playerMessage;
 	
 	public boolean isNaturalBJ() {
@@ -49,38 +53,34 @@ public class Player extends BasePlayer{
 		endFlag = true;
 	}
 
+	public int getEachResult() {
+		return eachResult;
+	}
+
+	public String getSignedEachResult() {
+		if (eachResult > 0) {
+			return "+" + String.valueOf(eachResult);
+		} else {
+			return String.valueOf(eachResult);
+		}
+	}
+
+	public void setEachResult(int eachResult) {
+		this.eachResult = eachResult;
+	}
+
 	public String getPlayerMessage() {
 		return playerMessage;
 	}
 
-	public void setPlayerMessage(String playerMessage) {
-		this.playerMessage = playerMessage;
+	public void setPlayerMessage() {
+		if (playerBurst) {
+			playerMessage = "バースト";
+		} else {
+			playerMessage = "結果待ち";
+		}
 	}
 
-	public void hit(Deck deck) {
-		Card newCard = deck.removeCard();
-		drawCard(newCard);
-		setPoint(newCard);
-		setBurst();
-		setPlayerPoint();
-	}
-	
-	/**
-	 * 手札が2枚かつ同点時、2枚目を新たなPlayerオブジェクトに渡し、BET額もコピーする。
-	 * @return 新たに生成したPlayerオブジェクト
-	 */
-	public Player split() {
-		Player splitPlayer = new Player();
-		
-		if (splitFlag) {
-			splitPlayer.drawCard(hand.removeCard());
-			splitPlayer.bet = bet;
-		} else {
-			splitPlayer = null;
-		}
-		return splitPlayer;
-	}
-	
 	public boolean isBlackJack() {
 		if (getPlayerPoint() == BLACKJACK) {
 			return true;
@@ -88,4 +88,65 @@ public class Player extends BasePlayer{
 			return false;
 		}
 	}
+
+	public void hit(Deck deck) {
+		if (!endFlag) {
+			Card newCard = deck.removeCard();
+			drawCard(newCard);
+			addPoint(newCard);
+			setBurst();
+			setPlayerPoint();
+		}
+	}
+	
+	/**
+	 * 手札が2枚かつ同点時、2枚目を新たなPlayerオブジェクトに渡し、<br>
+	 * 山札から1枚ずつ引いて点数を再計算。BET額もコピーする。
+	 * @return 新たに生成したPlayerオブジェクト
+	 */
+	public Player split(Deck deck) {
+		Player splitPlayer = new Player();
+		
+		if (splitFlag && !endFlag) {
+			Card removedCard = hand.removeCard();
+			splitPlayer.drawCard(removedCard);
+			
+			this.point = 0;
+			this.point2 = 0;
+			this.addPoint(removedCard);
+			Card deckCard = deck.removeCard();
+			this.drawCard(deckCard);
+			this.addPoint(deckCard);
+			this.setBurst();
+			this.setPlayerPoint();
+			this.setSplitFlag();
+			
+			splitPlayer.addPoint(removedCard);
+			deckCard = deck.removeCard();
+			splitPlayer.drawCard(deckCard);
+			splitPlayer.addPoint(deckCard);
+			splitPlayer.setBurst();
+			splitPlayer.setPlayerPoint();
+			splitPlayer.setSplitFlag();
+			splitPlayer.bet = bet;
+		} else {
+			splitPlayer = null;
+		}
+		return splitPlayer;
+	}
+	
+	public String getResultMessage() {
+		if (eachResult > 0) {
+			if (naturalBJFlag) {
+				return "NaturalBJ!!";
+			} else {
+				return "Win";
+			}
+		} else if (eachResult < 0) {
+			return "Lose";
+		} else {
+			return "Draw";
+		}
+	}
+
 }

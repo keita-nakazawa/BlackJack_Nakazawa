@@ -1,6 +1,7 @@
 package controller;
 
 import java.io.IOException;
+import java.util.Map;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -8,6 +9,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.*;
 
 import dao.UserDao;
+import model.NullChecker;
 import model.User;
 
 @WebServlet("/DeleteServlet")
@@ -17,21 +19,31 @@ public class DeleteServlet extends HttpServlet {
 			throws ServletException, IOException {
 
 		HttpSession session = request.getSession();
-		UserDao userDao = new UserDao(session);
-		String nextPage = new String();
-		
 		User loginUser = (User) session.getAttribute("loginUser");
-		userDao.doDelete(loginUser);
+		String nextPage = new String();
 
-		// userDaoからメッセージを抽出
-		if (userDao.getMessage() != null) {
-			request.setAttribute("message", userDao.getMessage());
-			nextPage = "delete.jsp";
+		Map<String, String> map = NullChecker.createMap(loginUser);
+
+		if (map.isEmpty()) {
+
+			UserDao userDao = new UserDao(session);
+			userDao.doDelete(loginUser);
+
+			// userDaoからメッセージを抽出
+			if (userDao.getMessage() != null) {
+				request.setAttribute("message", userDao.getMessage());
+				nextPage = "delete.jsp";
+
+			} else {
+				request.setAttribute("message", loginUser.getNickname() + "さんのユーザ情報を削除しました");
+				session.invalidate();
+				nextPage = "login.jsp";
+			}
 
 		} else {
-			request.setAttribute("message", loginUser.getNickname() + "さんのユーザ情報を削除しました");
-			session.invalidate();
-			nextPage = "login.jsp";
+
+			request.setAttribute("message", map.get("message"));
+			nextPage = map.get("nextPage");
 		}
 
 		RequestDispatcher rd = request.getRequestDispatcher(nextPage);

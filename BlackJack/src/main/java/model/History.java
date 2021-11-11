@@ -7,7 +7,6 @@ public class History {
 	private String userId;
 	private Timestamp timestamp;
 	private int result;
-	private boolean naturalBJ = false;
 
 	public String getUserId() {
 		return userId;
@@ -29,20 +28,6 @@ public class History {
 		}
 	}
 
-	public String getResultMessage() {
-		if (result > 0) {
-			if (naturalBJ) {
-				return "NaturalBJ!!";
-			} else {
-				return "Win";
-			}
-		} else if (result < 0) {
-			return "Lose";
-		} else {
-			return "Draw";
-		}
-	}
-
 	public void setUserId(String userId) {
 		this.userId = userId;
 	}
@@ -53,9 +38,5 @@ public class History {
 
 	public void setResult(int result) {
 		this.result = result;
-	}
-	
-	public void setNaturalBJ() {
-		naturalBJ = true;
 	}
 }
