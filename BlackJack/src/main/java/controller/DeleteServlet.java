@@ -32,7 +32,7 @@ public class DeleteServlet extends HttpServlet {
 			// userDaoからメッセージを抽出
 			if (userDao.getMessage() != null) {
 				request.setAttribute("message", userDao.getMessage());
-				nextPage = "delete.jsp";
+				nextPage = "deleteUser.jsp";
 
 			} else {
 				request.setAttribute("message", loginUser.getNickname() + "さんのユーザ情報を削除しました");

@@ -64,10 +64,10 @@
 						<a href="RankingServlet" class="button">ランキング</a>
 					</td>
 					<td>
-						<a href="edit.jsp" class="button">ユーザ情報変更</a>
+						<a href="editUserInfo.jsp" class="button">ユーザ情報変更</a>
 					</td>
 					<td>
-						<a href="delete.jsp" class="button">ユーザ削除</a>
+						<a href="deleteUser.jsp" class="button">ユーザ削除</a>
 					</td>
 				</tr>
 			</table>

@@ -48,7 +48,7 @@ public class EditPassServlet extends HttpServlet {
 				// userDaoからメッセージを抽出
 				request.setAttribute("message", userDao.getMessage());
 			}
-			nextPage = "edit.jsp";
+			nextPage = "editUserInfo.jsp";
 
 		} else {
 

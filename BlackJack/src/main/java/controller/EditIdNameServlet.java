@@ -52,7 +52,7 @@ public class EditIdNameServlet extends HttpServlet {
 				request.setAttribute("message", userDao.getMessage());
 				session.setAttribute("loginUser", loginUser);
 			}
-			nextPage = "edit.jsp";
+			nextPage = "editUserInfo.jsp";
 
 		} else {
 

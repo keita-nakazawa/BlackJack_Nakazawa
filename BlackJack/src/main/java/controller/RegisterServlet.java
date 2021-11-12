@@ -36,7 +36,7 @@ public class RegisterServlet extends HttpServlet {
 		if (validatorBJ.getMessage() != null) {
 			
 			request.setAttribute("message", validatorBJ.getMessage());
-			nextPage = "register.jsp";
+			nextPage = "registerUser.jsp";
 			
 		} else {
 
@@ -47,7 +47,7 @@ public class RegisterServlet extends HttpServlet {
 			// userDaoからメッセージを抽出
 			if (userDao.getMessage() != null) {
 				request.setAttribute("message", userDao.getMessage());
-				nextPage = "register.jsp";
+				nextPage = "registerUser.jsp";
 
 			} else {
 				request.setAttribute("message", "新規登録が完了しました");
@@ -62,7 +62,7 @@ public class RegisterServlet extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 
-		RequestDispatcher rd = request.getRequestDispatcher("register.jsp");
+		RequestDispatcher rd = request.getRequestDispatcher("registerUser.jsp");
 		rd.forward(request, response);
 	}
 }
