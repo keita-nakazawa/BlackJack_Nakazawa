@@ -5,7 +5,7 @@ public class Game {
 	private Deck deck;
 	private SplitPlayers splitPlayers = new SplitPlayers();
 	private Dealer dealer;
-	// splitPlayers中のすべてのPlayerオブジェクトのendFlagがtrueの場合、true
+	// splitPlayers中のすべてのPlayerオブジェクトのendFlagがtrueの場合、true。
 	private boolean gameEndFlag = false;
 
 	public Game(int bet) {
@@ -30,8 +30,14 @@ public class Game {
 		dealer.setPlayerPoint();
 		player.setSplitFlag();
 
+		if (player.isBlackJack()) {
+			player.setNaturalBJFlag();
+			player.setEndFlag();
+		}
+		
 		this.deck = deck;
 		splitPlayers.addPlayer(player);
+		splitPlayers.setAllSplitFlag();
 		this.dealer = dealer;
 	}
 
@@ -133,4 +139,5 @@ public class Game {
 
 		return history;
 	}
+	
 }

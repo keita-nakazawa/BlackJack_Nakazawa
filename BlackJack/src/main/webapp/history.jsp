@@ -15,7 +15,7 @@
 	</head>
 
 	<body>
-		<h1>BlackJack</h1>
+		<h1 id="top">BlackJack</h1>
 <%
 		User loginUser = (User)session.getAttribute("loginUser");
 		List<History> historyList = (List) request.getAttribute("historyList");
@@ -37,6 +37,8 @@
 			<h2>これまでの戦績</h2>
 			
 			<p>総対戦回数：<%=historyList.size()%>回</p>
+			
+			<a href="menu.jsp" class="button">メニューへ戻る</a>
 			
 			<table border="1">
 				<thead>
@@ -63,7 +65,7 @@
 			
 			<br>
 			
-			<a href="menu.jsp" class="button">メニューへ戻る</a>
+			<a href="#top">ページトップへ</a>
 <%
 		} else {
 			request.setAttribute("message", map.get("message"));

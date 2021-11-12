@@ -41,12 +41,9 @@ public class GameStartServlet extends HttpServlet {
 				Game oldGame = (Game) session.getAttribute("game");
 				Game newGame = new Game(bet);
 				Game game = newGame.start(oldGame);
+				Player player = game.getSplitPlayers().getPlayer(0);
 
-				Player player = game.getSplitPlayers().getList().get(0);
-				if (player.isBlackJack()) {
-					player.setNaturalBJFlag();
-					player.setEndFlag();
-					game.getSplitPlayers().setPlayer(0, player);
+				if (player.isEnd()) {
 					nextPage = "CheckEndFlagServlet";
 				} else {
 					nextPage = "playGame.jsp";

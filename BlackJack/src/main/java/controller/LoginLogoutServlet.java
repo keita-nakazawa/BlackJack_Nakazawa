@@ -18,7 +18,7 @@ public class LoginLogoutServlet extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 
-		//他のサーブレットからメッセージ付きでフォワードされてきたときはログアウト処理を実行
+		//他のサーブレットからメッセージ付きでフォワードされてきたときは強制ログアウト
 		if (request.getAttribute("message") != null) {
 			doGet(request, response);
 			
@@ -59,9 +59,6 @@ public class LoginLogoutServlet extends HttpServlet {
 		baseDao.closeCon(session);
 		session.invalidate();
 
-		if (baseDao.getMessage() != null) {
-			request.setAttribute("message", baseDao.getMessage());
-		}
 		RequestDispatcher rd = request.getRequestDispatcher("login.jsp");
 		rd.forward(request, response);
 	}

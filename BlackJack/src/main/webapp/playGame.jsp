@@ -53,8 +53,8 @@
 				<tr>
 					<td class="card"><%=firstCard.getMark()%><br><%=firstCard.getNumber()%></td>
 					<td class="card">？</td>
-					<td>
-						(<%=firstCard.getPoint()%>点
+					<td class="game_text">
+						<%=firstCard.getPoint()%>点
 <%
 					if (firstCard.getNumber().equals("A")) {
 %>
@@ -62,7 +62,7 @@
 <%
 					}
 %>
-						+ ？点)
+						+ ?
 					</td>
 				</tr>
 			</table>
@@ -84,19 +84,26 @@
 <%
 					}
 %>
-						<td>
-						
-							(<%=player.getPoint()%>点
+						<td class="game_text">
 <%
-						if ((player.getBurst2() == false) && (player.getPoint() != player.getPoint2())) {
+						if (!(player.isEnd())) {
 %>
-							or <%=player.getPoint2()%>点
+							<%=player.getPoint()%>点
+<%
+							if (!(player.getBurst2()) && (player.getPoint() != player.getPoint2())) {
+%>
+								or <%=player.getPoint2()%>点
+<%
+							}
+							
+						} else {
+%>
+							<%=player.getPlayerPoint()%>点
 <%
 						}
 %>
-							)
 						</td>
-						<td>BET額：<%=player.getBet()%></td>
+						<td class="game_text">(BET額：<%=player.getBet()%>)</td>
 					</tr>
 				</table>
 <%
@@ -117,7 +124,7 @@
 								</form>
 							</td>
 <%
-							if ((player.canSplit()) && ((splitPlayers.getSize() < splitPlayers.getMAXSize()) || (splitPlayers.getMAXSize() == 0))) {
+							if (player.canSplit() && splitPlayers.canSplit()) {
 %>
 							<td>
 								<form action="SplitServlet" method="POST">
@@ -133,7 +140,7 @@
 <%
 				} else {
 %>
-					<p class="game_button"><%=player.getPlayerMessage()%></p>
+					<p id="player_message"><%=player.getPlayerMessage()%></p>
 <%
 				}
 

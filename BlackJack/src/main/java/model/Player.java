@@ -8,7 +8,7 @@ public class Player extends BasePlayer{
 	private boolean naturalBJFlag = false;
 	//スプリット可能な手札ならtrue
 	private boolean splitFlag = false;
-	//既に結果の出た手札ならtrue
+	//バーストまたは結果待ち状態の手札ならtrue
 	private boolean endFlag = false;
 	//チップ収支
 	private int eachResult;
@@ -89,6 +89,10 @@ public class Player extends BasePlayer{
 		}
 	}
 
+	/**
+	 * バーストまたは結果待ち状態の手札ではない場合、山札からカードを1枚引く。<br>
+	 * このヒットにより発生するバーストとブラックジャックの判定も行う。
+	 */
 	public void hit(Deck deck) {
 		if (!endFlag) {
 			Card newCard = deck.removeCard();
@@ -96,47 +100,46 @@ public class Player extends BasePlayer{
 			addPoint(newCard);
 			setBurst();
 			setPlayerPoint();
+			setSplitFlag();
+			
+			if (playerBurst || isBlackJack()) {
+				setEndFlag();
+				setPlayerMessage();
+			}
 		}
 	}
 	
 	/**
-	 * 手札が2枚かつ同点時、2枚目を新たなPlayerオブジェクトに渡し、<br>
-	 * 山札から1枚ずつ引いて点数を再計算。BET額もコピーする。
+	 * スプリット可能な手札なら、その2枚目を新たなPlayerオブジェクトに渡し、<br>
+	 * 山札から1枚ずつ引いて点数を再計算。BET額も新たなPlayerオブジェクトにコピーする。<br>
+	 * ただし、Aのカードをスプリットした場合は強制的にスタンドを行う。
 	 * @return 新たに生成したPlayerオブジェクト
 	 */
 	public Player split(Deck deck) {
+		
 		Player splitPlayer = new Player();
 		
 		if (splitFlag && !endFlag) {
+			
 			Card removedCard = hand.removeCard();
 			splitPlayer.drawCard(removedCard);
 			
 			this.point = 0;
 			this.point2 = 0;
 			this.addPoint(removedCard);
-			Card deckCard = deck.removeCard();
-			this.drawCard(deckCard);
-			this.addPoint(deckCard);
-			this.setBurst();
-			this.setPlayerPoint();
-			this.setSplitFlag();
-			if (this.playerPoint == BLACKJACK) {
+			this.hit(deck);
+			if (removedCard.getNumber().equals("A")) {
 				this.setEndFlag();
 				this.setPlayerMessage();
 			}
 			
 			splitPlayer.addPoint(removedCard);
-			deckCard = deck.removeCard();
-			splitPlayer.drawCard(deckCard);
-			splitPlayer.addPoint(deckCard);
-			splitPlayer.setBurst();
-			splitPlayer.setPlayerPoint();
-			splitPlayer.setSplitFlag();
-			if (splitPlayer.playerPoint == BLACKJACK) {
+			splitPlayer.hit(deck);
+			splitPlayer.bet = bet;
+			if (removedCard.getNumber().equals("A")) {
 				splitPlayer.setEndFlag();
 				splitPlayer.setPlayerMessage();
 			}
-			splitPlayer.bet = bet;
 			
 		} else {
 			splitPlayer = null;

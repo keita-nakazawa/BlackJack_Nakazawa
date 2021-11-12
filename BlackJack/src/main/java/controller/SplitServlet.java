@@ -24,18 +24,23 @@ public class SplitServlet extends HttpServlet {
 
 		if (map.isEmpty()) {
 
-			// indexのバリデーション必要
-			int index = Integer.parseInt(request.getParameter("index"));
+			String strIndex = request.getParameter("index");
 			SplitPlayers splitPlayers = game.getSplitPlayers();
 
-			if ((index >= 0) && (index < splitPlayers.getSize())) {
+			ValidatorBJ validatorBJ = new ValidatorBJ();
+			int index = validatorBJ.indexValidation(strIndex, splitPlayers);
+
+			// validatorBJからメッセージを抽出
+			if (validatorBJ.getMessage() != null) {
+				request.setAttribute("message", validatorBJ.getMessage());
+				nextPage = "playGame.jsp";
+
+			} else {
 				Deck deck = game.getDeck();
 				splitPlayers.splitPlayer(index, deck);
+				splitPlayers.setAllSplitFlag();
 				nextPage = "CheckEndFlagServlet";
 				
-			} else {
-				request.setAttribute("message", "無効な操作です。");
-				nextPage = "playGame.jsp";
 			}
 
 		} else {

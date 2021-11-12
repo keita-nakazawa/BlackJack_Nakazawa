@@ -84,12 +84,10 @@ public class BaseDao {
 		try {
 			if (sessionCon != null) {
 				sessionCon.close();
-			} else {
-				message = "Connectionのクローズ処理が完了していない可能性があります。";
 			}
+			
 		} catch (Exception e) {
 			e.printStackTrace();
-			message = "Connectionのクローズ処理中に例外が発生しました";
 		}
 	}
 	

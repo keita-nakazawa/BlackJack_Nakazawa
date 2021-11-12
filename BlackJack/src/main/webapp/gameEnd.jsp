@@ -53,7 +53,7 @@
 <%
 				}
 %>
-				<td>(<%=dealer.getPlayerPoint()%>点)</td>
+				<td class="game_text">(<%=dealer.getPlayerPoint()%>点)</td>
 				</tr>
 			</table>
 			
@@ -64,22 +64,42 @@
 %>
 				<tr>
 <%
-				for(Card card: player.getHand().getListOfHand()) {
+				for(int i = 0; i < splitPlayers.getMaxHandSize(); i++) {
+					if (i < player.getHand().getSize()) {
+						Card card = player.getHand().getCard(i);
 %>
-					<td class="card">
-						<%=card.getMark()%><br><%=card.getNumber()%>
-					</td>
+						<td class="card">
+							<%=card.getMark()%><br><%=card.getNumber()%>
+						</td>
 <%
+					} else {
+%>
+						<td></td>
+<%
+					}
 				}
 %>
-					<td>(<%=player.getPlayerPoint()%>点)</td>
-					<td><%=player.getResultMessage()%></td>
-					<td><%=player.getSignedEachResult()%></td>
+					<td class="game_text">(<%=player.getPlayerPoint()%>点)</td>
+					<td class="game_text"><%=player.getResultMessage()%></td>
+					<td class="game_text"><%=player.getSignedEachResult()%></td>
 				</tr>
 <%
 			}
 %>
+				<tr>
+<%
+				for(int i = 0; i < splitPlayers.getMaxHandSize() + 1; i++) {
+%>
+					<td></td>
+<%
+				}
+%>
+					<td class="game_text">合計チップ獲得数</td>
+					<td class="game_text"><%=history.getSignedResult()%></td>
+				</tr>
 			</table>
+			
+			
 
 			<br>
 

@@ -1,20 +1,6 @@
 @charset "UTF-8";
 
-#message {
-	color: red;
-}
-
-#logout {
-	text-align: right;
-}
-
-.card {
-	border: 2px solid;
-	padding: 20px;
-	text-align: center;
-}
-
-a {
+a.button{
 	text-decoration: none;		/* 下線削除 */	
 }
 
@@ -36,6 +22,12 @@ a {
 	background    : #ffffff;     /* 文字色     */
 }
 
+.card {
+	border: 2px solid;
+	padding: 20px;
+	text-align: center;
+}
+
 .game_button {
   display       : inline-block;
   border-radius : 50%;          /* 角丸       */
@@ -54,4 +46,28 @@ a {
   background    : #ffffff;     /* 文字色     */
 }
 
+.game_text {
+	font-size     : 20pt;
+	text-align    : center;
+}
+
+#logout {
+	text-align: right;
+}
+
+#message {
+	color: red;
+}
+
+#player_message {
+	display       : inline-block;
+	border-radius : 50%;          /* 角丸       */
+	font-size     : 12pt;        /* 文字サイズ */
+	text-align    : center;      /* 文字位置   */
+	padding       : 6px 8px;   /* 余白       */
+	background    : #ff4d4d;     /* 背景色     */
+	color         : #ffffff;     /* 文字色     */
+	line-height   : 1em;         /* 1行の高さ  */
+	border        : 2px solid #ff4d4d;    /* 枠の指定 */
+}
 /* https://webparts.cman.jp/button/a/ */

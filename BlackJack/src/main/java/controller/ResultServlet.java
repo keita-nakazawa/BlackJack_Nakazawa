@@ -19,21 +19,19 @@ public class ResultServlet extends HttpServlet {
 			throws ServletException, IOException {
 
 		HttpSession session = request.getSession();
-		User loginUser = (User) session.getAttribute("loginUser");
-		Game game = (Game) session.getAttribute("game");
 		String nextPage = new String();
 
 		Map<String, String> map = NullChecker.createMap(request.getAttribute("gameEnd"));
 
 		if (map.isEmpty()) {
-
+			
+			User loginUser = (User) session.getAttribute("loginUser");
+			Game game = (Game) session.getAttribute("game");
 			Dealer dealer = game.getDealer();
 			SplitPlayers splitPlayers = game.getSplitPlayers();
 			Deck deck = game.getDeck();
 
 			dealer.action(splitPlayers, deck);
-			game.setDealer(dealer);
-			game.setDeck(deck);
 
 			History history = game.comparePoints(loginUser);
 			loginUser.addChip(history.getResult());
@@ -48,14 +46,15 @@ public class ResultServlet extends HttpServlet {
 				request.setAttribute("message", historyDao.getMessage());
 				nextPage = "playGame.jsp";
 
-				// userDaoからメッセージを抽出
+			// userDaoからメッセージを抽出
 			} else if (userDao.getMessage() != null) {
 				request.setAttribute("message", userDao.getMessage());
 				nextPage = "playGame.jsp";
 
 			} else {
 				session.setAttribute("loginUser", loginUser);
-				request.setAttribute("previousBet", game.getSplitPlayers().getPlayer(0).getBet());
+				request.setAttribute("previousBet", splitPlayers.getPlayer(0).getBet());
+				request.setAttribute("history", history);
 				request.setAttribute("game", game);
 				session.setAttribute("game", null);
 				nextPage = "gameEnd.jsp";

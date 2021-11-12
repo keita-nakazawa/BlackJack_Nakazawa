@@ -23,27 +23,29 @@ public class StandServlet extends HttpServlet {
 
 		if (map.isEmpty()) {
 
-			// indexのバリデーション必要
-			int index = Integer.parseInt(request.getParameter("index"));
+			String strIndex = request.getParameter("index");
 			SplitPlayers splitPlayers = game.getSplitPlayers();
+			
+			ValidatorBJ validatorBJ = new ValidatorBJ();
+			int index = validatorBJ.indexValidation(strIndex, splitPlayers);
 
-			if ((index >= 0) && (index < splitPlayers.getSize())) {
+			//validatorBJからメッセージを抽出
+			if (validatorBJ.getMessage() != null) {
+				request.setAttribute("message", validatorBJ.getMessage());
+				nextPage = "playGame.jsp";
+				
+			} else {
 				Player player = splitPlayers.getPlayer(index);
 				player.setEndFlag();
 				player.setPlayerMessage();
 				nextPage = "CheckEndFlagServlet";
-
-			} else {
-				request.setAttribute("message", "無効な操作です。");
-				nextPage = "playGame.jsp";
+				
 			}
-
+			
 		} else {
 
 			request.setAttribute("message", map.get("message"));
 			nextPage = map.get("nextPage");
-			LoginLogoutServlet lls = new LoginLogoutServlet();
-			lls.doGet(request, response);
 		}
 
 		RequestDispatcher rd = request.getRequestDispatcher(nextPage);

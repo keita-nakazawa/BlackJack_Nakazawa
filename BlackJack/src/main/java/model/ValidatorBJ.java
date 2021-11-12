@@ -14,8 +14,6 @@ public class ValidatorBJ {
 	private static final Pattern passwordPattern = Pattern.compile("^[!#-%'-;=?-~]{8,20}$");
 	//1～10の半角数字
 	private static final Pattern betPattern = Pattern.compile("^[1-9]$|^10$");
-	//半角数字
-	private static final Pattern indexPattern = Pattern.compile("[0-9]");
 	
 	private Map<String, String> strMap = new HashMap<>();
 	private String message;
@@ -48,13 +46,6 @@ public class ValidatorBJ {
 				match = betPattern.matcher(value).find();
 				break;
 				
-			case "index":
-				match = indexPattern.matcher(value).find();
-				if (!match) {
-					message = "無効な操作です。";
-				}
-				break;
-				
 			default:
 				match = false;
 				message = "バリデーションを実行できませんでした。";
@@ -67,6 +58,21 @@ public class ValidatorBJ {
 		}
 	}
 
+	public int indexValidation(String strIndex, SplitPlayers splitPlayers) {
+		
+		int index = 0;
+		try {
+			index = Integer.parseInt(strIndex);
+			if ((index < 0) || (index >= splitPlayers.getSize())) {
+				message = "無効な操作です。";
+			}
+		} catch(NumberFormatException e) {
+			e.printStackTrace();
+			message = "無効な操作です。";
+		}
+		return index;
+	}
+	
 	public void putStr(String key, String value) {
 		strMap.put(key, value);
 	}

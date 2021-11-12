@@ -24,40 +24,31 @@ public class HitServlet extends HttpServlet {
 		if (map.isEmpty()) {
 
 			String strIndex = request.getParameter("index");
-			
-			ValidatorBJ validatorBJ = new ValidatorBJ();
-			validatorBJ.putStr("index", strIndex);
-			validatorBJ.excuteValidation();
-
-			//validatorBJからメッセージを抽出
-			if (validatorBJ.getMessage() != null) {
-
-				request.setAttribute("message", validatorBJ.getMessage());
-				nextPage = "playGame.jsp";
-			}
-			
-			int index = Integer.parseInt(request.getParameter("index"));
 			SplitPlayers splitPlayers = game.getSplitPlayers();
 
-			if ((index >= 0) && (index < splitPlayers.getSize())) {
+			ValidatorBJ validatorBJ = new ValidatorBJ();
+			int index = validatorBJ.indexValidation(strIndex, splitPlayers);
+
+			// validatorBJからメッセージを抽出
+			if (validatorBJ.getMessage() != null) {
+				
+				request.setAttribute("message", validatorBJ.getMessage());
+				nextPage = "playGame.jsp";
+
+			} else {
 
 				Player player = splitPlayers.getPlayer(index);
 				Deck deck = game.getDeck();
 				player.hit(deck);
-				player.setSplitFlag();
+				splitPlayers.setAllSplitFlag();
 
-				if ((player.isBurst()) || (player.isBlackJack())) {
-					player.setEndFlag();
-					player.setPlayerMessage();
+				if (player.isEnd()) {
 					nextPage = "CheckEndFlagServlet";
 
 				} else {
 					nextPage = "playGame.jsp";
+					
 				}
-				
-			} else {
-				request.setAttribute("message", "無効な操作です。");
-				nextPage = "playGame.jsp";
 			}
 
 		} else {
