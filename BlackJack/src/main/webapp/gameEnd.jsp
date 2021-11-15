@@ -23,8 +23,6 @@
 <%
 		User loginUser = (User)session.getAttribute("loginUser");
 		Game game = (Game)request.getAttribute("game");
-		SplitPlayers splitPlayers = game.getSplitPlayers();
-		Dealer dealer = game.getDealer();
 		History history = (History)request.getAttribute("history");
 		int previousBet = (Integer)request.getAttribute("previousBet");
 
@@ -32,6 +30,9 @@
 		Map<String, String> map = NullChecker.createMap(game);
 
 		if (map.isEmpty()) {
+			
+			SplitPlayers splitPlayers = game.getSplitPlayers();
+			Dealer dealer = game.getDealer();
 %>
 			<p id="logout">
 				<%=loginUser.getNickname()%>さんがログイン中<br>

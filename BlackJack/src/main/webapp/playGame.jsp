@@ -22,12 +22,13 @@
 <%
 		User loginUser = (User)session.getAttribute("loginUser");
 		Game game = (Game)session.getAttribute("game");
-		SplitPlayers splitPlayers = game.getSplitPlayers();
-		Dealer dealer = game.getDealer();
 		
 		Map<String, String> map = NullChecker.createMap(game);
 
 		if (map.isEmpty()) {
+			
+			SplitPlayers splitPlayers = game.getSplitPlayers();
+			Dealer dealer = game.getDealer();
 %>	
 			<p id="logout">
 				<%=loginUser.getNickname()%>さんがログイン中<br>
