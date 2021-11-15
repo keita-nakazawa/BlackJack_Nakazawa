@@ -203,9 +203,9 @@ public class UserDao extends BaseDao {
 	}
 
 	/**
-	 * usersテーブルのwin_rateカラムをもとに勝率ランキングトップ5を生成する。
+	 * usersテーブルのchipカラムをもとにチップ所持枚数ランキングトップ5を生成する。
 	 * 
-	 * @return ニックネームと勝率を有するUserオブジェクトのリスト
+	 * @return ニックネームとチップ所持枚数を有するUserオブジェクトのリスト
 	 */
 	public List<User> getRankingList() {
 
@@ -235,16 +235,16 @@ public class UserDao extends BaseDao {
 	}
 
 	/**
-	 * usersテーブルのchipカラムを更新
+	 * usersテーブルのchipカラムに指定枚数のチップを追加
+	 * @param chip 追加されるチップ枚数。負数の場合は差し引かれる。
 	 */
-	public void updateChip(User loginUser) {
+	public void addChip(User loginUser, int chip) {
 
 		String userId = loginUser.getUserId();
-		int chip = loginUser.getChip();
 
 		try {
 			if (con != null) {
-				String sql = "UPDATE users SET chip = ? WHERE user_id = ?";
+				String sql = "UPDATE users SET chip = chip + ? WHERE user_id = ?";
 				ps = con.prepareStatement(sql);
 				ps.setInt(1, chip);
 				ps.setString(2, userId);

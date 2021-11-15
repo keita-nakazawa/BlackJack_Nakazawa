@@ -58,10 +58,11 @@ public class Player extends BasePlayer{
 	}
 
 	public String getSignedEachResult() {
-		if (eachResult > 0) {
-			return "+" + String.valueOf(eachResult);
+		int signedEachResult = eachResult - bet;
+		if (signedEachResult > 0) {
+			return "+" + String.valueOf(signedEachResult);
 		} else {
-			return String.valueOf(eachResult);
+			return String.valueOf(signedEachResult);
 		}
 	}
 
@@ -148,13 +149,15 @@ public class Player extends BasePlayer{
 	}
 	
 	public String getResultMessage() {
-		if (eachResult > 0) {
+		int signedEachResult = eachResult - bet;
+		
+		if (signedEachResult > 0) {
 			if (naturalBJFlag) {
 				return "NaturalBJ!!";
 			} else {
 				return "Win";
 			}
-		} else if (eachResult < 0) {
+		} else if (signedEachResult < 0) {
 			return "Lose";
 		} else {
 			return "Draw";

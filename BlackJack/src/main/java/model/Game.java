@@ -90,52 +90,55 @@ public class Game {
 	}
 
 	/**
-	 * プレイヤーのすべての手札とディーラーの手札で点数を比較し、チップ収支の総計を求める。
+	 * プレイヤーのすべての手札とディーラーの手札で点数を比較し、返ってきたチップの枚数及び実際のチップ収支を求める。
 	 * @return DBのhistoryテーブルへの記録に用いるHistoryオブジェクト
 	 */
 	public History comparePoints(User loginUser) {
 
 		History history = new History();
 		history.setUserId(loginUser.getUserId());
-		
+
+		int returnedChip = 0;
 		int result = 0;
 		for (Player player: getSplitPlayers().getList()) {
 
 			if (player.isBurst()) {
 
-				player.setEachResult(player.getBet() * (-1));
+				player.setEachResult(0);
 
 			} else if (dealer.isBurst()) {
 
 				if (player.isNaturalBJ()) {
-					//BET額を1.5倍して小数点以下切り捨て
-					player.setEachResult((int) Math.floor(player.getBet() * 1.5));
+					//BET額を2.5倍して小数点以下切り捨て
+					player.setEachResult((int) Math.floor(player.getBet() * 2.5));
 				} else {
-					player.setEachResult(player.getBet());
+					player.setEachResult(player.getBet() * 2);
 				}
 
 			} else {
 
 				if (dealer.getPlayerPoint() > player.getPlayerPoint()) {
-					player.setEachResult(player.getBet() * (-1));
+					player.setEachResult(0);
 
 				} else if (dealer.getPlayerPoint() == player.getPlayerPoint()) {
 					// 3枚以上のカードでの「21」がナチュラルBJに対して負けるというルールは適用しない。
-					player.setEachResult(0);
+					player.setEachResult(player.getBet());
 
 				} else {
 					if (player.isNaturalBJ()) {
-						// ナチュラルBJ時はBET額を1.5倍して小数点以下切り捨て
-						player.setEachResult((int) Math.floor(player.getBet() * 1.5));
+						// ナチュラルBJ時はBET額を2.5倍して小数点以下切り捨て
+						player.setEachResult((int) Math.floor(player.getBet() * 2.5));
 					} else {
-						player.setEachResult(player.getBet());
+						player.setEachResult(player.getBet() * 2);
 					}
 				}
 			}
 
-			result += player.getEachResult();
+			returnedChip += player.getEachResult();
+			result += player.getEachResult() - player.getBet();
 		}
 		history.setResult(result);
+		splitPlayers.setReturnedChip(returnedChip);
 
 		return history;
 	}

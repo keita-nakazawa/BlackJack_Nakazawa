@@ -8,6 +8,7 @@ import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.*;
 
+import dao.UserDao;
 import model.*;
 
 @WebServlet("/SplitServlet")
@@ -36,11 +37,27 @@ public class SplitServlet extends HttpServlet {
 				nextPage = "playGame.jsp";
 
 			} else {
-				Deck deck = game.getDeck();
-				splitPlayers.splitPlayer(index, deck);
-				splitPlayers.setAllSplitFlag();
-				nextPage = "CheckEndFlagServlet";
 				
+				User loginUser = (User) session.getAttribute("loginUser");
+				int bet = splitPlayers.getPlayer(index).getBet();
+				UserDao userDao = new UserDao(session);
+				//スプリット時、BET額をチップ所持枚数から差し引く。
+				userDao.addChip(loginUser, -bet);
+
+				// userDaoからメッセージを抽出
+				if (userDao.getMessage() != null) {
+					request.setAttribute("message", userDao.getMessage());
+					nextPage = "playGame.jsp";
+
+				} else {
+					//スプリット時、BET額をチップ所持枚数から差し引く。
+					loginUser.addChip(-bet);
+					
+					Deck deck = game.getDeck();
+					splitPlayers.splitPlayer(index, deck);
+					splitPlayers.setAllSplitFlag();
+					nextPage = "CheckEndFlagServlet";
+				}
 			}
 
 		} else {

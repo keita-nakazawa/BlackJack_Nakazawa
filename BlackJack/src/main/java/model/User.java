@@ -30,8 +30,8 @@ public class User {
 		return chip;
 	}
 	
-	public void addChip(int result) {
-		chip += result;
+	public void addChip(int chip) {
+		this.chip += chip;
 	}
 
 	

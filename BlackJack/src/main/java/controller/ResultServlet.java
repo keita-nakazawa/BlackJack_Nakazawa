@@ -34,12 +34,11 @@ public class ResultServlet extends HttpServlet {
 			dealer.action(splitPlayers, deck);
 
 			History history = game.comparePoints(loginUser);
-			loginUser.addChip(history.getResult());
 
 			HistoryDao historyDao = new HistoryDao(session);
 			UserDao userDao = new UserDao(session);
 			historyDao.addHistory(history);
-			userDao.updateChip(loginUser);
+			userDao.addChip(loginUser, splitPlayers.getReturnedChip());
 
 			// historyDaoからメッセージを抽出
 			if (historyDao.getMessage() != null) {
@@ -52,10 +51,12 @@ public class ResultServlet extends HttpServlet {
 				nextPage = "playGame.jsp";
 
 			} else {
-				session.setAttribute("loginUser", loginUser);
+				loginUser.addChip(splitPlayers.getReturnedChip());
+				
 				request.setAttribute("previousBet", splitPlayers.getPlayer(0).getBet());
 				request.setAttribute("history", history);
 				request.setAttribute("game", game);
+				//Gameオブジェクトはセッションから削除
 				session.setAttribute("game", null);
 				nextPage = "gameEnd.jsp";
 			}

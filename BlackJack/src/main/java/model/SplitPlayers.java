@@ -10,6 +10,8 @@ public class SplitPlayers {
 	private List<Player> splitPlayerList = new ArrayList<>();
 	//手札の数が上限値未満ならtrue。
 	private boolean allSplitFlag = true;
+	//ゲーム終了時に返ってきたチップの枚数
+	private int returnedChip;
 	
 	public List<Player> getList() {
 		return splitPlayerList;
@@ -25,6 +27,10 @@ public class SplitPlayers {
 
 	public boolean canSplit() {
 		return allSplitFlag;
+	}
+
+	public int getReturnedChip() {
+		return returnedChip;
 	}
 
 	public void addPlayer(Player player) {
@@ -43,7 +49,11 @@ public class SplitPlayers {
 			allSplitFlag = false;
 		}
 	}
-	
+
+	public void setReturnedChip(int returnedChip) {
+		this.returnedChip = returnedChip;
+	}
+
 	/**
 	 * {@link Player#split()}により生成したPlayerオブジェクトを、<br>
 	 * スプリット元のPlayerオブジェクトの次の要素として挿入

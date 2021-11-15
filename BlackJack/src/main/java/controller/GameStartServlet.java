@@ -8,6 +8,7 @@ import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.*;
 
+import dao.UserDao;
 import model.*;
 
 @WebServlet("/GameStartServlet")
@@ -26,7 +27,8 @@ public class GameStartServlet extends HttpServlet {
 
 			// BET額のバリデーション
 			ValidatorBJ validatorBJ = new ValidatorBJ();
-			validatorBJ.putStr("bet", request.getParameter("bet"));
+			String strBet = request.getParameter("bet");
+			validatorBJ.putStr("bet", strBet);
 			validatorBJ.excuteValidation();
 
 			// validatorBJからメッセージを抽出
@@ -37,18 +39,32 @@ public class GameStartServlet extends HttpServlet {
 
 			} else {
 
-				int bet = Integer.parseInt(request.getParameter("bet"));
-				Game oldGame = (Game) session.getAttribute("game");
-				Game newGame = new Game(bet);
-				Game game = newGame.start(oldGame);
-				Player player = game.getSplitPlayers().getPlayer(0);
+				int bet = Integer.parseInt(strBet);
+				UserDao userDao = new UserDao(session);
+				//ゲーム開始前にBET額をチップ所持枚数から差し引く。
+				userDao.addChip(loginUser, -bet);
 
-				if (player.isEnd()) {
-					nextPage = "CheckEndFlagServlet";
+				// userDaoからメッセージを抽出
+				if (userDao.getMessage() != null) {
+					request.setAttribute("message", userDao.getMessage());
+					nextPage = "menu.jsp";
+
 				} else {
-					nextPage = "playGame.jsp";
+
+					//ゲーム開始前にBET額をチップ所持枚数から差し引く。
+					loginUser.addChip(-bet);
+					
+					Game oldGame = (Game) session.getAttribute("game");
+					Game newGame = new Game(bet);
+					Game game = newGame.start(oldGame);
+					Player player = game.getSplitPlayers().getPlayer(0);
+					if (player.isEnd()) {
+						nextPage = "CheckEndFlagServlet";
+					} else {
+						nextPage = "playGame.jsp";
+					}
+					session.setAttribute("game", game);
 				}
-				session.setAttribute("game", game);
 			}
 
 		} else {
