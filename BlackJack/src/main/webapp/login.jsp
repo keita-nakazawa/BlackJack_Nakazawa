@@ -23,11 +23,11 @@
 			<table>
 				<tr>
 					<td>ユーザID</td>
-					<td><input type="text" name="user_id" required></td>
+					<td><input type="text" name="user_id"></td>
 				</tr>
 				<tr>
 					<td>パスワード</td>
-					<td><input type="password" name="password" required></td>
+					<td><input type="password" name="password"></td>
 				</tr>
 			</table>
 			
