@@ -1,6 +1,9 @@
 package model;
 
-public class User {
+import java.io.Serializable;
+
+//Serializableを実装しないとSpotBugsでバグ報告される。
+public class User implements Serializable{
 
 	private String userId;
 	private String nickname;
@@ -33,13 +36,4 @@ public class User {
 	public void addChip(int chip) {
 		this.chip += chip;
 	}
-
-	
-//	public boolean isEmpty() {
-//		if(userId.isEmpty() && nickname.isEmpty()) {
-//			return true;
-//		} else {
-//			return false;
-//		}
-//	}
 }

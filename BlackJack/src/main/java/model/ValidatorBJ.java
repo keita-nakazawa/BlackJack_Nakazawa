@@ -10,7 +10,7 @@ public class ValidatorBJ {
 	private static final Pattern userIdPattern = Pattern.compile("^[0-9A-Za-z]{1,20}$");
 	// 「" & < >」以外の文字で20文字以内
 	private static final Pattern nicknamePattern = Pattern.compile("^[^\"&<>]{1,20}$");
-	// 半角英数字または「" < >」以外の記号で20文字以内
+	// 半角英数字または「" & < >」以外の記号で20文字以内
 	private static final Pattern passwordPattern = Pattern.compile("^[!#-%'-;=?-~]{8,20}$");
 	//1～10の半角数字
 	private static final Pattern betPattern = Pattern.compile("^[1-9]$|^10$");

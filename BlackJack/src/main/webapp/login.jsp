@@ -27,7 +27,7 @@
 				</tr>
 				<tr>
 					<td>パスワード</td>
-					<td><input type="password" name="password" pattern="^[!-~&&[^&quot;&amp;&lt;&gt;]]{8,20}$" maxlength="20" placeholder="半角英数字記号8～20文字" required></td>
+					<td><input type="password" name="password" pattern="^[!#-%'-;=?-~]{8,20}$" maxlength="20" placeholder="半角英数字記号8～20文字" required></td>
 				</tr>
 			</table>
 			
