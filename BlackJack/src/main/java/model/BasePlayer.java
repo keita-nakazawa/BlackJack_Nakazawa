@@ -11,6 +11,8 @@ public abstract class BasePlayer {
 	protected boolean burst = false;
 	protected boolean burst2 = false;
 	protected boolean playerBurst = false;
+	//ナチュラルBJの可能性があるならtrue
+	protected boolean naturalBJFlag = false;
 
 	public void drawCard(Card card) {
 		hand.addCard(card);
@@ -42,6 +44,10 @@ public abstract class BasePlayer {
 
 	public boolean isBurst() {
 		return playerBurst;
+	}
+
+	public boolean isNaturalBJ() {
+		return naturalBJFlag;
 	}
 
 	public void addPoint(Card newCard) {
@@ -76,4 +82,18 @@ public abstract class BasePlayer {
 			playerPoint = point2;
 		}
 	}
+
+	public void setNaturalBJFlag() {
+		naturalBJFlag = true;
+	}
+
+	//21点かどうか判定
+	public boolean isBlackJack() {
+		if (getPlayerPoint() == BLACKJACK) {
+			return true;
+		} else {
+			return false;
+		}
+	}
+
 }

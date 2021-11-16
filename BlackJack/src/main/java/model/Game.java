@@ -90,7 +90,7 @@ public class Game {
 	}
 
 	/**
-	 * プレイヤーのすべての手札とディーラーの手札で点数を比較し、返ってきたチップの枚数及び実際のチップ収支を求める。
+	 * プレイヤーのすべての手札とディーラーの手札を比較し、返ってきたチップの枚数及び実際のチップ収支を求める。
 	 * @return DBのhistoryテーブルへの記録に用いるHistoryオブジェクト
 	 */
 	public History comparePoints(User loginUser) {
@@ -118,13 +118,24 @@ public class Game {
 			} else {
 
 				if (dealer.getPlayerPoint() > player.getPlayerPoint()) {
+					
 					player.setEachResult(0);
 
 				} else if (dealer.getPlayerPoint() == player.getPlayerPoint()) {
-					// 3枚以上のカードでの「21」がナチュラルBJに対して負けるというルールは適用しない。
-					player.setEachResult(player.getBet());
+					
+					//初手の2枚で21点となる手札は、他の21点の手札より強い。
+					if (dealer.isNaturalBJ() && !(player.isNaturalBJ())) {
+						player.setEachResult(0);
+						
+					} else if (!(dealer.isNaturalBJ()) && player.isNaturalBJ()) {
+						player.setEachResult((int) Math.floor(player.getBet() * 2.5));
+						
+					} else {
+						player.setEachResult(player.getBet());
+					}
 
 				} else {
+					
 					if (player.isNaturalBJ()) {
 						// ナチュラルBJ時はBET額を2.5倍して小数点以下切り捨て
 						player.setEachResult((int) Math.floor(player.getBet() * 2.5));

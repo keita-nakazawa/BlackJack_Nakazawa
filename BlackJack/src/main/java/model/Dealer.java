@@ -13,17 +13,25 @@ public class Dealer extends BasePlayer {
 	 */
 	public void action(SplitPlayers splitPlayers, Deck deck) {
 		
-		for (Player player: splitPlayers.getList()) {
-			if (!(player.isBurst())) {
-				while (getPlayerPoint() < CRITERIA) {
-					Card newCard = deck.removeCard();
-					drawCard(newCard);
-					addPoint(newCard);
-					setBurst();
-					setPlayerPoint();
+		if (isBlackJack()) {
+			
+			setNaturalBJFlag();
+		
+		} else {
+
+			for (Player player: splitPlayers.getList()) {
+				if (!(player.isBurst())) {
+					while (getPlayerPoint() < CRITERIA) {
+						Card newCard = deck.removeCard();
+						drawCard(newCard);
+						addPoint(newCard);
+						setBurst();
+						setPlayerPoint();
+					}
+					break;
 				}
-				break;
 			}
 		}
 	}
+	
 }

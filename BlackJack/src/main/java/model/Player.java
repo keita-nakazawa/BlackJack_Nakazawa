@@ -4,8 +4,6 @@ public class Player extends BasePlayer{
 
 	//BET額
 	private int bet;
-	//ナチュラルBJの可能性があるならtrue
-	private boolean naturalBJFlag = false;
 	//スプリット可能な手札ならtrue
 	private boolean splitFlag = false;
 	//バーストまたは結果待ち状態の手札ならtrue
@@ -15,14 +13,6 @@ public class Player extends BasePlayer{
 	//"バースト" or "結果待ち" 
 	private String playerMessage;
 	
-	public boolean isNaturalBJ() {
-		return naturalBJFlag;
-	}
-
-	public void setNaturalBJFlag() {
-		naturalBJFlag = true;
-	}
-
 	public void setBet(int bet) {
 		this.bet = bet;
 	}
@@ -79,14 +69,6 @@ public class Player extends BasePlayer{
 			playerMessage = "バースト";
 		} else {
 			playerMessage = "結果待ち";
-		}
-	}
-
-	public boolean isBlackJack() {
-		if (getPlayerPoint() == BLACKJACK) {
-			return true;
-		} else {
-			return false;
 		}
 	}
 
