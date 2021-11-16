@@ -23,7 +23,7 @@
 %>	
 			<p id="logout">
 				<%=loginUser.getNickname()%>さんがログイン中<br>
-				現在のチップ所持枚数：<%=loginUser.getChip()%><br>
+				現在のチップ所持枚数 : <%=loginUser.getChip()%><br>
 				<a href="LoginLogoutServlet" class="button">ログアウト</a>
 			</p>
 			
