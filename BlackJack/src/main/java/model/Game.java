@@ -126,10 +126,8 @@ public class Game {
 					//初手の2枚で21点となる手札は、他の21点の手札より強い。
 					if (dealer.isNaturalBJ() && !(player.isNaturalBJ())) {
 						player.setEachResult(0);
-						
 					} else if (!(dealer.isNaturalBJ()) && player.isNaturalBJ()) {
 						player.setEachResult((int) Math.floor(player.getBet() * 2.5));
-						
 					} else {
 						player.setEachResult(player.getBet());
 					}
