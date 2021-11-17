@@ -38,7 +38,7 @@ public class HistoryDao extends BaseDao {
 
 		} catch (SQLException e) {
 			e.printStackTrace();
-			message = "SQL実行中に例外が発生しました";
+			message = "例外(addHistory)が発生しました。<br>管理者へお問い合わせください。";
 		}
 	}
 
@@ -66,7 +66,7 @@ public class HistoryDao extends BaseDao {
 
 		} catch (SQLException e) {
 			e.printStackTrace();
-			message = "SQL実行中に例外が発生しました";
+			message = "例外(getHistoryList)が発生しました。<br>管理者へお問い合わせください。";
 		} finally {
 			closeAll();
 		}

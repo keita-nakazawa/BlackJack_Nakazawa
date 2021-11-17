@@ -37,10 +37,10 @@ public class UserDao extends BaseDao {
 
 			} catch (SQLIntegrityConstraintViolationException e) {
 				e.printStackTrace();
-				message = "登録済みかもしくは不正なユーザIDです。";
+				message = "既に登録されているユーザIDです。";
 			} catch (SQLException e) {
 				e.printStackTrace();
-				message = "SQL実行中に例外が発生しました。";
+				message = "例外(doRegister)が発生しました。<br>管理者へお問い合わせください。";
 			} finally {
 				closeAll();
 			}
@@ -79,7 +79,7 @@ public class UserDao extends BaseDao {
 
 		} catch (SQLException e) {
 			e.printStackTrace();
-			message = "SQL実行中に例外が発生しました";
+			message = "例外(getLoginUser)が発生しました。<br>管理者へお問い合わせください。";
 		} finally {
 			closeAll();
 		}
@@ -99,7 +99,7 @@ public class UserDao extends BaseDao {
 
 		} catch (SQLException e) {
 			e.printStackTrace();
-			message = "SQL実行中に例外が発生しました";
+			message = "例外(doDelete)が発生しました。<br>管理者へお問い合わせください。";
 		} finally {
 			closeAll();
 		}
@@ -131,7 +131,7 @@ public class UserDao extends BaseDao {
 			message = "既に登録されているユーザIDです。";
 		} catch (SQLException e) {
 			e.printStackTrace();
-			message = "SQL実行中に例外が発生しました。";
+			message = "例外(editIdName)が発生しました。<br>管理者へお問い合わせください。";
 		} finally {
 			closeAll();
 		}
@@ -167,7 +167,7 @@ public class UserDao extends BaseDao {
 
 			} catch (SQLException e) {
 				e.printStackTrace();
-				message = "SQL実行中に例外が発生しました";
+				message = "例外(editPassword)が発生しました。<br>管理者へお問い合わせください。";
 			} finally {
 				closeAll();
 			}
@@ -195,7 +195,7 @@ public class UserDao extends BaseDao {
 
 		} catch (SQLException e) {
 			e.printStackTrace();
-			message = "SQL実行中に例外が発生しました";
+			message = "例外(getPopulation)が発生しました。<br>管理者へお問い合わせください。";
 		} finally {
 			closeAll();
 		}
@@ -227,7 +227,7 @@ public class UserDao extends BaseDao {
 
 		} catch (SQLException e) {
 			e.printStackTrace();
-			message = "SQL実行中に例外が発生しました";
+			message = "例外(getRankingList)が発生しました。<br>管理者へお問い合わせください。";
 		} finally {
 			closeAll();
 		}
@@ -253,7 +253,7 @@ public class UserDao extends BaseDao {
 
 		} catch (SQLException e) {
 			e.printStackTrace();
-			message = "SQL実行中に例外が発生しました";
+			message = "例外(addChip)が発生しました。<br>管理者へお問い合わせください。";
 		} finally {
 			closeAll();
 		}

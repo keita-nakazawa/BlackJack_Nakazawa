@@ -35,7 +35,7 @@ public class DeleteServlet extends HttpServlet {
 				nextPage = "deleteUser.jsp";
 
 			} else {
-				request.setAttribute("message", loginUser.getNickname() + "さんのユーザ情報を削除しました");
+				request.setAttribute("message", loginUser.getNickname() + "さんのユーザ情報を削除しました。");
 				session.invalidate();
 				nextPage = "login.jsp";
 			}

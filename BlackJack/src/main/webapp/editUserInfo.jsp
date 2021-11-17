@@ -68,7 +68,7 @@
 					<tr>
 						<td>新しいパスワード</td>
 						<td>
-							<input type="password" name="new_password" pattern="^[!#-%'-;=?-~]{8,20}$" maxlength="20" placeholder="半角英数字記号8～20文字以内" required>
+							<input type="password" name="new_password" pattern="^[!#-%'-;=?-~]{8,20}$" maxlength="20" placeholder="半角英数字記号8～20文字" required>
 						</td>
 					</tr>	
 					<tr>

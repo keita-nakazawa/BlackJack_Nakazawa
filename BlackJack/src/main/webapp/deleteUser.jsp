@@ -48,7 +48,7 @@
 				</tr>
 			</table>
 			<form action="DeleteServlet" method="POST">
-				<p><input type="button" value="削除" class="button"></p>
+				<p><input type="submit" value="削除" class="button"></p>
 			</form>
 			
 			<a href="menu.jsp" class="button">メニューへ戻る</a>
