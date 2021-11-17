@@ -20,7 +20,7 @@ public class NullChecker {
 		Map<String, String> map = new HashMap<>();
 
 		if (object == null) {
-			map.put("message", "不正な操作・URLを検知したため、強制ログアウトしました。");
+			map.put("message", "不正な操作・URLを検知、もしくはセッションタイムアウトです。<br>強制ログアウトしました。");
 			map.put("nextPage", "LoginLogoutServlet");
 		}
 

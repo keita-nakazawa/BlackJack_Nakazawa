@@ -67,7 +67,7 @@ public class EditIdNameServlet extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 
-		request.setAttribute("message", "不正な操作・URLを検知したため、強制ログアウトしました。");
+		request.setAttribute("message", "不正な操作・URLを検知、もしくはセッションタイムアウトです。<br>強制ログアウトしました。");
 		RequestDispatcher rd = request.getRequestDispatcher("LoginLogoutServlet");
 		rd.forward(request, response);
 	}

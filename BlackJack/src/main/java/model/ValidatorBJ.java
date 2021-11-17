@@ -48,7 +48,7 @@ public class ValidatorBJ {
 				
 			default:
 				match = false;
-				message = "バリデーションを実行できませんでした。";
+				message = "エラー(excuteValidation)が発生しました。<br>管理者へお問い合わせください。";
 				break;
 			}
 			

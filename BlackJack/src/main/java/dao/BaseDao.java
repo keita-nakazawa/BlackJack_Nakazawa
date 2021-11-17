@@ -49,10 +49,10 @@ public class BaseDao {
 			
 		} catch (ClassNotFoundException e) {
 			e.printStackTrace();
-			message = "JDBCドライバが見つかりません";
+			message = "JDBCドライバが見つかりません。<br>管理者へお問い合わせください。";
 		} catch (SQLException e) {
 			e.printStackTrace();
-			message = "DB接続処理のSQL実行中に例外が発生しました";
+			message = "データベースへの接続に失敗しました。<br>しばらく経ってから再度接続してください。";
 		}
 	}
 	
@@ -67,9 +67,9 @@ public class BaseDao {
 			if (rs != null) {
 				rs.close();
 			}
-		} catch (Exception e) {
+		} catch (SQLException e) {
 			e.printStackTrace();
-			message = "クローズ処理中に例外が発生しました";
+			message = "例外(closeAll)が発生しました。<br>管理者へお問い合わせください。";
 		}
 	}
 	
@@ -86,8 +86,9 @@ public class BaseDao {
 				sessionCon.close();
 			}
 			
-		} catch (Exception e) {
+		} catch (SQLException e) {
 			e.printStackTrace();
+			message = "例外(closeCon)が発生しました。<br>管理者へお問い合わせください。";
 		}
 	}
 	
