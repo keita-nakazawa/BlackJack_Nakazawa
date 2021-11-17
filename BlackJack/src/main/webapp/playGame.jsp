@@ -1,3 +1,4 @@
+<%@page import="model.Deck"%>
 <%@page import="model.SplitPlayers"%>
 <%@page import="model.Dealer"%>
 <%@page import="model.Player"%>
@@ -147,7 +148,22 @@
 
 				index++;
 			}
-			
+%>
+
+
+			<p>----テスト用に山札の中身を列挙----</p>
+<%
+			Deck deck = game.getDeck();
+
+			for (Card card: deck.getListOfDeck()){
+%>
+				<p><%=card.getMark()%><%=card.getNumber()%></p>
+<%
+			}
+%>
+
+
+<%
 		} else {
 			request.setAttribute("message", map.get("message"));
 			RequestDispatcher rd = request.getRequestDispatcher(map.get("nextPage"));
