@@ -45,7 +45,7 @@
 					<tr>
 						<td>対戦回数</td>
 						<td>日時</td>
-						<td>チップ増減</td>
+						<td>チップ獲得数</td>
 					</tr>
 				</thead>
 				<tbody>

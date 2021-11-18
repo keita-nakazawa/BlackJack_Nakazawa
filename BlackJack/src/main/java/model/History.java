@@ -23,6 +23,8 @@ public class History {
 	public String getSignedResult() {
 		if (result > 0) {
 			return "+" + String.valueOf(result);
+		} else if (result == 0) {
+			return "±" + String.valueOf(result);
 		} else {
 			return String.valueOf(result);
 		}

@@ -51,6 +51,8 @@ public class Player extends BasePlayer{
 		int signedEachResult = eachResult - bet;
 		if (signedEachResult > 0) {
 			return "+" + String.valueOf(signedEachResult);
+		} else if (signedEachResult == 0) {
+			return "±" + String.valueOf(signedEachResult);
 		} else {
 			return String.valueOf(signedEachResult);
 		}

@@ -82,7 +82,7 @@
 %>
 					<td class="game_text">(<%=player.getPlayerPoint()%>点)</td>
 					<td class="game_text"><%=player.getResultMessage()%></td>
-					<td class="game_text"><%=player.getSignedEachResult()%></td>
+					<td class="game_text">　<%=player.getSignedEachResult()%></td>
 				</tr>
 <%
 			}
@@ -94,9 +94,14 @@
 					<td></td>
 <%
 				}
+
+				if (splitPlayers.getSize() > 1) {
 %>
 					<td class="game_text">合計チップ獲得数</td>
-					<td class="game_text"><%=history.getSignedResult()%></td>
+					<td class="game_text">　<%=history.getSignedResult()%></td>
+<%
+				}
+%>
 				</tr>
 			</table>
 			
