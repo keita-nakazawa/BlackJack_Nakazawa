@@ -84,6 +84,7 @@ public class BaseDao {
 		try {
 			if (sessionCon != null) {
 				sessionCon.close();
+				session.setAttribute("con", null);
 			}
 			
 		} catch (SQLException e) {

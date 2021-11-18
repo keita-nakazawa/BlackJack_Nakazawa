@@ -35,6 +35,7 @@ public class LoginLogoutServlet extends HttpServlet {
 
 			// userDaoからメッセージを抽出
 			if (userDao.getMessage() != null) {
+				userDao.closeCon(session);
 				request.setAttribute("message", userDao.getMessage());
 				nextPage = "login.jsp";
 
