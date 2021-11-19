@@ -42,13 +42,13 @@
 					<tr>
 						<td>ユーザID</td>
 						<td>
-							<input type="text" name="user_id" pattern="^[0-9A-Za-z]{1,20}$" maxlength="20" placeholder="半角英数字20文字以内" value="<%=loginUser.getUserId()%>" required>
+							<input type="text" name="user_id" placeholder="半角英数字20文字以内" value="<%=loginUser.getUserId()%>">
 						</td>
 					</tr>	
 					<tr>	
 						<td>ニックネーム</td>
 						<td>
-							<input type="text" name="nickname" pattern="^[^&quot;&amp;&lt;&gt;]{1,20}$" maxlength="20" placeholder="20文字以内" value="<%=loginUser.getNickname()%>" required>
+							<input type="text" name="nickname" placeholder="20文字以内" value="<%=loginUser.getNickname()%>">
 						</td>
 					</tr>
 				</table>
@@ -62,19 +62,19 @@
 					<tr>	
 						<td>古いパスワード</td>
 						<td>
-							<input type="password" name="old_password" required>
+							<input type="password" name="old_password">
 						</td>
 					</tr>
 					<tr>
 						<td>新しいパスワード</td>
 						<td>
-							<input type="password" name="new_password" pattern="^[!#-%'-;=?-~]{8,20}$" maxlength="20" placeholder="半角英数字記号8～20文字" required>
+							<input type="password" name="new_password" placeholder="半角英数字記号8～20文字">
 						</td>
 					</tr>	
 					<tr>
 						<td>新しいパスワード2回目</td>
 						<td>
-							<input type="password" name="new_password2" pattern="^[!#-%'-;=?-~]{8,20}$" maxlength="20" placeholder="再入力" required>
+							<input type="password" name="new_password2" placeholder="再入力">
 						</td>
 					</tr>	
 				</table>
