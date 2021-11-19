@@ -23,11 +23,11 @@
 			<table>
 				<tr>
 					<td>ユーザID</td>
-					<td><input type="text" name="user_id"></td>
+					<td><input type="text" name="user_id" pattern="^[0-9A-Za-z]$" required></td>
 				</tr>
 				<tr>
 					<td>パスワード</td>
-					<td><input type="password" name="password"></td>
+					<td><input type="password" name="password" pattern="^[!#-%'-;=?-~]$" required></td>
 				</tr>
 			</table>
 			
