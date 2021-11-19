@@ -28,7 +28,7 @@ public class Player extends BasePlayer{
 	public void setSplitFlag() {
 		Card firstCard = hand.getCard(0);
 		Card secondCard = hand.getCard(1);
-		if ((hand.getSize() == 2) && (firstCard.getPoint() == secondCard.getPoint())) {
+		if ((hand.getSize() == 2) && (firstCard.getNumber() == secondCard.getNumber())) {
 			splitFlag = true;
 		} else {
 			splitFlag = false;
