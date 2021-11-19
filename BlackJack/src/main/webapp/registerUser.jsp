@@ -24,13 +24,13 @@
 				<tr>
 					<td>ユーザID</td>
 					<td>
-						<input type="text" name="user_id" placeholder="半角英数字20文字以内">
+						<input type="text" name="user_id" placeholder="半角英数字1～20文字">
 					</td>
 				</tr>	
 				<tr>	
 					<td>ニックネーム</td>
 					<td>
-						<input type="text" name="nickname" placeholder="20文字以内">
+						<input type="text" name="nickname" placeholder="1～20文字">
 					</td>
 				</tr>
 				<tr>	
