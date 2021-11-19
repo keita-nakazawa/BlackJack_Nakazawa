@@ -131,6 +131,7 @@ public class UserDao extends BaseDao {
 			message = "既に登録されているユーザIDです。";
 		} catch (SQLException e) {
 			e.printStackTrace();
+			userId = sessionUserId;
 			message = "例外(editIdName)が発生しました。<br>管理者へお問い合わせください。";
 		} finally {
 			closeAll();

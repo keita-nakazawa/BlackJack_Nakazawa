@@ -20,16 +20,24 @@ public class BaseDao {
 	
 	/**
 	 * コンストラクタ<br>
-	 * 初期処理として、セッションに保存されているDBコネクションを参照するかDBに新規接続する。
+	 * 初期処理として、セッションに保存されている有効なDBコネクションを参照するかDBに新規接続する。
 	 */
 	public BaseDao(HttpSession session) {
 
 		Connection sessionCon = (Connection) session.getAttribute("con");
 
-		if (sessionCon != null) {
-			con = sessionCon;
-		} else {
-			getConnect(session);
+		try {
+			
+			if (sessionCon != null && sessionCon.isValid(0)) {
+				con = sessionCon;
+			} else {
+				closeCon(session);
+				getConnect(session);
+			}
+			
+		} catch (SQLException e) {
+			// isValidメソッドの引数が0以上の整数である限り投げられない例外
+			e.printStackTrace();
 		}
 	}
 	
@@ -75,7 +83,7 @@ public class BaseDao {
 	
 	/**
 	 * セッションに退避してあったConnectionオブジェクトのクローズ処理。
-	 * ただし、クローズしないうちにセッション切れが起きた場合はクローズ不可能状態になってしまう恐れあり。
+	 * ただし、クローズしないうちにセッションタイムアウトが起きた場合はクローズ不可能状態になってしまう恐れあり。
 	 */
 	public void closeCon(HttpSession session) {
 		

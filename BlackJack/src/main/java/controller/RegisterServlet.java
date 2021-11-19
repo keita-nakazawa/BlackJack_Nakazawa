@@ -43,7 +43,6 @@ public class RegisterServlet extends HttpServlet {
 			HttpSession session = request.getSession();
 			UserDao userDao = new UserDao(session);
 			userDao.doRegister(userId, nickname, password, password2);
-			userDao.closeCon(session);
 
 			// userDaoからメッセージを抽出
 			if (userDao.getMessage() != null) {
