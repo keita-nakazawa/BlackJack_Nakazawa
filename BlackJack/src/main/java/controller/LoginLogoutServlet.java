@@ -7,7 +7,6 @@ import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.*;
 
-import dao.BaseDao;
 import dao.UserDao;
 import model.User;
 
@@ -54,9 +53,6 @@ public class LoginLogoutServlet extends HttpServlet {
 			throws ServletException, IOException {
 		
 		HttpSession session = request.getSession();
-		
-		BaseDao baseDao = new BaseDao();
-		baseDao.closeCon(session);
 		session.invalidate();
 
 		RequestDispatcher rd = request.getRequestDispatcher("login.jsp");

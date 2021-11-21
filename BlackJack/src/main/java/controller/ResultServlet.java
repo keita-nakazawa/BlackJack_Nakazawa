@@ -11,7 +11,6 @@ import javax.servlet.http.*;
 import dao.HistoryDao;
 import dao.UserDao;
 import model.*;
-
 @WebServlet("/ResultServlet")
 public class ResultServlet extends HttpServlet {
 
@@ -57,7 +56,7 @@ public class ResultServlet extends HttpServlet {
 				request.setAttribute("history", history);
 				request.setAttribute("game", game);
 				//Gameオブジェクトはセッションから削除
-				session.setAttribute("game", null);
+				session.removeAttribute("game");
 				nextPage = "gameEnd.jsp";
 			}
 

@@ -4,19 +4,13 @@ import java.sql.*;
 
 import javax.servlet.http.HttpSession;
 
-public class BaseDao {
+public abstract class BaseDao {
 
 	protected Connection con = null;
 	protected PreparedStatement ps = null;
 	protected ResultSet rs = null;
 
 	protected String message;
-	
-	/**
-	 * ログアウト時のみ使用するコンストラクタ
-	 */
-	public BaseDao() {
-	}
 	
 	/**
 	 * コンストラクタ<br>
@@ -28,15 +22,18 @@ public class BaseDao {
 
 		try {
 			
-			if (sessionCon != null && sessionCon.isValid(0)) {
-				con = sessionCon;
-			} else {
-				closeCon(session);
-				getConnect(session);
+			if (sessionCon != null) {
+				
+				if (sessionCon.isValid(0)) {
+					con = sessionCon;
+				} else {
+					sessionCon.close();
+					session.removeAttribute("con");
+					getConnect(session);
+				}
 			}
 			
 		} catch (SQLException e) {
-			// isValidメソッドの引数が0以上の整数である限り投げられない例外
 			e.printStackTrace();
 		}
 	}
@@ -54,6 +51,7 @@ public class BaseDao {
 
 			con = DriverManager.getConnection(url, user, password);
 			session.setAttribute("con", con);
+			session.setAttribute("SIW", new SessionInvalidateWatcher(con));
 			
 		} catch (ClassNotFoundException e) {
 			e.printStackTrace();
@@ -80,27 +78,7 @@ public class BaseDao {
 			message = "例外(closeAll)が発生しました。<br>管理者へお問い合わせください。";
 		}
 	}
-	
-	/**
-	 * セッションに退避してあったConnectionオブジェクトのクローズ処理。
-	 * ただし、クローズしないうちにセッションタイムアウトが起きた場合はクローズ不可能状態になってしまう恐れあり。
-	 */
-	public void closeCon(HttpSession session) {
-		
-		Connection sessionCon = (Connection) session.getAttribute("con");
-		
-		try {
-			if (sessionCon != null) {
-				sessionCon.close();
-				session.setAttribute("con", null);
-			}
-			
-		} catch (SQLException e) {
-			e.printStackTrace();
-			message = "例外(closeCon)が発生しました。<br>管理者へお問い合わせください。";
-		}
-	}
-	
+
 	public String getMessage() {
 		return message;
 	}
