@@ -10,7 +10,8 @@
 	</head>
 
 	<body>
-		<h1>ログインページ</h1>
+		<h1>BlackJack</h1>
+		<h2>ログインページ</h2>
 <%
 		String message = (String)request.getAttribute("message");
 		if(message != null) {

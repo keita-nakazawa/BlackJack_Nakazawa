@@ -8,7 +8,7 @@ public class Player extends BasePlayer{
 	private boolean splitFlag = false;
 	//バーストまたは結果待ち状態の手札ならtrue
 	private boolean endFlag = false;
-	//チップ収支
+	//チップ払戻額
 	private int eachResult;
 	//"バースト" or "結果待ち" 
 	private String playerMessage;

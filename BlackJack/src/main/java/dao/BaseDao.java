@@ -18,17 +18,19 @@ public abstract class BaseDao {
 	 */
 	public BaseDao(HttpSession session) {
 
-		Connection sessionCon = (Connection) session.getAttribute("con");
+		ConnectionHolder connectionHolder = (ConnectionHolder)session.getAttribute("connectionHolder");
 
 		try {
 			
-			if (sessionCon != null) {
+			if (connectionHolder != null) {
+				
+				Connection sessionCon = connectionHolder.getCon();
 				
 				if (sessionCon.isValid(0)) {
 					con = sessionCon;
 				} else {
 					sessionCon.close();
-					session.removeAttribute("con");
+					session.removeAttribute("connectionHolder");
 					getConnect(session);
 				}
 				
@@ -54,8 +56,7 @@ public abstract class BaseDao {
 			String password = "";
 
 			con = DriverManager.getConnection(url, user, password);
-			session.setAttribute("con", con);
-			session.setAttribute("SIW", new SessionInvalidateWatcher(con));
+			session.setAttribute("connectionHolder", new ConnectionHolder(con));
 			
 		} catch (ClassNotFoundException e) {
 			e.printStackTrace();
