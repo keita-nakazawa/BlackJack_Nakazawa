@@ -31,6 +31,10 @@ public abstract class BaseDao {
 					session.removeAttribute("con");
 					getConnect(session);
 				}
+				
+			} else {
+				
+				getConnect(session);
 			}
 			
 		} catch (SQLException e) {
