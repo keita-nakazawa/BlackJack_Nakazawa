@@ -18,6 +18,7 @@ public class SessionInvalidateWatcher implements HttpSessionBindingListener {
 		this.con = con;
 	}
 	
+	@Override
 	public void valueUnbound(HttpSessionBindingEvent event) {
 		try {
 			con.close();
