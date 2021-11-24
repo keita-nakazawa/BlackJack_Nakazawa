@@ -48,7 +48,7 @@
 <%
 				for(Card card: dealer.getHand().getListOfHand()) {
 %>
-					<td class="card">
+					<td class="card <%=card.getColor()%>">
 						<%=card.getMark()%><br><%=card.getNumber()%>
 					</td>
 <%
@@ -69,7 +69,7 @@
 					if (i < player.getHand().getSize()) {
 						Card card = player.getHand().getCard(i);
 %>
-						<td class="card">
+						<td class="card <%=card.getColor()%>">
 							<%=card.getMark()%><br><%=card.getNumber()%>
 						</td>
 <%

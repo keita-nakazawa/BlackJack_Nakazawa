@@ -52,7 +52,7 @@
 			
 			<table>
 				<tr>
-					<td class="card"><%=firstCard.getMark()%><br><%=firstCard.getNumber()%></td>
+					<td class="card <%=firstCard.getColor()%>"><%=firstCard.getMark()%><br><%=firstCard.getNumber()%></td>
 					<td class="card">？</td>
 					<td class="game_text">
 						<%=firstCard.getPoint()%>点
@@ -79,7 +79,7 @@
 <%
 					for(Card card: player.getHand().getListOfHand()) {
 %>
-						<td class="card">
+						<td class="card <%=card.getColor()%>">
 							<%=card.getMark()%><br><%=card.getNumber()%>
 						</td>
 <%

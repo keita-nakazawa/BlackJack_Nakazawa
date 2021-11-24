@@ -13,6 +13,10 @@ public class Card {
 	public String getMark() {
 		return mark.mark;
 	}
+
+	public String getColor() {
+		return mark.color;
+	}
 	
 	public String getNumber() {
 		return number.number;
@@ -30,14 +34,20 @@ public class Card {
 enum Mark {
 	
 	SPADE("♠"),
-	HEART("♥"),
-	DIAMOND("♦"),
+	HEART("♥", "red"),
+	DIAMOND("♦", "red"),
 	CLUB("♣");
 	
 	protected String mark;
+	protected String color;
 	
 	private Mark(String mark) {
 		this.mark = mark;
+	}
+	
+	private Mark(String mark, String color) {
+		this.mark = mark;
+		this.color = color;
 	}
 }
 
