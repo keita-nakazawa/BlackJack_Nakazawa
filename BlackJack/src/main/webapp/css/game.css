@@ -55,6 +55,10 @@ a.button{
 	text-align    : center;
 }
 
+.player {
+	font-size     : 20pt;
+}
+
 #logout {
 	text-align: right;
 }

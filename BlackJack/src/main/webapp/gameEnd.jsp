@@ -42,7 +42,7 @@
 			
 			<br>
 			
-			<p>ディーラー</p>
+			<p class="player">ディーラー</p>
 			<table>
 				<tr>
 <%
@@ -58,7 +58,7 @@
 				</tr>
 			</table>
 			
-			<p>あなた</p>
+			<p class="player">あなた</p>
 			<table>
 <%
 			for(Player player: splitPlayers.getList()) {

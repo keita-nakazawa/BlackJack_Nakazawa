@@ -48,7 +48,7 @@
 			
 			Card firstCard = dealer.getHand().getListOfHand().get(0);
 %>				
-			<p>ディーラー</p>
+			<p class="player">ディーラー</p>
 			
 			<table>
 				<tr>
@@ -69,7 +69,7 @@
 			</table>
 			
 			
-			<p>あなた</p>
+			<p class="player">あなた</p>
 <%
 			int index = 0;
 			for(Player player: splitPlayers.getList()) {
